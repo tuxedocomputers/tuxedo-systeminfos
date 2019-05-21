@@ -1,0 +1,8 @@
+variables:
+  SYS_INFO_URL: "https://www.mytuxedo.de/remote.php/webdav/systeminfo-sh/systeminfos.sh"
+
+upload_mytuxedo:
+  only:
+    - master
+  script:
+    - curl -T ./systeminfos.sh --user ${K8S_SECRET_WEBDAV_USER}:${K8S_SECRET_WEBDAV_PASSWORD} ${SYS_INFO_URL}
