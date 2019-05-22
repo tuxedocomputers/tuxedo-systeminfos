@@ -2,14 +2,14 @@ variables:
   SYS_INFO_URL: "https://www.mytuxedo.de/remote.php/webdav/systeminfo-sh/systeminfos.sh"
 
 stages:
-  - upload
+  - deploy
 
 upload_mytuxedo:
-  stage: upload
+  stage: deploy
   only:
     refs:
       - master
     changes:
-      - ./systeminfos.sh
+      - systeminfos.sh
   script:
     - curl -T ./systeminfos.sh --user ${K8S_SECRET_WEBDAV_USER}:${K8S_SECRET_WEBDAV_PASSWORD} ${SYS_INFO_URL}
