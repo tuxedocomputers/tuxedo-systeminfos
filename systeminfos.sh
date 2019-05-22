@@ -462,5 +462,5 @@ zip -9 $infoFileName.zip $infoFileName
 curl -F "file=@$infoFileName.zip" $serverURI?ticketnumber=$ticketnumber
 
 rm $infoFileName.zip
-echo "test">/dev/null
+echo "test">/dev/null #
 exit 0;
