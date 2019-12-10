@@ -307,6 +307,18 @@ echo '/etc/apt/sources.list.d ppa
 cat /etc/apt/sources.list.d/* >> $infoFileName
 echo '
 
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+' >> $infoFileName
+echo '/etc/zypp/repos.d
+' >> $infoFileName
+ls -al /etc/zypp/repos.d/ >> $infoFileName
+echo '
+
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -396,6 +408,7 @@ echo '
 echo 'dpkg -l|grep nvidia
 ' >> $infoFileName
 dpkg -l|grep nvidia >> $infoFileName
+rpm -qa | grep nvidia >> $infoFileName
 echo '
 
 
@@ -435,6 +448,7 @@ echo '
 echo 'Display-Manager
 ' >> $infoFileName
 cat /etc/systemd/system/display-manager.service >> $infoFileName
+cat /etc/alternatives/default-displaymanager | grep DISPLAYMANAGER >> $infoFileName
 echo '
 
 
@@ -579,6 +593,7 @@ echo '
 echo '/var/log/apt/history.log
 ' >> $infoFileName
 cat /var/log/apt/history.log >> $infoFileName
+cat /var/log/zypp/history >> $infoFileName
 echo '
 
 
@@ -592,6 +607,7 @@ echo '
 echo 'dpkg -l
 ' >> $infoFileName
 dpkg -l >> $infoFileName
+rpm -qa >> $infoFileName
 echo '
 
 
@@ -605,6 +621,7 @@ echo '
 echo 'cat /var/log/syslog
 ' >> $infoFileName
 cat /var/log/syslog >> $infoFileName
+journalctl --system -e >> $infoFileName
 
 zip -9 $infoFileName.zip $infoFileName
 
