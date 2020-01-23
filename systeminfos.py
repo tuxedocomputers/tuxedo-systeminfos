@@ -1,9 +1,18 @@
 #!/usr/bin/env python
-import distro
 import platform
+
+import distro
+from pylspci.parsers import VerboseParser
+
+
+def getPCI():
+    lspci = VerboseParser()
+    pciData = lspci.run()
+    return pciData
 
 
 def main():
+
     print(
         "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. / We cannot proceed your inquire without ticket number!")
     print(
@@ -15,6 +24,7 @@ def main():
     LinuxDistro = distro.linux_distribution()[0]
     LinuxDistroVersion = distro.linux_distribution()[0]
     Kernel = platform.platform()
+    pciDevs = getPCI()
 
     if distro.linux_distribution(full_distribution_name=False) == "arch":
         pass
