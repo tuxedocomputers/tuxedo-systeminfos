@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import platform
+import subprocess
 
+import chardet
 import distro
 from pylspci.parsers import VerboseParser
 
@@ -25,9 +27,17 @@ def main():
     LinuxDistroVersion = distro.linux_distribution()[0]
     Kernel = platform.platform()
     pciDevs = getPCI()
+    installedPKG = {}
 
-    if distro.linux_distribution(full_distribution_name=False) == "arch":
-        pass
+    if distro.linux_distribution(full_distribution_name=False)[0] == "arch":
+        PacOut = subprocess.check_output(['pacman', '-Q', "-e"])
+        PacOutEnc = chardet.detect(PacOut)["encoding"]
+        PacOutStr = str(PacOut, PacOutEnc)
+        for line in PacOutStr.splitlines():
+            lineParts = line.split()
+            installedPKG[lineParts[0]] = lineParts[1]
+
+
 
 
 if __name__ == '__main__':
