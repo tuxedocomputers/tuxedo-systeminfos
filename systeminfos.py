@@ -58,9 +58,14 @@ def main():
     TuxReport = ET.Element("TuxReport", TicketID=IMNr)
 
     xml_LinuxDist = ET.SubElement(TuxReport, "LinuxDistro", name=LinuxDistro, version=LinuxDistroVersion)
+    xml_instSoftware = ET.SubElement(xml_LinuxDist, "InstalledSoftware")
     xml_LinuxKernel = ET.SubElement(xml_LinuxDist, "LinuxKernel", VersionString=Kernel)
     xml_System = ET.SubElement(TuxReport, "System")
     xml_pciBus = ET.SubElement(xml_System, "PCI")
+
+    for pkg in installedPKG.items():
+        ET.SubElement(xml_instSoftware, "pkg", version=pkg[1]).text = pkg[0]
+
     for dev in pciDevs:
         xml_pciDev = ET.SubElement(xml_pciBus, "dev", id=dev.device.name, slot=str(dev.slot), vendor=str(dev.vendor),
                                    driver=str(dev.driver), name=dev.device.name, revision=str(dev.revision))
@@ -69,7 +74,7 @@ def main():
 
     tree = ET.ElementTree(TuxReport).getroot()
     xmlstr = minidom.parseString(tostring(tree, encoding='utf8')).toprettyxml()
-
+    print(xmlstr)
     # ToDo: send Text to Tuxedo
 
 
