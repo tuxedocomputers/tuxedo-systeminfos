@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 import platform
 import subprocess
+import xml.etree.ElementTree as ET
+from xml.dom import minidom
+from xml.etree.ElementTree import tostring
 
 import chardet
 import distro
@@ -52,6 +55,20 @@ def main():
             installedPKG[lineParts[0]] = lineParts[1]
 
     # ToDo: Add a part for creating the Text to send
+    TuxReport = ET.Element("TuxReport", TicketID=IMNr)
+
+    xml_LinuxDist = ET.SubElement(TuxReport, "LinuxDistro", name=LinuxDistro, version=LinuxDistroVersion)
+    xml_LinuxKernel = ET.SubElement(xml_LinuxDist, "LinuxKernel", VersionString=Kernel)
+    xml_System = ET.SubElement(TuxReport, "System")
+    xml_pciBus = ET.SubElement(xml_System, "PCI")
+    for dev in pciDevs:
+        xml_pciDev = ET.SubElement(xml_pciBus, "dev", id=dev.device.name, slot=str(dev.slot), vendor=str(dev.vendor),
+                                   driver=str(dev.driver), name=dev.device.name, revision=str(dev.revision))
+        for km in dev.kernel_modules:
+            ET.SubElement(xml_pciDev, "kernel_module").text = km
+
+    tree = ET.ElementTree(TuxReport).getroot()
+    xmlstr = minidom.parseString(tostring(tree, encoding='utf8')).toprettyxml()
 
     # ToDo: send Text to Tuxedo
 
