@@ -52,7 +52,7 @@ def main():
     with open('/sys/devices/virtual/dmi/id/bios_vendor') as f:
         MotherBoard["bios_vendor"] = f.readline().rstrip()
 
-    
+
     LinuxDistro = distro.linux_distribution()[0]
     LinuxDistroVersion = distro.linux_distribution()[0]
     Kernel = platform.platform()
@@ -60,6 +60,7 @@ def main():
     usbDevs = getUSB()
     installedPKG = {}
 
+    #ToDo: need to be done for other distro
     if distro.linux_distribution(full_distribution_name=False)[0] == "arch":
         PacOut = subprocess.check_output(['pacman', '-Q', "-e"])
         PacOutEnc = chardet.detect(PacOut)["encoding"]
