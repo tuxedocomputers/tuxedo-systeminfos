@@ -8,3 +8,5 @@ bsp-report.xml
 __pycache__/
 
 build/
+
+systeminfos.spec
