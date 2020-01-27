@@ -22,11 +22,11 @@ def getUSB():
     usbDevs = usb.core.find(find_all=True)
     for dev in usbDevs:
         usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)] = {}
-        usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["Bus"] = dev.bus
-        usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["AddrOnBus"] = dev.address
-        usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["serial_number"] = dev.serial_number
-        usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["product"] = dev.product
-        usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["manufacturer"] = dev.manufacturer
+        usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["Bus"] = str(dev.bus)
+        usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["AddrOnBus"] = str(dev.address)
+        usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["serial_number"] = str(dev.serial_number)
+        usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["product"] = str(dev.product)
+        usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["manufacturer"] = str(dev.manufacturer)
     return usbDevsList
 
 def main():
@@ -77,7 +77,7 @@ def main():
     xml_LinuxKernel = ET.SubElement(xml_LinuxDist, "LinuxKernel", VersionString=Kernel)
     xml_System = ET.SubElement(TuxReport, "System")
     xml_pciBus = ET.SubElement(xml_System, "PCI")
-
+    xml_usbBus = ET.SubElement(xml_System, "USB")
     for pkg in installedPKG.items():
         ET.SubElement(xml_instSoftware, "pkg", version=pkg[1]).text = pkg[0]
 
@@ -88,6 +88,12 @@ def main():
                                    driver=str(dev.driver), name=dev.device.name, revision=str(dev.revision))
         for km in dev.kernel_modules:
             ET.SubElement(xml_pciDev, "kernel_module").text = km
+
+    for devID, dev in usbDevs.items():
+        localDict = dev
+        localDict["id"] = devID
+        xml_usbDev = ET.SubElement(xml_usbBus, "dev", localDict)
+
 
     tree = ET.ElementTree(TuxReport).getroot()
     xmlstr = minidom.parseString(tostring(tree, encoding='utf8')).toprettyxml()
