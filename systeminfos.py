@@ -39,6 +39,20 @@ def main():
     print("")
     print("Okay, we are working with ticket %s!" % IMNr)
 
+    MotherBoard = {}
+    with open('/sys/devices/virtual/dmi/id/board_vendor') as f:
+        MotherBoard["vendor"] = f.readline().rstrip()
+
+    with open('/sys/devices/virtual/dmi/id/board_name') as f:
+        MotherBoard["name"] = f.readline().rstrip()
+
+    with open('/sys/devices/virtual/dmi/id/bios_version') as f:
+        MotherBoard["bios_version"] = f.readline().rstrip()
+
+    with open('/sys/devices/virtual/dmi/id/bios_vendor') as f:
+        MotherBoard["bios_vendor"] = f.readline().rstrip()
+
+    
     LinuxDistro = distro.linux_distribution()[0]
     LinuxDistroVersion = distro.linux_distribution()[0]
     Kernel = platform.platform()
@@ -65,6 +79,8 @@ def main():
 
     for pkg in installedPKG.items():
         ET.SubElement(xml_instSoftware, "pkg", version=pkg[1]).text = pkg[0]
+
+    xml_MotherBoard = ET.SubElement(xml_System, "MotherBoard", MotherBoard)
 
     for dev in pciDevs:
         xml_pciDev = ET.SubElement(xml_pciBus, "dev", id=dev.device.name, slot=str(dev.slot), vendor=str(dev.vendor),
