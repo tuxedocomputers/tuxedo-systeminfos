@@ -29,6 +29,20 @@ def getUSB():
         usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["product"] = str(dev.product)
         usbDevsList[hex(dev.idVendor) + ":" + hex(dev.idProduct)]["manufacturer"] = str(dev.manufacturer)
     return usbDevsList
+def getDKMS():
+    DKMSstats = {}
+    dmksout = subprocess.check_output(['dkms', 'status'])
+    dmksoutEnc = chardet.detect(dmksout)["encoding"]
+    dmksout = str(dmksout, dmksoutEnc)
+    for line in dmksout.splitlines():
+        line = line.strip()
+        infos = line.split(",")
+        DKMSstats[infos[0]] = {}
+        DKMSstats[infos[0]]["Version"] = infos[1].strip()
+        DKMSstats[infos[0]]["KernelVersion"] = infos[2].strip()
+        DKMSstats[infos[0]]["architecture"] = infos[3].split(":")[0].strip()
+        DKMSstats[infos[0]]["status"] = infos[3].split(":")[1].strip()
+    return DKMSstats
 
 def main():
     getUSB()
@@ -101,6 +115,7 @@ def main():
     xml_LinuxDist = ET.SubElement(TuxReport, "LinuxDistro", name=LinuxDistro, version=LinuxDistroVersion)
     xml_instSoftware = ET.SubElement(xml_LinuxDist, "InstalledSoftware")
     xml_LinuxKernel = ET.SubElement(xml_LinuxDist, "LinuxKernel", VersionString=Kernel)
+    xml_DKMS = ET.SubElement(xml_LinuxKernel, "DKMS")
     xml_System = ET.SubElement(TuxReport, "System")
     xml_pciBus = ET.SubElement(xml_System, "PCI")
     xml_usbBus = ET.SubElement(xml_System, "USB")
@@ -108,6 +123,8 @@ def main():
     for filename, cont in PKGMgrCfg.items():
         xml_PKFcfgFile = ET.SubElement(xml_PKGMgr, "cfg-file", filename=filename)
         xml_PKFcfgFile.text = cont
+    for modName, info in getDKMS().items():
+        xml_DKMSMod = ET.SubElement(xml_DKMS, modName, info)
 
     for pkg in installedPKG.items():
         ET.SubElement(xml_instSoftware, "pkg", version=pkg[1]).text = pkg[0]
