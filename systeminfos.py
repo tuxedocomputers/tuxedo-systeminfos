@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+import os
 import platform
 import subprocess
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 from xml.etree.ElementTree import tostring
-
+import re
 import chardet
 import distro
 import usb.core
@@ -59,7 +60,7 @@ def main():
     pciDevs = getPCI()
     usbDevs = getUSB()
     installedPKG = {}
-
+    PKGMgrCfg = {}
     #ToDo: need to be done for other distro
     if distro.linux_distribution(full_distribution_name=False)[0] == "arch":
         PacOut = subprocess.check_output(['pacman', '-Q', "-e"])
@@ -68,6 +69,31 @@ def main():
         for line in PacOutStr.splitlines():
             lineParts = line.split()
             installedPKG[lineParts[0]] = lineParts[1]
+        with open("/etc/pacman.conf", "r") as pacmanCFG:
+            readConfig = ""
+            for line in pacmanCFG.readlines():
+                if not line.startswith("#"):
+                    readConfig = readConfig + line
+
+            readConfig = re.sub(' +', ' ',readConfig)
+            readConfig = os.linesep.join([s for s in readConfig.splitlines() if s])
+            PKGMgrCfg["pacman.conf"] = readConfig
+            IncludeList = []
+            for line in readConfig.splitlines():
+                if line.startswith("Include"):
+                    IncludeList.append(line[line.index("/"):])
+            IncludeList = list(dict.fromkeys(IncludeList))
+
+            for file in IncludeList:
+                with open(file, "r") as cfgFile:
+                    readConfig = ""
+                    for line in cfgFile.readlines():
+                        if not line.startswith("#"):
+                            readConfig = readConfig + line
+                    readConfig = re.sub(' +', ' ', readConfig)
+                    readConfig = os.linesep.join([s for s in readConfig.splitlines() if s])
+                    PKGMgrCfg[file] = readConfig
+
 
     # ToDo: Add a part for creating the Text to send
     TuxReport = ET.Element("TuxReport", TicketID=IMNr)
@@ -78,6 +104,11 @@ def main():
     xml_System = ET.SubElement(TuxReport, "System")
     xml_pciBus = ET.SubElement(xml_System, "PCI")
     xml_usbBus = ET.SubElement(xml_System, "USB")
+    xml_PKGMgr = ET.SubElement(xml_LinuxDist, "PKGManager")
+    for filename, cont in PKGMgrCfg.items():
+        xml_PKFcfgFile = ET.SubElement(xml_PKGMgr, "cfg-file", filename=filename)
+        xml_PKFcfgFile.text = cont
+
     for pkg in installedPKG.items():
         ET.SubElement(xml_instSoftware, "pkg", version=pkg[1]).text = pkg[0]
 
