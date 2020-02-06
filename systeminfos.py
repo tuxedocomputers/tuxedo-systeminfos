@@ -78,6 +78,22 @@ def main():
             readConfig = re.sub(' +', ' ',readConfig)
             readConfig = os.linesep.join([s for s in readConfig.splitlines() if s])
             PKGMgrCfg["pacman.conf"] = readConfig
+            IncludeList = []
+            for line in readConfig.splitlines():
+                if line.startswith("Include"):
+                    IncludeList.append(line[line.index("/"):])
+            IncludeList = list(dict.fromkeys(IncludeList))
+
+            for file in IncludeList:
+                with open(file, "r") as cfgFile:
+                    readConfig = ""
+                    for line in cfgFile.readlines():
+                        if not line.startswith("#"):
+                            readConfig = readConfig + line
+                    readConfig = re.sub(' +', ' ', readConfig)
+                    readConfig = os.linesep.join([s for s in readConfig.splitlines() if s])
+                    PKGMgrCfg[file] = readConfig
+
 
     # ToDo: Add a part for creating the Text to send
     TuxReport = ET.Element("TuxReport", TicketID=IMNr)
