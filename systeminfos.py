@@ -10,7 +10,17 @@ import chardet
 import distro
 import usb.core
 from pylspci.parsers import VerboseParser
+import psutil
 
+def getNetBasics():
+    NetworkInfo = {}
+    NetIf = psutil.net_if_addrs()
+    statsIf = psutil.net_if_stats()
+    for Interface in NetIf.keys():
+        NetworkInfo[Interface] = {}
+        # Up is not the same as connected (have to learn it the hard way)
+        NetworkInfo[Interface]["Up"] = statsIf[Interface].isup
+        NetworkInfo[Interface]["duplex"] = statsIf[Interface].duplex
 
 def getPCI():
     lspci = VerboseParser()
