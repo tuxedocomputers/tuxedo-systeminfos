@@ -165,8 +165,15 @@ def main():
         xml_usbDev = ET.SubElement(xml_usbBus, "dev", localDict)
 
     cpuUseP = psutil.cpu_percent(interval=2, percpu=True)
+    cpuTimesP = psutil.cpu_times_percent(interval=2, percpu=True)
+
+    xmlc_CPUinfo = ET.Comment("this values are collected by 2 commands. both blocking for 2 seconds. It is not at the same time collected.")
+    xmlc_CPUinfo2 = ET.Comment("The value ending with P are % ")
+
+    xml_CPU.insert(0, xmlc_CPUinfo)
+    xml_CPU.insert(1, xmlc_CPUinfo2)
     for CPU in range(psutil.cpu_count(logical=True)):
-        xml_CPUthread = ET.SubElement(xml_CPU, "LCPU", percent=str(cpuUseP[CPU]))
+        xml_CPUthread = ET.SubElement(xml_CPU, "LCPU", CPUUseP=str(cpuUseP[CPU]), userP=str(cpuTimesP[CPU].user),idleP=str(cpuTimesP[CPU].idle), systemP=str(cpuTimesP[CPU].system), iowaitP=str(cpuTimesP[CPU].iowait))
 
 
     tree = ET.ElementTree(TuxReport).getroot()
