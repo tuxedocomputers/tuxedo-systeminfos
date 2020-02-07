@@ -169,11 +169,16 @@ def main():
 
     xmlc_CPUinfo = ET.Comment("this values are collected by 2 commands. both blocking for 2 seconds. It is not at the same time collected.")
     xmlc_CPUinfo2 = ET.Comment("The value ending with P are % ")
-
+    xmlc_CPUinfo4 = ET.Comment("The value ending with freq are MHz ")
     xml_CPU.insert(0, xmlc_CPUinfo)
     xml_CPU.insert(1, xmlc_CPUinfo2)
+    xml_CPU.insert(2, xmlc_CPUinfo3)
     for CPU in range(psutil.cpu_count(logical=True)):
-        xml_CPUthread = ET.SubElement(xml_CPU, "LCPU", CPUUseP=str(cpuUseP[CPU]), userP=str(cpuTimesP[CPU].user),idleP=str(cpuTimesP[CPU].idle), systemP=str(cpuTimesP[CPU].system), iowaitP=str(cpuTimesP[CPU].iowait))
+        xml_CPUthread = ET.SubElement(xml_CPU, "LCPU", CPUUseP=str(cpuUseP[CPU]), userP=str(cpuTimesP[CPU].user),
+                                      idleP=str(cpuTimesP[CPU].idle), systemP=str(cpuTimesP[CPU].system),
+                                      iowaitP=str(cpuTimesP[CPU].iowait),currentfreq = str(psutil.cpu_freq(percpu=True)[CPU].current),
+                                      minfreq = str(psutil.cpu_freq(percpu=True)[CPU].min),
+                                      maxfreq = str(psutil.cpu_freq(percpu=True)[CPU].max))
 
 
     tree = ET.ElementTree(TuxReport).getroot()
