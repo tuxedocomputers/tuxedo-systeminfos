@@ -1,8 +1,6 @@
-# tuxedo-systeminfos
+# TUXEDO Systeminfos
 
-Script from TUXEDO Computers to get necessary information of the system
-
-For more Informations see https://www.tuxedocomputers.com/en/Notebooks-PCs-systeminfossh.tuxedo (English) or https://www.tuxedocomputers.com/de/Notebooks-PCs-systeminfossh.tuxedo (German)
+Script from TUXEDO Computers to get necessary information of the system for technical support purposes. For more information see here in [English](https://www.tuxedocomputers.com/en/Notebooks-PCs-systeminfossh.tuxedo) or [German](https://www.tuxedocomputers.com/de/Notebooks-PCs-systeminfossh.tuxedo).
 
 What exactly does the script collect?
 
