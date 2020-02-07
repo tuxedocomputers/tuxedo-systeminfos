@@ -135,7 +135,7 @@ def main():
     xmlc_NetworkSpeed = ET.Comment("the NIC speed expressed in megabits, if it cannot be determined it will be set to 0.")
     xml_Network.insert(0,xmlc_NetworkUp)
     xml_Network.insert(1, xmlc_NetworkSpeed)
-    xml_CPU = ET.SubElement(xml_System, "CPU", count=str(psutil.cpu_count(logical=False)),logicalcount=str(psutil.cpu_count(logical=True)))
+
     xml_pciBus = ET.SubElement(xml_System, "PCI")
     xml_usbBus = ET.SubElement(xml_System, "USB")
     xml_PKGMgr = ET.SubElement(xml_LinuxDist, "PKGManager")
@@ -151,7 +151,8 @@ def main():
         ET.SubElement(xml_instSoftware, "pkg", version=pkg[1]).text = pkg[0]
 
     xml_MotherBoard = ET.SubElement(xml_System, "MotherBoard", MotherBoard)
-
+    xml_CPU = ET.SubElement(xml_MotherBoard, "CPU", count=str(psutil.cpu_count(logical=False)),
+                            logicalcount=str(psutil.cpu_count(logical=True)))
     for dev in pciDevs:
         xml_pciDev = ET.SubElement(xml_pciBus, "dev", id=dev.device.name, slot=str(dev.slot), vendor=str(dev.vendor),
                                    driver=str(dev.driver), name=dev.device.name, revision=str(dev.revision))
@@ -162,6 +163,17 @@ def main():
         localDict = dev
         localDict["id"] = devID
         xml_usbDev = ET.SubElement(xml_usbBus, "dev", localDict)
+
+    cpuUseP = psutil.cpu_percent(interval=2, percpu=True)
+    cpuTimesP = psutil.cpu_times_percent(interval=2, percpu=True)
+
+    xmlc_CPUinfo = ET.Comment("this values are collected by 2 commands. both blocking for 2 seconds. It is not at the same time collected.")
+    xmlc_CPUinfo2 = ET.Comment("The value ending with P are % ")
+
+    xml_CPU.insert(0, xmlc_CPUinfo)
+    xml_CPU.insert(1, xmlc_CPUinfo2)
+    for CPU in range(psutil.cpu_count(logical=True)):
+        xml_CPUthread = ET.SubElement(xml_CPU, "LCPU", CPUUseP=str(cpuUseP[CPU]), userP=str(cpuTimesP[CPU].user),idleP=str(cpuTimesP[CPU].idle), systemP=str(cpuTimesP[CPU].system), iowaitP=str(cpuTimesP[CPU].iowait))
 
 
     tree = ET.ElementTree(TuxReport).getroot()
