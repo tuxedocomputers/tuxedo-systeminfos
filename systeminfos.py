@@ -135,6 +135,7 @@ def main():
     xmlc_NetworkSpeed = ET.Comment("the NIC speed expressed in megabits, if it cannot be determined it will be set to 0.")
     xml_Network.insert(0,xmlc_NetworkUp)
     xml_Network.insert(1, xmlc_NetworkSpeed)
+    xml_CPU = ET.SubElement(xml_System, "CPU", count=str(psutil.cpu_count(logical=False)),logicalcount=str(psutil.cpu_count(logical=True)))
     xml_pciBus = ET.SubElement(xml_System, "PCI")
     xml_usbBus = ET.SubElement(xml_System, "USB")
     xml_PKGMgr = ET.SubElement(xml_LinuxDist, "PKGManager")
