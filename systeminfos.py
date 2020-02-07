@@ -30,6 +30,14 @@ def getPCI():
     pciData = lspci.run()
     return pciData
 
+def getDisks():
+    Disks = {}
+    for mount in psutil.disk_partitions():
+        Disks[mount.device] = {}
+        Disks[mount.device]["mountpoints"] = {}
+    for mount in psutil.disk_partitions():
+        Disks[mount.device]["fstype"] = mount.fstype
+        Disks[mount.device]["mountpoints"][mount.mountpoint] = mount.opts
 
 def getUSB():
     usbDevsList = {}
@@ -150,6 +158,7 @@ def main():
     for pkg in installedPKG.items():
         ET.SubElement(xml_instSoftware, "pkg", version=pkg[1]).text = pkg[0]
 
+
     xml_MotherBoard = ET.SubElement(xml_System, "MotherBoard", MotherBoard)
     xml_CPU = ET.SubElement(xml_MotherBoard, "CPU", count=str(psutil.cpu_count(logical=False)),
                             logicalcount=str(psutil.cpu_count(logical=True)))
@@ -169,7 +178,7 @@ def main():
 
     xmlc_CPUinfo = ET.Comment("this values are collected by 2 commands. both blocking for 2 seconds. It is not at the same time collected.")
     xmlc_CPUinfo2 = ET.Comment("The value ending with P are % ")
-    xmlc_CPUinfo4 = ET.Comment("The value ending with freq are MHz ")
+    xmlc_CPUinfo3 = ET.Comment("The value ending with freq are MHz ")
     xml_CPU.insert(0, xmlc_CPUinfo)
     xml_CPU.insert(1, xmlc_CPUinfo2)
     xml_CPU.insert(2, xmlc_CPUinfo3)
