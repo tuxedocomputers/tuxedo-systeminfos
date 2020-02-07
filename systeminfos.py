@@ -19,8 +19,11 @@ def getNetBasics():
     for Interface in NetIf.keys():
         NetworkInfo[Interface] = {}
         # Up is not the same as connected (have to learn it the hard way)
-        NetworkInfo[Interface]["Up"] = statsIf[Interface].isup
-        NetworkInfo[Interface]["duplex"] = statsIf[Interface].duplex
+        NetworkInfo[Interface]["Up"] = str(statsIf[Interface].isup)
+        NetworkInfo[Interface]["duplex"] = str(statsIf[Interface].duplex)
+        NetworkInfo[Interface]["mtu"] = str(statsIf[Interface].mtu)
+        NetworkInfo[Interface]["speed"] = str(statsIf[Interface].speed)
+    return NetworkInfo
 
 def getPCI():
     lspci = VerboseParser()
@@ -128,8 +131,10 @@ def main():
     xml_DKMS = ET.SubElement(xml_LinuxKernel, "DKMS")
     xml_System = ET.SubElement(TuxReport, "System")
     xml_Network = ET.SubElement(xml_System, "Network")
-    xmlc_Network = ET.Comment("for a network interface the status Up does not mean that it is connected to anything. It just means it would accept connections.")
-    xml_Network.insert(0,xmlc_Network)
+    xmlc_NetworkUp = ET.Comment("for a network interface the status Up does not mean that it is connected to anything. It just means it would accept connections.")
+    xmlc_NetworkSpeed = ET.Comment("the NIC speed expressed in megabits, if it cannot be determined it will be set to 0.")
+    xml_Network.insert(0,xmlc_NetworkUp)
+    xml_Network.insert(1, xmlc_NetworkSpeed)
     xml_pciBus = ET.SubElement(xml_System, "PCI")
     xml_usbBus = ET.SubElement(xml_System, "USB")
     xml_PKGMgr = ET.SubElement(xml_LinuxDist, "PKGManager")
@@ -138,6 +143,8 @@ def main():
         xml_PKFcfgFile.text = cont
     for modName, info in getDKMS().items():
         xml_DKMSMod = ET.SubElement(xml_DKMS, modName, info)
+    for CardName, info in getNetBasics().items():
+        xml_Networkcard = ET.SubElement(xml_Network, CardName, info)
 
     for pkg in installedPKG.items():
         ET.SubElement(xml_instSoftware, "pkg", version=pkg[1]).text = pkg[0]
