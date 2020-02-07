@@ -38,6 +38,7 @@ def getDisks():
     for mount in psutil.disk_partitions():
         Disks[mount.device]["fstype"] = mount.fstype
         Disks[mount.device]["mountpoints"][mount.mountpoint] = mount.opts
+    return Disks
 
 def getUSB():
     usbDevsList = {}
@@ -188,6 +189,11 @@ def main():
                                       iowaitP=str(cpuTimesP[CPU].iowait),currentfreq = str(psutil.cpu_freq(percpu=True)[CPU].current),
                                       minfreq = str(psutil.cpu_freq(percpu=True)[CPU].min),
                                       maxfreq = str(psutil.cpu_freq(percpu=True)[CPU].max))
+
+    for Disk, info in getDisks().items():
+        xml_Part = ET.SubElement(xml_Disks, "Part", path=Disk, fstype=info["fstype"])
+        for path, opts in info["mountpoints"].items():
+            xml_Mount = ET.SubElement(xml_Part, "Mount", path=path).text = opts
 
 
     tree = ET.ElementTree(TuxReport).getroot()
