@@ -164,8 +164,9 @@ def main():
         localDict["id"] = devID
         xml_usbDev = ET.SubElement(xml_usbBus, "dev", localDict)
 
+    cpuUseP = psutil.cpu_percent(interval=2, percpu=True)
     for CPU in range(psutil.cpu_count(logical=True)):
-        xml_CPUthread = ET.SubElement(xml_CPU, "LCPU",)
+        xml_CPUthread = ET.SubElement(xml_CPU, "LCPU", percent=str(cpuUseP[CPU]))
 
 
     tree = ET.ElementTree(TuxReport).getroot()
