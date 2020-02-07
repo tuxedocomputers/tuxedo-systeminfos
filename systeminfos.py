@@ -169,7 +169,7 @@ def main():
 
     xmlc_CPUinfo = ET.Comment("this values are collected by 2 commands. both blocking for 2 seconds. It is not at the same time collected.")
     xmlc_CPUinfo2 = ET.Comment("The value ending with P are % ")
-    xmlc_CPUinfo4 = ET.Comment("The value ending with freq are MHz ")
+    xmlc_CPUinfo3 = ET.Comment("The value ending with freq are MHz ")
     xml_CPU.insert(0, xmlc_CPUinfo)
     xml_CPU.insert(1, xmlc_CPUinfo2)
     xml_CPU.insert(2, xmlc_CPUinfo3)
