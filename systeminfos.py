@@ -15,7 +15,17 @@ from dmidecode import DMIDecode
 
 
 def getRAM():
-    pass
+    r = {}
+    RAMs = DMIDecode().get(17)
+    for RAM in RAMs:
+        r[RAM["Bank Locator"]]= {}
+        r[RAM["Bank Locator"]]['Size'] = str(RAM["Size"])
+        r[RAM["Bank Locator"]]['ConfiguredVoltage'] = str(RAM['Configured Voltage'])
+        r[RAM["Bank Locator"]]['FormFactor'] = str(RAM['Form Factor'])
+        r[RAM["Bank Locator"]]['Type'] = str(RAM['Type'])
+        r[RAM["Bank Locator"]]['TypeDetail'] = str(RAM['Type Detail'])
+        r[RAM["Bank Locator"]]['PartNumber'] = str(RAM['Part Number'])
+    return r
 
 
 
@@ -204,6 +214,9 @@ def main():
         for path, opts in info["mountpoints"].items():
             xml_Mount = ET.SubElement(xml_Part, "Mount", path=path).text = opts
 
+    for Bank, info in getRAM().items():
+        info["Bank"]= str(Bank)
+        xml_RAMbank = ET.SubElement(xml_RAM, "stick", info)
 
     tree = ET.ElementTree(TuxReport).getroot()
     xmlstr = minidom.parseString(tostring(tree, encoding='utf8')).toprettyxml()
