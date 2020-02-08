@@ -11,6 +11,23 @@ import distro
 import usb.core
 from pylspci.parsers import VerboseParser
 import psutil
+from dmidecode import DMIDecode
+
+
+def getRAM():
+    r = {}
+    RAMs = DMIDecode().get(17)
+    for RAM in RAMs:
+        r[RAM["Bank Locator"]]= {}
+        r[RAM["Bank Locator"]]['Size'] = str(RAM["Size"])
+        r[RAM["Bank Locator"]]['ConfiguredVoltage'] = str(RAM['Configured Voltage'])
+        r[RAM["Bank Locator"]]['FormFactor'] = str(RAM['Form Factor'])
+        r[RAM["Bank Locator"]]['Type'] = str(RAM['Type'])
+        r[RAM["Bank Locator"]]['TypeDetail'] = str(RAM['Type Detail'])
+        r[RAM["Bank Locator"]]['PartNumber'] = str(RAM['Part Number'])
+    return r
+
+
 
 def getNetBasics():
     NetworkInfo = {}
@@ -148,6 +165,7 @@ def main():
     xml_pciBus = ET.SubElement(xml_System, "PCI")
     xml_usbBus = ET.SubElement(xml_System, "USB")
     xml_PKGMgr = ET.SubElement(xml_LinuxDist, "PKGManager")
+
     for filename, cont in PKGMgrCfg.items():
         xml_PKFcfgFile = ET.SubElement(xml_PKGMgr, "cfg-file", filename=filename)
         xml_PKFcfgFile.text = cont
@@ -162,7 +180,8 @@ def main():
 
     xml_MotherBoard = ET.SubElement(xml_System, "MotherBoard", MotherBoard)
     xml_CPU = ET.SubElement(xml_MotherBoard, "CPU", count=str(psutil.cpu_count(logical=False)),
-                            logicalcount=str(psutil.cpu_count(logical=True)))
+                            logicalcount=str(psutil.cpu_count(logical=True)), type=DMIDecode().cpu_type())
+    xml_RAM = ET.SubElement(xml_MotherBoard, "RAM", size=str(psutil.virtual_memory().total), free=str(psutil.virtual_memory().free), available=str(psutil.virtual_memory().available))
     for dev in pciDevs:
         xml_pciDev = ET.SubElement(xml_pciBus, "dev", id=dev.device.name, slot=str(dev.slot), vendor=str(dev.vendor),
                                    driver=str(dev.driver), name=dev.device.name, revision=str(dev.revision))
@@ -195,12 +214,15 @@ def main():
         for path, opts in info["mountpoints"].items():
             xml_Mount = ET.SubElement(xml_Part, "Mount", path=path).text = opts
 
+    for Bank, info in getRAM().items():
+        info["Bank"]= str(Bank)
+        xml_RAMbank = ET.SubElement(xml_RAM, "stick", info)
 
     tree = ET.ElementTree(TuxReport).getroot()
     xmlstr = minidom.parseString(tostring(tree, encoding='utf8')).toprettyxml()
     print(xmlstr)
     # ToDo: send Text to Tuxedo
-
+    
 
 if __name__ == '__main__':
     main()
