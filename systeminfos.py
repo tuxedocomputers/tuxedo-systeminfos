@@ -91,7 +91,7 @@ def main():
 
 
     LinuxDistro = distro.linux_distribution()[0]
-    LinuxDistroVersion = distro.linux_distribution()[0]
+    LinuxDistroVersion = distro.linux_distribution()[1]
     Kernel = platform.platform()
     pciDevs = getPCI()
     usbDevs = getUSB()
