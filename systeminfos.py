@@ -30,6 +30,15 @@ def getPCI():
     pciData = lspci.run()
     return pciData
 
+def getDisks():
+    Disks = {}
+    for mount in psutil.disk_partitions():
+        Disks[mount.device] = {}
+        Disks[mount.device]["mountpoints"] = {}
+    for mount in psutil.disk_partitions():
+        Disks[mount.device]["fstype"] = mount.fstype
+        Disks[mount.device]["mountpoints"][mount.mountpoint] = mount.opts
+    return Disks
 
 def getUSB():
     usbDevsList = {}
@@ -135,7 +144,7 @@ def main():
     xmlc_NetworkSpeed = ET.Comment("the NIC speed expressed in megabits, if it cannot be determined it will be set to 0.")
     xml_Network.insert(0,xmlc_NetworkUp)
     xml_Network.insert(1, xmlc_NetworkSpeed)
-
+    xml_Disks = ET.SubElement(xml_System, "Disks")
     xml_pciBus = ET.SubElement(xml_System, "PCI")
     xml_usbBus = ET.SubElement(xml_System, "USB")
     xml_PKGMgr = ET.SubElement(xml_LinuxDist, "PKGManager")
@@ -149,6 +158,7 @@ def main():
 
     for pkg in installedPKG.items():
         ET.SubElement(xml_instSoftware, "pkg", version=pkg[1]).text = pkg[0]
+
 
     xml_MotherBoard = ET.SubElement(xml_System, "MotherBoard", MotherBoard)
     xml_CPU = ET.SubElement(xml_MotherBoard, "CPU", count=str(psutil.cpu_count(logical=False)),
@@ -179,6 +189,11 @@ def main():
                                       iowaitP=str(cpuTimesP[CPU].iowait),currentfreq = str(psutil.cpu_freq(percpu=True)[CPU].current),
                                       minfreq = str(psutil.cpu_freq(percpu=True)[CPU].min),
                                       maxfreq = str(psutil.cpu_freq(percpu=True)[CPU].max))
+
+    for Disk, info in getDisks().items():
+        xml_Part = ET.SubElement(xml_Disks, "Part", path=Disk, fstype=info["fstype"])
+        for path, opts in info["mountpoints"].items():
+            xml_Mount = ET.SubElement(xml_Part, "Mount", path=path).text = opts
 
 
     tree = ET.ElementTree(TuxReport).getroot()
