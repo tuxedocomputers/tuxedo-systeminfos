@@ -12,7 +12,8 @@ if [ -z $ticketnumber ]; then
     echo "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen / What is your ticket number?"
     echo "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. / We cannot proceed your inquire without ticket number!"
     echo "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine Mail an tux@tuxedocomputer.com mit Ihrem Anliegen. / To get an ticket number you can contact us by mail to tux@tuxedocomputers.com"
-    
+    echo "Sie müssen die Systeminfos nicht manuell an den Support senden, dies geschieht automatisch. / You do not have to send the system information to support manually, this happens automatically."
+
     while [ -z $ticketnumber ]; do
         read ticketnumber;
     done;
