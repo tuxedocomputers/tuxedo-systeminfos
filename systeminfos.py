@@ -236,9 +236,24 @@ def main():
 
     tree = ET.ElementTree(TuxReport).getroot()
     xmlstr = minidom.parseString(tostring(tree, encoding='utf8')).toprettyxml()
-    print(xmlstr)
-    # ToDo: send Text to Tuxedo
-    
+    import tempfile, shutil,zipfile
+    tmpdir = tempfile.mkdtemp()
+    try:
+        tmparchive = os.path.join(tmpdir, 'TuxReport.zip')
+        reportfile = os.path.join(tmpdir, 'TuxReport.xml')
+        text_file = open(reportfile, "w")
+        text_file.write(xmlstr)
+        text_file.close()
+        ziptext = "This file is for ticket %s!" % IMNr
+        ziptext = ziptext.encode()
+        with zipfile.ZipFile(tmparchive, "w", zipfile.ZIP_DEFLATED, allowZip64=True) as zf:
+            zf.comment = ziptext
+            zf.write(reportfile,"TuxReport.xml")
+        #ToDo: send zip to tuxedo
+
+    finally:
+        shutil.rmtree(tmpdir)
+
 
 if __name__ == '__main__':
     main()
