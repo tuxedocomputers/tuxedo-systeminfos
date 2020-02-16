@@ -47,6 +47,11 @@ def getPCI():
     pciData = lspci.run()
     return pciData
 
+def secs2hours(secs):
+    mm, ss = divmod(secs, 60)
+    hh, mm = divmod(mm, 60)
+    return "%d:%02d:%02d" % (hh, mm, ss)
+
 def getDisks():
     Disks = {}
     for mount in psutil.disk_partitions():
@@ -156,6 +161,16 @@ def main():
     xml_LinuxKernel = ET.SubElement(xml_LinuxDist, "LinuxKernel", VersionString=Kernel)
     xml_DKMS = ET.SubElement(xml_LinuxKernel, "DKMS")
     xml_System = ET.SubElement(TuxReport, "System")
+    xml_Power = ET.SubElement(xml_System, "Power")
+    battery = psutil.sensors_battery()
+    if battery.power_plugged:
+        xml_AC = ET.SubElement(xml_Power, "AC-Power")
+    if not battery.percent == None:
+        if not battery.secsleft == psutil.POWER_TIME_UNLIMITED:
+            xml_battery = ET.SubElement(xml_Power, "battery-Power", charge=str(battery.percent), timeleft=secs2hours(battery.secsleft))
+        else:
+            xml_battery = ET.SubElement(xml_Power, "battery-Power", charge=str(battery.percent))
+
     xml_Network = ET.SubElement(xml_System, "Network")
     xmlc_NetworkUp = ET.Comment("for a network interface the status Up does not mean that it is connected to anything. It just means it would accept connections.")
     xmlc_NetworkSpeed = ET.Comment("the NIC speed expressed in megabits, if it cannot be determined it will be set to 0.")
