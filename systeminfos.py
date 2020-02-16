@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import datetime
 import os
 import platform
 import subprocess
@@ -160,7 +161,7 @@ def main():
     xml_instSoftware = ET.SubElement(xml_LinuxDist, "InstalledSoftware")
     xml_LinuxKernel = ET.SubElement(xml_LinuxDist, "LinuxKernel", VersionString=Kernel)
     xml_DKMS = ET.SubElement(xml_LinuxKernel, "DKMS")
-    xml_System = ET.SubElement(TuxReport, "System")
+    xml_System = ET.SubElement(TuxReport, "System",boottime=datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S"))
     xml_Power = ET.SubElement(xml_System, "Power")
     battery = psutil.sensors_battery()
     if battery.power_plugged:
