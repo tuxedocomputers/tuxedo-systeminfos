@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+serverURI: str = "https://www.tuxedocomputers.com/tuxedosysteminfos/systeminfo.php"
+
 import datetime
 import os
 import platform
@@ -154,7 +156,7 @@ def main():
                     PKGMgrCfg[file] = readConfig
 
 
-    # ToDo: Add a part for creating the Text to send
+
     TuxReport = ET.Element("TuxReport", TicketID=IMNr)
 
     xml_LinuxDist = ET.SubElement(TuxReport, "LinuxDistro", name=LinuxDistro, version=LinuxDistroVersion)
@@ -258,8 +260,23 @@ def main():
                 fb = f.read(BLOCK_SIZE)
         zipchecksum = file_hash.hexdigest()
 
-        #ToDo: send zip to tuxedo
 
+        import pycurl, certifi, urllib.parse
+        params = {"ticketnumber": IMNr, "SHA3-512": zipchecksum}
+        curl = pycurl.Curl()
+        curl.setopt(pycurl.VERBOSE, 0)
+        curl.setopt(pycurl.WRITEFUNCTION, lambda x: None)
+        curl.setopt(curl.URL, serverURI + '?' + urllib.parse.urlencode(params))
+        curl.setopt(curl.CAINFO, certifi.where())
+        curl.setopt(curl.POST, 1)
+        curl.setopt(curl.HTTPPOST, [("file", (curl.FORM_FILE, tmparchive))])
+        curl.setopt(pycurl.HTTPHEADER, ['Accept-Language: en'])
+        print(serverURI + '?' + urllib.parse.urlencode(params))
+        curl.perform()
+        curl.close()
+
+        #The ZIP file is located locally on the hard disk in a temporary folder. For this purpose there is a checksum of the ZIP file in the variable zipchecksum.
+        #The folder is also deleted after these lines.
     finally:
         shutil.rmtree(tmpdir)
 
