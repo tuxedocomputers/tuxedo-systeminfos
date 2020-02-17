@@ -236,7 +236,7 @@ def main():
 
     tree = ET.ElementTree(TuxReport).getroot()
     xmlstr = minidom.parseString(tostring(tree, encoding='utf8')).toprettyxml()
-    import tempfile, shutil,zipfile
+    import tempfile, shutil,zipfile, hashlib
     tmpdir = tempfile.mkdtemp()
     try:
         tmparchive = os.path.join(tmpdir, 'TuxReport.zip')
@@ -249,6 +249,15 @@ def main():
         with zipfile.ZipFile(tmparchive, "w", zipfile.ZIP_DEFLATED, allowZip64=True) as zf:
             zf.comment = ziptext
             zf.write(reportfile,"TuxReport.xml")
+        BLOCK_SIZE = 65536
+        file_hash = hashlib.sha3_512()
+        with open(tmparchive, 'rb') as f:
+            fb = f.read(BLOCK_SIZE)
+            while len(fb) > 0:
+                file_hash.update(fb)
+                fb = f.read(BLOCK_SIZE)
+        zipchecksum = file_hash.hexdigest()
+
         #ToDo: send zip to tuxedo
 
     finally:
