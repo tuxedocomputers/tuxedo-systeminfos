@@ -284,7 +284,8 @@ def main():
         curl.setopt(curl.POST, 1)
         curl.setopt(curl.HTTPPOST, [("file", (curl.FORM_FILE, tmparchive))])
         curl.setopt(pycurl.HTTPHEADER, ['Accept-Language: en'])
-        print(serverURI + '?' + urllib.parse.urlencode(params))
+        curl.setopt(pycurl.USERAGENT, "TUXEDO/PyHWReporter")
+        # print(serverURI + '?' + urllib.parse.urlencode(params))
         curl.perform()
         curl.close()
 
