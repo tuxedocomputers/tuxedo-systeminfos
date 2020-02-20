@@ -91,6 +91,16 @@ def getDKMS():
         DKMSstats[infos[0]]["status"] = infos[3].split(":")[1].strip()
     return DKMSstats
 
+def getDmesg():
+    dmesgout = subprocess.check_output(['dmesg', '--ctime'])
+    dmesgout = str(dmesgout, chardet.detect(dmesgout)["encoding"]).splitlines()
+    log = {}
+    for line in dmesgout:
+        dtsave = line[line.find("[") + 1:line.find("]")]
+        msgsave = line.split("] ",1)[1]
+        log[dtsave] = msgsave
+    return log
+
 def main():
     getUSB()
     print(
@@ -162,6 +172,9 @@ def main():
     xml_LinuxDist = ET.SubElement(TuxReport, "LinuxDistro", name=LinuxDistro, version=LinuxDistroVersion)
     xml_instSoftware = ET.SubElement(xml_LinuxDist, "InstalledSoftware")
     xml_LinuxKernel = ET.SubElement(xml_LinuxDist, "LinuxKernel", VersionString=Kernel)
+    xml_dmesg = ET.SubElement(xml_LinuxKernel, "dmesg")
+    for when, what in getDmesg().items():
+        ET.SubElement(xml_dmesg, "LogLine", DateAndTime=str(when)).text = what
     xml_DKMS = ET.SubElement(xml_LinuxKernel, "DKMS")
     xml_System = ET.SubElement(TuxReport, "System",boottime=datetime.datetime.fromtimestamp(psutil.boot_time()).strftime("%Y-%m-%d %H:%M:%S"))
     xml_Power = ET.SubElement(xml_System, "Power")
