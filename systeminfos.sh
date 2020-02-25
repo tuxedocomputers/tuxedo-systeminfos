@@ -22,7 +22,6 @@ fi
 apt-get -y install curl zip
 echo " "
 echo 'Ticketnummer: ' $ticketnumber > $infoFileName
-echo 'Test' > /dev/null
 
 echo '
 
