@@ -9,7 +9,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 if [ -z $ticketnumber ]; then
-    echo "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen / What is your ticket number?"
+    echo "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen / What is your ticket number? Confirm with [ENTER]"
     echo "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. / We cannot proceed your inquire without ticket number!"
     echo "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. / To get an ticket number you can contact us by mail to tux[at]tuxedocomputers.com"
     echo "Sie müssen die Systeminfos nicht manuell an den Support senden, dies geschieht automatisch. / You do not have to send the system information to support manually, this happens automatically."
@@ -19,7 +19,9 @@ if [ -z $ticketnumber ]; then
     done;
 fi
 
-apt-get -y install curl zip
+apt -y install curl zip
+zypper in -y curl zip
+
 echo " "
 echo 'Ticketnummer: ' $ticketnumber > $infoFileName
 
