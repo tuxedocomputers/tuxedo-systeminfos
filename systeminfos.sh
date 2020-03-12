@@ -19,8 +19,8 @@ if [ -z $ticketnumber ]; then
     done;
 fi
 
-apt -y install curl zip
-zypper in -y curl zip
+apt -y install curl zip > /dev/null 2>&1
+zypper in -y curl zip > /dev/null 2>&1
 
 echo " "
 echo 'Ticketnummer: ' $ticketnumber > $infoFileName
