@@ -137,8 +137,12 @@ echo '
 
 ' >> $infoFileName
 echo '/sys/devices/virtual/dmi/id/bios_version
+dmidecode | grep "Firmware Revision"
 ' >> $infoFileName
 cat /sys/devices/virtual/dmi/id/bios_version >> $infoFileName
+echo "" >> $infoFileName
+echo "EC-Version" >> $infoFileName
+dmidecode | grep "Firmware Revision" >> $infoFileName
 echo '
 
 
