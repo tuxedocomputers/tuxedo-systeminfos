@@ -1,6 +1,11 @@
 #!/bin/sh
 serverURI=https://www.tuxedocomputers.com/tuxedosysteminfos/systeminfo.php
 infoFileName=/home/systeminfos.txt
+lspciFileName=/home/lspcioutput.txt
+udevFileName=/home/udevoutput.txt
+logFileName=/home/logoutput.txt
+packagesFileName=/home/packagesoutput.txt
+audioFileName=/home/audiooutput.txt
 ticketnumber=$1
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -167,8 +172,8 @@ echo '
 
 ' >> $infoFileName
 echo 'lspci
-' >> $infoFileName
-lspci >> $infoFileName
+' >> $lspciFileName
+lspci >> $lspciFileName
 echo '
 
 
@@ -180,8 +185,8 @@ echo '
 
 ' >> $infoFileName
 echo 'aplay -l
-' >> $infoFileName
-aplay -l >> $infoFileName
+' >> $audioFileName
+aplay -l >> $audioFileName
 echo '
 
 
@@ -191,10 +196,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $audioFileName
 echo 'cat /proc/asound/card*/codec*
-' >> $infoFileName
-cat /proc/asound/card*/codec* >> $infoFileName
+' >> $audioFileName
+cat /proc/asound/card*/codec* >> $audioFileName
 echo '
 
 
@@ -230,10 +235,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $lspciFileName
 echo 'lspci -vv
-' >> $infoFileName
-lspci -vv >> $infoFileName
+' >> $lspciFileName
+lspci -vv >> $lspciFileName
 echo '
 
 
@@ -311,8 +316,8 @@ echo '
 
 ' >> $infoFileName
 echo 'sources.list
-' >> $infoFileName
-cat /etc/apt/sources.list >> $infoFileName
+' >> $packagesFileName
+cat /etc/apt/sources.list >> $packagesFileName
 echo '
 
 
@@ -322,10 +327,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $packagesFileName
 echo '/etc/apt/sources.list.d
-' >> $infoFileName
-ls /etc/apt/sources.list.d >> $infoFileName
+' >> $packagesFileName
+ls /etc/apt/sources.list.d >> $packagesFileName
 echo '
 
 
@@ -335,10 +340,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $packagesFileName
 echo '/etc/apt/sources.list.d ppa
-' >> $infoFileName
-cat /etc/apt/sources.list.d/* >> $infoFileName
+' >> $packagesFileName
+cat /etc/apt/sources.list.d/* >> $packagesFileName
 echo '
 
 
@@ -348,10 +353,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $packagesFileName
 echo '/etc/zypp/repos.d
-' >> $infoFileName
-ls -al /etc/zypp/repos.d/ >> $infoFileName
+' >> $packagesFileName
+ls -al /etc/zypp/repos.d/ >> $packagesFileName
 echo '
 
 
@@ -363,8 +368,8 @@ echo '
 
 ' >> $infoFileName
 echo '/etc/udev/rules.d/
-' >> $infoFileName
-ls /etc/udev/rules.d/ >> $infoFileName
+' >> $udevFileName
+ls /etc/udev/rules.d/ >> $udevFileName
 echo '
 
 
@@ -374,10 +379,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $udevFileName
 echo '/etc/udev/rules.d/ files
-' >> $infoFileName
-cat /etc/udev/rules.d/* >> $infoFileName
+' >> $udevFileName
+cat /etc/udev/rules.d/* >> $udevFileName
 echo '
 
 
@@ -454,8 +459,8 @@ echo '
 
 ' >> $infoFileName
 echo 'systemctl status systemd-modules-load.service
-' >> $infoFileName
-systemctl status systemd-modules-load.service >> $infoFileName
+' >> $logFileName
+systemctl status systemd-modules-load.service >> $logFileName
 echo '
 
 
@@ -465,10 +470,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $packagesFileName
 echo 'dpkg -l | grep nvidia
-' >> $infoFileName
-dpkg -l|grep nvidia >> $infoFileName
+' >> $packagesFileName
+dpkg -l|grep nvidia >> $packagesFileName
 echo '
 
 
@@ -478,10 +483,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $packagesFileName
 echo 'dpkg -l | grep tuxedo
-' >> $infoFileName
-dpkg -l|grep tuxedo >> $infoFileName
+' >> $packagesFileName
+dpkg -l|grep tuxedo >> $packagesFileName
 echo '
 
 
@@ -491,10 +496,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $packagesFileName
 echo 'rpm -qa | grep nvidia
-' >> $infoFileName
-rpm -qa | grep nvidia >> $infoFileName
+' >> $packagesFileName
+rpm -qa | grep nvidia >> $packagesFileName
 echo '
 
 
@@ -504,10 +509,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $packagesFileName
 echo 'rpm -qa | grep tuxedo
-' >> $infoFileName
-rpm -qa | grep tuxedo >> $infoFileName
+' >> $packagesFileName
+rpm -qa | grep tuxedo >> $packagesFileName
 echo '
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -609,10 +614,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $logFileName
 echo 'cat /var/log/boot.log
-' >> $infoFileName
-cat /var/log/boot.log >> $infoFileName
+' >> $logFileName
+cat /var/log/boot.log >> $logFileName
 echo '
 
 
@@ -635,10 +640,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $logFileName
 echo 'dmesg
-' >> $infoFileName
-dmesg >> $infoFileName
+' >> $logFileName
+dmesg >> $logFileName
 echo '
 
 
@@ -687,10 +692,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $logFileName
 echo '/var/log/apt/history.log
-' >> $infoFileName
-cat /var/log/apt/history.log >> $infoFileName
+' >> $logFileName
+cat /var/log/apt/history.log >> $logFileName
 echo '
 
 
@@ -700,10 +705,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $logFileName
 echo '/var/log/zypp/history
-' >> $infoFileName
-cat /var/log/zypp/history >> $infoFileName
+' >> $logFileName
+cat /var/log/zypp/history >> $logFileName
 echo '
 
 
@@ -713,11 +718,11 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $packagesFileName
 echo 'dpkg -l
-' >> $infoFileName
-dpkg -l >> $infoFileName
-rpm -qa >> $infoFileName
+' >> $packagesFileName
+dpkg -l >> $packagesFileName
+rpm -qa >> $packagesFileName
 echo '
 
 
@@ -727,15 +732,20 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $logFileName
 echo 'cat /var/log/syslog
-' >> $infoFileName
-cat /var/log/syslog >> $infoFileName
-journalctl --system -e >> $infoFileName
+' >> $logFileName
+cat /var/log/syslog >> $logFileName
+journalctl --system -e >> $logFileName
 
 mv $infoFileName systeminfos-$ticketnumber.txt
+mv $lspciFileName lspci-$ticketnumber.txt
+mv $udevFileName udev-$ticketnumber.txt
+mv $logFileName log-$ticketnumber.txt
+mv $packagesFileName packages-$ticketnumber.txt
+mv $audioFileName audio-$ticketnumber.txt
 
-zip -9 systeminfos-$ticketnumber.zip systeminfos-$ticketnumber.txt
+zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 curl -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
 
