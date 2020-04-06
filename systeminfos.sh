@@ -6,10 +6,12 @@ udevFileName=/home/udevoutput.txt
 logFileName=/home/logoutput.txt
 packagesFileName=/home/packagesoutput.txt
 audioFileName=/home/audiooutput.txt
+networkFileName=/home/networkoutput.txt
+boardFileName=/home/boardoutput.txt
 ticketnumber=$1
 
 if [ "$(id -u)" -ne 0 ]; then
-    echo -e "\033[31;1mYou aren't 'root', but '$(whoami)'. Aren't you?! \033[0m"
+    echo -e "\033[31;1mYou aren't 'root', but '$(whoami)'. Aren't you?! / Sie sind nicht 'root', aber '$(whoami)'. Oder etwa nicht?! \033[0m"
     exec sudo su -c "bash '$(basename $0)' $1"
 fi
 
@@ -43,8 +45,8 @@ echo '
 ' >> $infoFileName
 
 if [ -f /var/log/tuxedo-install.log ]; then
-    head -n 1 /var/log/tuxedo-install.log >> $infoFileName
-    cat /var/log/tuxedo-install.log | grep "Starting FAI execution" >> $infoFileName
+    head -n 1 /var/log/tuxedo-install.log >> $logFileName
+    cat /var/log/tuxedo-install.log | grep "Starting FAI execution" >> $logFileName
 fi
 
 
@@ -57,7 +59,7 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $logFileName
 
 echo 'uname -a
 ' >> $infoFileName
@@ -101,8 +103,8 @@ echo '
 
 ' >> $infoFileName
 echo '/sys/devices/virtual/dmi/id/board_vendor
-' >> $infoFileName
-cat /sys/devices/virtual/dmi/id/board_vendor >> $infoFileName
+' >> $boardFileName
+cat /sys/devices/virtual/dmi/id/board_vendor >> $boardFileName
 echo '
 
 
@@ -113,10 +115,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
-' >> $infoFileName
+' >> $boardFileName
 echo '/sys/devices/virtual/dmi/id/board_name
-' >> $infoFileName
-cat /sys/devices/virtual/dmi/id/board_name >> $infoFileName
+' >> $boardFileName
+cat /sys/devices/virtual/dmi/id/board_name >> $boardFileName
 echo '
 
 
@@ -127,10 +129,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
-' >> $infoFileName
+' >> $boardFileName
 echo '/sys/devices/virtual/dmi/id/board_serial
-' >> $infoFileName
-cat /sys/devices/virtual/dmi/id/board_serial >> $infoFileName
+' >> $boardFileName
+cat /sys/devices/virtual/dmi/id/board_serial >> $boardFileName
 echo '
 
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -140,14 +142,14 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 
-' >> $infoFileName
+' >> $boardFileName
 echo '/sys/devices/virtual/dmi/id/bios_version
 dmidecode | grep "Firmware Revision"
-' >> $infoFileName
-cat /sys/devices/virtual/dmi/id/bios_version >> $infoFileName
-echo "" >> $infoFileName
-echo "EC-Version" >> $infoFileName
-dmidecode | grep "Firmware Revision" >> $infoFileName
+' >> $boardFileName
+cat /sys/devices/virtual/dmi/id/bios_version >> $boardFileName
+echo "" >> $boardFileName
+echo "EC-Version" >> $boardFileName
+dmidecode | grep "Firmware Revision" >> $boardFileName
 echo '
 
 
@@ -209,10 +211,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $audioFileName
 echo 'lspci -v | grep -A7 -i "audio"
-' >> $infoFileName
-lspci -v | grep -A7 -i "audio" >> $infoFileName
+' >> $audioFileName
+lspci -v | grep -A7 -i "audio" >> $audioFileName
 echo '
 
 
@@ -224,8 +226,8 @@ echo '
 
 ' >> $infoFileName
 echo 'lspci -nnk | grep -E -A3 -i "Ethernet|Network"
-' >> $infoFileName
-lspci -nnk | grep -E -A3 -i "Ethernet|Network" >> $infoFileName
+' >> $networkFileName
+lspci -nnk | grep -E -A3 -i "Ethernet|Network" >> $networkFileName
 echo '
 
 
@@ -392,10 +394,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $networkFileName
 echo 'ifconfig
-' >> $infoFileName
-ifconfig >> $infoFileName
+' >> $networkFileName
+ifconfig >> $networkFileName
 echo '
 
 
@@ -405,10 +407,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $networkFileName
 echo 'ip addr show
-' >> $infoFileName
-ip addr show >> $infoFileName
+' >> $networkFileName
+ip addr show >> $networkFileName
 echo '
 
 
@@ -418,10 +420,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $networkFileName
 echo 'ip link show
-' >> $infoFileName
-ip link show >> $infoFileName
+' >> $networkFileName
+ip link show >> $networkFileName
 echo '
 
 
@@ -431,10 +433,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $networkFileName
 echo 'ip route show
-' >> $infoFileName
-ip route show >> $infoFileName
+' >> $networkFileName
+ip route show >> $networkFileName
 echo '
 
 
@@ -562,10 +564,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $networkFileName
 echo 'iwconfig
-' >> $infoFileName
-iwconfig >> $infoFileName
+' >> $networkFileName
+iwconfig >> $networkFileName
 echo '
 
 
@@ -588,10 +590,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $networkFileName
 echo 'rfkill list
-' >> $infoFileName
-rfkill list >> $infoFileName
+' >> $networkFileName
+rfkill list >> $networkFileName
 echo '
 
 
@@ -679,10 +681,10 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-' >> $infoFileName
+' >> $boardFileName
 echo 'dmidecode
-' >> $infoFileName
-dmidecode >> $infoFileName
+' >> $boardFileName
+dmidecode >> $boardFileName
 echo '
 
 
@@ -744,11 +746,13 @@ mv $udevFileName udev-$ticketnumber.txt
 mv $logFileName log-$ticketnumber.txt
 mv $packagesFileName packages-$ticketnumber.txt
 mv $audioFileName audio-$ticketnumber.txt
+mv $networkFileName network-$ticketnumber.txt
+mv $boardFileName boardinfo-$ticketnumber.txt
 
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 curl -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
 
-rm systeminfos-$ticketnumber.zip systeminfos-$ticketnumber.txt
+rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 exit 0;
