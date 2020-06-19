@@ -757,6 +757,6 @@ zip -9 systeminfos-$ticketnumber-$(date +"%d%m%y-%H%M").zip *-$ticketnumber.txt
 
 curl -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
 
-rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
+rm systeminfos-$ticketnumber-$(date +"%d%m%y-%H%M").zip *-$ticketnumber.txt
 
 exit 0;
