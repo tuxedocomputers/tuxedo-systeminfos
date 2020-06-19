@@ -8,6 +8,7 @@ packagesFileName=/home/packagesoutput.txt
 audioFileName=/home/audiooutput.txt
 networkFileName=/home/networkoutput.txt
 boardFileName=/home/boardoutput.txt
+started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -22,9 +23,11 @@ if [ -z $ticketnumber ]; then
     echo -e "\033[31;1mWenn sie keine Ticketnummer haben, beenden sie das Skript bitte JETZT mit Strg + C / If you do not have a ticket number, please exit the script NOW with Ctrl + C\033[0m"
     echo "Sie müssen die Systeminfos nicht manuell an den Support senden, dies geschieht automatisch. / You do not have to send the system information to support manually, this happens automatically."
     echo " "
-    while [ -z $ticketnumber ]; do
-        read ticketnumber;
-    done;
+    read -p "Ticket#: " ticketnumber
+    if [ -z $ticketnumber ]; then
+        echo -e "\033[31;1mKeine Tickernummer angegeben. Beende. / No ticker number given. Quitting. \033[0m"
+        exit 1
+    fi
 fi
 
 apt -y install curl zip > /dev/null 2>&1
@@ -32,6 +35,7 @@ zypper in -y curl zip > /dev/null 2>&1
 
 echo " "
 echo 'Ticketnummer: ' $ticketnumber > $infoFileName
+echo 'systeminfos.sh started at' $started > $infoFileName
 
 echo '
 
@@ -749,7 +753,7 @@ mv $audioFileName audio-$ticketnumber.txt
 mv $networkFileName network-$ticketnumber.txt
 mv $boardFileName boardinfo-$ticketnumber.txt
 
-zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
+zip -9 systeminfos-$ticketnumber-$(date +"%d%m%y-%H%M").zip *-$ticketnumber.txt
 
 curl -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
 
