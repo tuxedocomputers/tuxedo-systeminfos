@@ -35,7 +35,7 @@ zypper in -y curl zip > /dev/null 2>&1
 
 echo " "
 echo 'Ticketnummer: ' $ticketnumber > $infoFileName
-echo 'systeminfos.sh started at' $started > $infoFileName
+echo 'systeminfos.sh started at' $started >> $infoFileName
 
 echo '
 
@@ -696,7 +696,7 @@ echo '
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@(date +"%d%m%y-%H%M")
 
 ' >> $logFileName
 echo '/var/log/apt/history.log
@@ -753,10 +753,10 @@ mv $audioFileName audio-$ticketnumber.txt
 mv $networkFileName network-$ticketnumber.txt
 mv $boardFileName boardinfo-$ticketnumber.txt
 
-zip -9 systeminfos-$ticketnumber-$(date +"%d%m%y-%H%M").zip *-$ticketnumber.txt
+zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 curl -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
 
-rm systeminfos-$ticketnumber-$(date +"%d%m%y-%H%M").zip *-$ticketnumber.txt
+rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 exit 0;
