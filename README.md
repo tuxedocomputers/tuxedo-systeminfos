@@ -18,6 +18,7 @@ What exactly does the script collect?
 * System messages (dmesg)
 * Mainboard functions
 * System log file
+* Audio devices
 
 ---
 
@@ -39,3 +40,4 @@ Was genau sammelt das Script?
 * Systemnachrichten (dmesg)
 * Mainboardfunktionen
 * Systemlogfile
+* Audio-Geräte
