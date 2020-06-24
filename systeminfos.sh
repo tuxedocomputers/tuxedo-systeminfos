@@ -35,7 +35,7 @@ zypper in -y curl zip > /dev/null 2>&1
 
 echo " "
 echo 'Ticketnummer: ' $ticketnumber > $infoFileName
-echo 'systeminfos.sh started at' $started >> $infoFileName
+echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName
 
 echo '
 
