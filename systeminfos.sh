@@ -1,13 +1,13 @@
 #!/bin/sh
 serverURI=https://www.tuxedocomputers.com/tuxedosysteminfos/systeminfo.php
-infoFileName=/home/systeminfos.txt
-lspciFileName=/home/lspcioutput.txt
-udevFileName=/home/udevoutput.txt
-logFileName=/home/logoutput.txt
-packagesFileName=/home/packagesoutput.txt
-audioFileName=/home/audiooutput.txt
-networkFileName=/home/networkoutput.txt
-boardFileName=/home/boardoutput.txt
+infoFileName=systeminfos.txt
+lspciFileName=lspcioutput.txt
+udevFileName=udevoutput.txt
+logFileName=logoutput.txt
+packagesFileName=packagesoutput.txt
+audioFileName=audiooutput.txt
+networkFileName=networkoutput.txt
+boardFileName=boardoutput.txt
 started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
@@ -26,7 +26,8 @@ if [ -z $ticketnumber ]; then
     printf "\e[31mEs werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. / Only information about your hardware and software configuration is collected.\e[1m\n"
     printf "\n"
     printf "Bitte beachten sie dass sie nur für Ubuntu und openSUSE Support von TUXEDO Computers erhalten. / Please note that you only get support for Ubuntu and openSUSE from TUXEDO Computers."
-    printf "\n"
+#    printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren. / You can ignore any error messages that may appear"
+    printf "\e[37m\e[0m\n"
     read -p "Ticket#: " ticketnumber
     if [ -z $ticketnumber ]; then
         printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticker number given. Quitting.\e[1m\n"
@@ -34,15 +35,23 @@ if [ -z $ticketnumber ]; then
     fi
 fi
 
-if [  -n "$(lsb_release -a | grep Ubuntu)" ]; then
+if [ cat /etc/os-release | grep 'NAME="Ubuntu"' ]; then
     apt -y install curl zip > /dev/null 2>&1
 fi
 
-if [  -n "$(lsb_release -a | grep openSUSE)" ]; then
+if [ cat /etc/os-release | grep 'NAME="openSUSE Leap"' ]; then
     zypper in -y curl zip > /dev/null 2>&1
 else
     printf "Unsupported Distribution! Skip\n"
 fi
+
+# Manjaro
+# 
+# if [ -n cat /etc/os-release | grep 'NAME="Manjaro Linux"' ]; then
+#    pacman -Sy curl zip > /dev/null 2>&1
+# fi
+
+
 printf "\n"
 echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName
 echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName
@@ -62,7 +71,7 @@ lsb_release -a >> $infoFileName
 printf "\n\n\n" >> $infoFileName
 
 printf "XDG_SESSION_TYPE\n" >> $infoFileName
-printf $XDG_SESSION_TYPE >> $infoFileName
+echo $XDG_SESSION_TYPE >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
@@ -73,7 +82,6 @@ printf "\n\n\n" >> $infoFileName
 
 printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n" >> $infoFileName
 grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
-
 
 printf "\n\n\n" >> $infoFileName
 
@@ -130,7 +138,7 @@ printf "\n\n\n" >> $infoFileName
 printf "glxinfo|grep vendor\n" >> $infoFileName
 glxinfo|grep vendor >> $infoFileName
 
-printf "\n\n\n">> $infoFileName
+printf "\n\n\n" >> $infoFileName
 
 printf "Desktop\n" >> $infoFileName
 echo $XDG_CURRENT_DESKTOP >> $infoFileName
@@ -148,15 +156,15 @@ if [ -f /var/log/tuxedo-install.log ]; then
     cat /var/log/tuxedo-install.log | grep "Starting FAI execution" >> $logFileName
 fi
 
-printf "\n\n\n">> $logFileName
+printf "\n\n\n" >> $logFileName
 
-if [ -n "$(lsb_release -a | grep Ubuntu)" ]; then
+if [ cat /etc/os-release | grep 'NAME="Ubuntu"' ]; then
     printf "/var/log/apt/history.log\n" >> $logFileName
     cat /var/log/apt/history.log >> $logFileName
     printf "\n\n\n" >> $logFileName
 fi
 
-if [ -n "$(lsb_release -a | grep openSUSE)" ]; then
+if [ cat /etc/os-release | grep 'NAME="openSUSE Leap"' ]; then
     printf "/var/log/zypp/history\n" >> $logFileName
     cat /var/log/zypp/history >> $logFileName
     printf "\n\n\n" >> $logFileName
@@ -164,7 +172,15 @@ else
     printf "Unsupported Distribution! Skip"
 fi
 
-"cat /var/log/syslog\n" >> $logFileName
+# Manjaro
+# 
+# if [ cat /etc/os-release | grep 'NAME="Manjaro Linux"' ]; then
+#    cat /var/log/pacman.log >> $logFileName
+#
+#    printf "\n\n\n" >> $logFileName
+# fi
+
+printf "cat /var/log/syslog\n" >> $logFileName
 cat /var/log/syslog >> $logFileName
 journalctl --system -e >> $logFileName
 
@@ -296,7 +312,7 @@ iwconfig >> $networkFileName
 printf "\n\n\n" >> $packagesFileName
 
 # Ubuntu
-if [  -n "$(lsb_release -a | grep Ubuntu)" ]; then
+if [ cat /etc/os-release | grep 'NAME="Ubuntu"' ]; then
     printf "sources.list\n" >> $packagesFileName
     cat /etc/apt/sources.list >> $packagesFileName
 
@@ -328,7 +344,7 @@ if [  -n "$(lsb_release -a | grep Ubuntu)" ]; then
 fi
 
 # openSUSE
-if [  -n "$(lsb_release -a | grep openSUSE)" ]; then
+if [ cat /etc/os-release | grep 'NAME="openSUSE Leap"' ]; then
 
     printf "/etc/zypp/repos.d\n" >> $packagesFileName
     ls -al /etc/zypp/repos.d/ >> $packagesFileName
@@ -343,13 +359,32 @@ if [  -n "$(lsb_release -a | grep openSUSE)" ]; then
     printf "rpm -qa | grep nvidia\n" >> $packagesFileName
     rpm -qa | grep nvidia >> $packagesFileName
 
-    printf "\n\n\n">> $packagesFileName
+    printf "\n\n\n" >> $packagesFileName
 
     printf "rpm -qa | grep tuxedo\n" >> $packagesFileName
     rpm -qa | grep tuxedo >> $packagesFileName
 else
     printf "Unsupported Distribution! Skip\n"
 fi
+
+# Manjaro
+# 
+# if [ cat /etc/os-release | grep 'NAME="Manjaro Linux"' ]; then
+#
+#    printf "cat /etc/pacman.conf" >> $packagesFileName
+#    cat /etc/pacman.conf >> $packagesFileName
+#
+#    printf "\n\n\n" >> $packagesFileName
+#
+#    printf "pacman -Qqe" >> $packagesFileName
+#    pacman -Qqe >> $packagesFileName
+#
+#    printf "\n\n\n" >> $packagesFileName
+#    
+#    printf "pacman Repo's" >> $packagesFileName
+#    cat /etc/pacman.conf | grep -E 'core|extra|community|multilib' >> $packagesFileName
+#
+# fi
 
 ### $udevFileName Section
 
@@ -360,7 +395,6 @@ printf "\n\n\n" >> $udevFileName
 
 printf "/etc/udev/rules.d/ files\n" >> $udevFileName
 cat /etc/udev/rules.d/* >> $udevFileName
-
 
 
 # Rename files
