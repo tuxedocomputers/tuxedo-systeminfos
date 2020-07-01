@@ -8,13 +8,28 @@ packagesFileName=packagesoutput.txt
 audioFileName=audiooutput.txt
 networkFileName=networkoutput.txt
 boardFileName=boardoutput.txt
+firmwareFileName=firmwareoutput.txt
 started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
 if [ "$(id -u)" -ne 0 ]; then
-    echo -e "\033[31;1mYou aren't 'root', but '$(whoami)'. Aren't you?! / Sie sind nicht 'root', aber '$(whoami)'. Oder etwa nicht?! \033[0m"
+    printf "\e[31mSie sind nicht 'root', aber '$(whoami)'. Oder etwa nicht?! / You aren't 'root', but '$(whoami)'. Aren't you?!\e[1m\n"
+    printf "\e[37m\e[0m\n"
     exec sudo su -c "bash '$(basename $0)' $1"
 fi
+
+# Check Internet connection
+#printf "Überprüfe Internetverbindung... / Checking Internet connection...\n"
+#wget -q --spider https://tuxedocomputers.com
+#if [ $? -eq 0 ]; then
+#    printf "\e[32mOnline\e[0m\n"
+#    printf "\e[37m\e[0m\n"
+#else
+#    printf "\e[31mOffline! Um das Skript ausführen zu können ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script!\e[1m\n"
+#    printf "\e[37m\e[0m\n"
+#    exit 1
+#fi
+
 
 if [ -z $ticketnumber ]; then
     printf "\n"
@@ -31,123 +46,106 @@ if [ -z $ticketnumber ]; then
     read -p "Ticket#: " ticketnumber
     if [ -z $ticketnumber ]; then
         printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticker number given. Quitting.\e[1m\n"
+        printf "\e[37m\e[0m\n"
         exit 1
     fi
 fi
 
-if [ cat /etc/os-release | grep 'NAME="Ubuntu"' ]; then
+if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
     apt -y install curl zip > /dev/null 2>&1
-fi
 
-if [ cat /etc/os-release | grep 'NAME="openSUSE Leap"' ]; then
+elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     zypper in -y curl zip > /dev/null 2>&1
 else
-    printf "Unsupported Distribution! Skip\n"
+    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip...\n"
 fi
 
 # Manjaro
 # 
-# if [ -n cat /etc/os-release | grep 'NAME="Manjaro Linux"' ]; then
+# elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
 #    pacman -Sy curl zip > /dev/null 2>&1
 # fi
 
 
 printf "\n"
-echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName
-echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName
-
-printf "\n\n\n" >> $infoFileName
+echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName
+echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName
+printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName
 
 ### $infoFileName Section
 
-printf 'uname -a\n' >> $infoFileName
+printf 'uname -a\n\n' >> $infoFileName
 uname -a >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "lsb_release -a\n" >> $infoFileName
+printf "lsb_release -a\n\n" >> $infoFileName
 lsb_release -a >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "XDG_SESSION_TYPE\n" >> $infoFileName
+printf "XDG_SESSION_TYPE\n\n" >> $infoFileName
 echo $XDG_SESSION_TYPE >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "lsusb\n" >> $infoFileName
+printf "lsusb\n\n" >> $infoFileName
 lsusb >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n" >> $infoFileName
+printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $infoFileName
 grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "xinput\n" >> $infoFileName
+printf "xinput\n\n" >> $infoFileName
 xinput >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "lsblk\n" >> $infoFileName
+printf "lsblk\n\n" >> $infoFileName
 lsblk >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "/etc/default/grub\n" >> $infoFileName
+printf "/etc/default/grub\n\n" >> $infoFileName
 cat /etc/default/grub >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "free -h\n" >> $infoFileName
+printf "free -h\n\n" >> $infoFileName
 free -h >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "dmesg|grep firmware\n" >> $infoFileName
-dmesg|grep firmware >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
-printf "dkms status\n" >> $infoFileName
+printf "dkms status\n\n" >> $infoFileName
 dkms status >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "lshw\n" >> $infoFileName
-lshw >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
-printf "upower -i $(upower -e | grep 'BAT')\n" >> $infoFileName
+printf "upower -i $(upower -e | grep 'BAT')\n\n" >> $infoFileName
 upower -i $(upower -e | grep 'BAT') >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "lsmod\n" >> $infoFileName
+printf "lsmod\n\n" >> $infoFileName
 lsmod >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "ls -l /lib/firmware\n" >> $infoFileName
-ls -l /lib/firmware >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
-printf "glxinfo|grep vendor\n" >> $infoFileName
+printf "glxinfo|grep vendor\n\n" >> $infoFileName
 glxinfo|grep vendor >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "Desktop\n" >> $infoFileName
+printf "Desktop\n\n" >> $infoFileName
 echo $XDG_CURRENT_DESKTOP >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "Display-Manager\n" >> $infoFileName
+printf "Display-Manager\n\n" >> $infoFileName
 cat /etc/systemd/system/display-manager.service >> $infoFileName
-cat /etc/alternatives/default-displaymanager | grep DISPLAYMANAGER >> $infoFileName
 
 ### $logFileName Section
 
@@ -158,153 +156,157 @@ fi
 
 printf "\n\n\n" >> $logFileName
 
-if [ cat /etc/os-release | grep 'NAME="Ubuntu"' ]; then
-    printf "/var/log/apt/history.log\n" >> $logFileName
+if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
+    printf "/var/log/apt/history.log\n\n" >> $logFileName
     cat /var/log/apt/history.log >> $logFileName
     printf "\n\n\n" >> $logFileName
-fi
 
-if [ cat /etc/os-release | grep 'NAME="openSUSE Leap"' ]; then
-    printf "/var/log/zypp/history\n" >> $logFileName
+elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
+    printf "/var/log/zypp/history\n\n" >> $logFileName
     cat /var/log/zypp/history >> $logFileName
     printf "\n\n\n" >> $logFileName
 else
-    printf "Unsupported Distribution! Skip"
+    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip...\n"
 fi
 
 # Manjaro
 # 
-# if [ cat /etc/os-release | grep 'NAME="Manjaro Linux"' ]; then
+# elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
 #    cat /var/log/pacman.log >> $logFileName
 #
 #    printf "\n\n\n" >> $logFileName
 # fi
 
-printf "cat /var/log/syslog\n" >> $logFileName
+printf "cat /var/log/syslog\n\n" >> $logFileName
 cat /var/log/syslog >> $logFileName
 journalctl --system -e >> $logFileName
 
 printf "\n\n\n" >> $logFileName
 
-printf "cat /var/log/boot.log\n" >> $logFileName
+printf "cat /var/log/boot.log\n\n" >> $logFileName
 cat /var/log/boot.log >> $logFileName
 
 printf "\n\n\n" >> $logFileName
 
-printf "dmesg\n" >> $logFileName
+printf "dmesg\n\n" >> $logFileName
 dmesg >> $logFileName
 
-printf "systemctl status systemd-modules-load.service\n" >> $logFileName
+printf "systemctl status systemd-modules-load.service\n\n" >> $logFileName
 systemctl status systemd-modules-load.service >> $logFileName
 
 printf "\n\n\n" >> $packagesFileName
 
 ### $boardFileName Section
 
-printf "/sys/devices/virtual/dmi/id/board_vendor\n" >> $boardFileName
+printf "/sys/devices/virtual/dmi/id/board_vendor\n\n" >> $boardFileName
 cat /sys/devices/virtual/dmi/id/board_vendor >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/board_name\n" >> $boardFileName
+printf "/sys/devices/virtual/dmi/id/board_name\n\n" >> $boardFileName
 cat /sys/devices/virtual/dmi/id/board_name >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/board_serial\n" >> $boardFileName
+printf "/sys/devices/virtual/dmi/id/board_serial\n\n" >> $boardFileName
 cat /sys/devices/virtual/dmi/id/board_serial >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/bios_version\n" >> $boardFileName
+printf "/sys/devices/virtual/dmi/id/bios_version\n\n" >> $boardFileName
 cat /sys/devices/virtual/dmi/id/bios_version >> $boardFileName
 printf "\n\n"
-printf "EC-Version\n" >> $boardFileName
-dmidecode | grep "Firmware Revision\n" >> $boardFileName
+printf "EC-Version\n\n" >> $boardFileName
+dmidecode | grep "Firmware Revision" >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "dmidecode\n" >> $boardFileName
+printf "dmidecode\n\n" >> $boardFileName
 dmidecode >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "lshw\n\n" >> $boardFileName
+lshw >> $boardFileName
 
 ### $lspciFileName Section
 
-printf "lspci\n" >> $lspciFileName
+printf "lspci\n\n" >> $lspciFileName
 lspci >> $lspciFileName
 
-printf "\n\n\n" >> $infoFileName
+printf "\n\n\n" >> $lspciFileName
 
-printf "lspci -vv\n" >> $lspciFileName
+printf "lspci -vv\n\n" >> $lspciFileName
 lspci -vv >> $lspciFileName
 
 printf "\n\n\n" >> $lspciFileName
 
 ### $audioFileName Section
 
-printf "aplay -l\n" >> $audioFileName
+printf "aplay -l\n\n" >> $audioFileName
 aplay -l >> $audioFileName
 
 printf "\n\n\n" >> $audioFileName
 
-printf "cat /proc/asound/card*/codec*\n" >> $audioFileName
+printf "cat /proc/asound/card*/codec*\n\n" >> $audioFileName
 cat /proc/asound/card*/codec* >> $audioFileName
 
 printf "\n\n\n" >> $audioFileName
 
-printf "lspci -v | grep -A7 -i "audio"\n" >> $audioFileName
+printf "lspci -v | grep -A7 -i "audio"\n\n" >> $audioFileName
 lspci -v | grep -A7 -i "audio" >> $audioFileName
 
 printf "\n\n\n" >> $audioFileName
 
-printf "pacmd list-sink-inputs\n" >> $audioFileName
+printf "pacmd list-sink-inputs\n\n" >> $audioFileName
 pacmd list-sink-inputs >> $audioFileName
 
 printf "\n\n\n" >> $audioFileName
 
-printf "arecord -l\n" >> $audioFileName
+printf "arecord -l\n\n" >> $audioFileName
 arecord -l >> $audioFileName
 
 printf "\n\n\n" >> $audioFileName
 
-printf "fuser -v /dev/snd/*\n" >> $audioFileName
+printf "fuser -v /dev/snd/*\n\n" >> $audioFileName
 fuser -v /dev/snd/* >> $audioFileName
 
 ### $networkFileName Section
 
 printf "\n\n\n" >> $networkFileName
 
-printf "lspci -nnk | grep -E -A3 -i "Ethernet|Network"" >> $networkFileName
-printf "\n"
+echo 'lspci -nnk | grep -E -A3 -i "Ethernet|Network"' >> $networkFileName
+printf "\n\n" >> $networkFileName
 lspci -nnk | grep -E -A3 -i "Ethernet|Network" >> $networkFileName
 
 printf "\n\n\n" >> $networkFileName
 
-printf "ifconfig\n" >> $networkFileName
+printf "ifconfig\n\n" >> $networkFileName
 ifconfig >> $networkFileName
 
 printf "\n\n\n" >> $networkFileName
 
-printf "ip addr show\n" >> $networkFileName
+printf "ip addr show\n\n" >> $networkFileName
 ip addr show >> $networkFileName
 
 printf "\n\n\n" >> $networkFileName
 
-printf "ip link show\n" >> $networkFileName
+printf "ip link show\n\n" >> $networkFileName
 ip link show >> $networkFileName
 
 printf "\n\n\n" >> $networkFileName
 
-printf "ip route show\n" >> $networkFileName
+printf "ip route show\n\n" >> $networkFileName
 ip route show >> $networkFileName
 
 printf "\n\n\n" >> $networkFileName
 
-printf "rfkill list\n" >> $networkFileName
+printf "rfkill list\n\n" >> $networkFileName
 rfkill list >> $networkFileName
 
 printf "\n\n\n" >> $networkFileName
 
-printf "iwconfig\n" >> $networkFileName
+printf "iwconfig\n\n" >> $networkFileName
 iwconfig >> $networkFileName
 
 ### $packagesFileName Section
@@ -312,64 +314,63 @@ iwconfig >> $networkFileName
 printf "\n\n\n" >> $packagesFileName
 
 # Ubuntu
-if [ cat /etc/os-release | grep 'NAME="Ubuntu"' ]; then
-    printf "sources.list\n" >> $packagesFileName
+if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
+
+    printf "sources.list\n\n" >> $packagesFileName
     cat /etc/apt/sources.list >> $packagesFileName
 
     printf "\n\n\n" >> $packagesFileName
 
-    printf "/etc/apt/sources.list.d\n" >> $packagesFileName
+    printf "/etc/apt/sources.list.d\n\n" >> $packagesFileName
     ls /etc/apt/sources.list.d >> $packagesFileName
 
     printf "\n\n\n" >> $packagesFileName
 
-    printf "/etc/apt/sources.list.d ppa\n" >> $packagesFileName
+    printf "/etc/apt/sources.list.d ppa\n\n" >> $packagesFileName
     cat /etc/apt/sources.list.d/* >> $packagesFileName
 
     printf "\n\n\n" >> $packagesFileName
 
-    printf "dpkg -l\n" >> $packagesFileName
+    printf "dpkg -l\n\n" >> $packagesFileName
     dpkg -l >> $packagesFileName
 
     printf "\n\n\n" >> $packagesFileName
 
-    printf "dpkg -l | grep nvidia\n" >> $packagesFileName
+    printf "dpkg -l | grep nvidia\n\n" >> $packagesFileName
     dpkg -l|grep nvidia >> $packagesFileName
 
     printf "\n\n\n" >> $packagesFileName
 
-    printf "dpkg -l | grep tuxedo\n" >> $packagesFileName
+    printf "dpkg -l | grep tuxedo\n\n" >> $packagesFileName
     dpkg -l|grep tuxedo >> $packagesFileName
 
-fi
-
 # openSUSE
-if [ cat /etc/os-release | grep 'NAME="openSUSE Leap"' ]; then
+elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 
-    printf "/etc/zypp/repos.d\n" >> $packagesFileName
+    printf "/etc/zypp/repos.d\n\n" >> $packagesFileName
     ls -al /etc/zypp/repos.d/ >> $packagesFileName
 
     printf "\n\n\n" >> $packagesFileName
 
-    printf "rpm -qa\n" >> $packagesFileName
+    printf "rpm -qa\n\n" >> $packagesFileName
     rpm -qa >> $packagesFileName
 
     printf "\n\n\n" >> $packagesFileName
 
-    printf "rpm -qa | grep nvidia\n" >> $packagesFileName
+    printf "rpm -qa | grep nvidia\n\n" >> $packagesFileName
     rpm -qa | grep nvidia >> $packagesFileName
 
     printf "\n\n\n" >> $packagesFileName
 
-    printf "rpm -qa | grep tuxedo\n" >> $packagesFileName
+    printf "rpm -qa | grep tuxedo\n\n" >> $packagesFileName
     rpm -qa | grep tuxedo >> $packagesFileName
 else
-    printf "Unsupported Distribution! Skip\n"
+    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip...\n\n"
 fi
 
 # Manjaro
 # 
-# if [ cat /etc/os-release | grep 'NAME="Manjaro Linux"' ]; then
+# elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
 #
 #    printf "cat /etc/pacman.conf" >> $packagesFileName
 #    cat /etc/pacman.conf >> $packagesFileName
@@ -388,14 +389,23 @@ fi
 
 ### $udevFileName Section
 
-printf "/etc/udev/rules.d/\n" >> $udevFileName
+printf "/etc/udev/rules.d/\n\n" >> $udevFileName
 ls /etc/udev/rules.d/ >> $udevFileName
 
 printf "\n\n\n" >> $udevFileName
 
-printf "/etc/udev/rules.d/ files\n" >> $udevFileName
+printf "/etc/udev/rules.d/ files\n\n" >> $udevFileName
 cat /etc/udev/rules.d/* >> $udevFileName
 
+# $firmwareFileName Section
+
+printf "ls -l /lib/firmware\n\n" >> $firmwareFileName
+ls -l /lib/firmware >> $firmwareFileName
+
+printf "\n\n\n" >> $firmwareFileName
+
+printf "dmesg|grep firmware\n\n" >> $firmwareFileName
+dmesg|grep firmware >> $firmwareFileName
 
 # Rename files
 mv $infoFileName systeminfos-$ticketnumber.txt
@@ -406,6 +416,7 @@ mv $packagesFileName packages-$ticketnumber.txt
 mv $audioFileName audio-$ticketnumber.txt
 mv $networkFileName network-$ticketnumber.txt
 mv $boardFileName boardinfo-$ticketnumber.txt
+mv $firmwareFileName firmware-$ticketnumber.txt
 
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
