@@ -229,6 +229,9 @@ lspci -vv >> $lspciFileName
 
 printf "\n\n\n" >> $lspciFileName
 
+printf "lspci -vnn\n\n" >> $lspciFileName
+lspci -vnn >> $lspciFileName
+
 ### $audioFileName Section
 
 printf "aplay -l\n\n" >> $audioFileName
