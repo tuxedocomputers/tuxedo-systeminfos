@@ -53,18 +53,13 @@ fi
 
 if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
     apt -y install curl zip > /dev/null 2>&1
-
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     zypper in -y curl zip > /dev/null 2>&1
+# elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
+#    pacman -Sy curl zip > /dev/null 2>&1
 else
     printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip...\n"
 fi
-
-# Manjaro
-# 
-# elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-#    pacman -Sy curl zip > /dev/null 2>&1
-# fi
 
 
 printf "\n"
@@ -165,17 +160,12 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     printf "/var/log/zypp/history\n\n" >> $logFileName
     cat /var/log/zypp/history >> $logFileName
     printf "\n\n\n" >> $logFileName
+# elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
+#    cat /var/log/pacman.log >> $logFileName
+#    printf "\n\n\n" >> $logFileName
 else
     printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip...\n"
 fi
-
-# Manjaro
-# 
-# elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-#    cat /var/log/pacman.log >> $logFileName
-#
-#    printf "\n\n\n" >> $logFileName
-# fi
 
 printf "cat /var/log/syslog\n\n" >> $logFileName
 cat /var/log/syslog >> $logFileName
@@ -193,8 +183,6 @@ dmesg >> $logFileName
 
 printf "systemctl status systemd-modules-load.service\n\n" >> $logFileName
 systemctl status systemd-modules-load.service >> $logFileName
-
-printf "\n\n\n" >> $packagesFileName
 
 ### $boardFileName Section
 
@@ -364,12 +352,7 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 
     printf "rpm -qa | grep tuxedo\n\n" >> $packagesFileName
     rpm -qa | grep tuxedo >> $packagesFileName
-else
-    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip...\n\n"
-fi
-
 # Manjaro
-# 
 # elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
 #
 #    printf "cat /etc/pacman.conf" >> $packagesFileName
@@ -380,12 +363,17 @@ fi
 #    printf "pacman -Qqe" >> $packagesFileName
 #    pacman -Qqe >> $packagesFileName
 #
+#    printf "pacman -Qqe | grep tuxedo" >> $packagesFileName
+#    pacman -Qqe | grep tuxedo >> $packagesFileName
+#
 #    printf "\n\n\n" >> $packagesFileName
 #    
 #    printf "pacman Repo's" >> $packagesFileName
 #    cat /etc/pacman.conf | grep -E 'core|extra|community|multilib' >> $packagesFileName
-#
-# fi
+else
+    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip...\n\n"
+fi
+
 
 ### $udevFileName Section
 
@@ -427,7 +415,7 @@ zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 #    printf "\e[32mOnline\e[0m\n"
 #    printf "\e[37m\e[0m\n"
 #else
-#    printf "\e[31mOffline! Um das Skript ausführen zu können ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script!\e[1m\n"
+#    printf "\e[31mOffline! Um die Ergebnisse übermitteln zu können ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results!\e[1m\n"
 #    printf "\e[37m\e[0m\n"
 #    rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 #    exit 1
