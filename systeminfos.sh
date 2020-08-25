@@ -19,16 +19,16 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Check Internet connection
-#printf "Überprüfe Internetverbindung... / Checking Internet connection...\n"
-#wget -q --spider https://tuxedocomputers.com
-#if [ $? -eq 0 ]; then
-#    printf "\e[32mOnline\e[0m\n"
-#    printf "\e[37m\e[0m\n"
-#else
-#    printf "\e[31mOffline! Um das Skript ausführen zu können ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script!\e[1m\n"
-#    printf "\e[37m\e[0m\n"
-#    exit 1
-#fi
+printf "Überprüfe Internetverbindung... / Checking Internet connection...\n"
+wget -q --spider https://tuxedocomputers.com
+if [ $? -eq 0 ]; then
+    printf "\e[32mOnline\e[0m\n"
+    printf "\e[37m\e[0m\n"
+else
+    printf "\e[31mOffline! Um das Skript ausführen zu können ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script!\e[1m\n"
+    printf "\e[37m\e[0m\n"
+    exit 1
+fi
 
 
 if [ -z $ticketnumber ]; then
@@ -41,7 +41,7 @@ if [ -z $ticketnumber ]; then
     printf "\e[31mEs werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. / Only information about your hardware and software configuration is collected.\e[1m\n"
     printf "\n"
     printf "Bitte beachten sie dass sie nur für Ubuntu und openSUSE Support von TUXEDO Computers erhalten. / Please note that you only get support for Ubuntu and openSUSE from TUXEDO Computers."
-#    printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren. / You can ignore any error messages that may appear"
+    printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren. / You can ignore any error messages that may appear"
     printf "\e[37m\e[0m\n"
     read -p "Ticket#: " ticketnumber
     if [ -z $ticketnumber ]; then
@@ -412,20 +412,20 @@ mv $firmwareFileName firmware-$ticketnumber.txt
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 # Re-Check Internet connection before sending
-#printf "Überprüfe Internetverbindung... / Checking Internet connection...\n"
-#wget -q --spider https://tuxedocomputers.com
-#if [ $? -eq 0 ]; then
-#    printf "\e[32mOnline\e[0m\n"
-#    printf "\e[37m\e[0m\n"
-#else
-#    printf "\e[31mOffline! Um die Ergebnisse übermitteln zu können ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results!\e[1m\n"
-#    printf "\e[37m\e[0m\n"
-#    rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
-#    exit 1
-#fi
+printf "Überprüfe Internetverbindung... / Checking Internet connection...\n"
+wget -q --spider https://tuxedocomputers.com
+if [ $? -eq 0 ]; then
+    printf "\e[32mOnline\e[0m\n"
+    printf "\e[37m\e[0m\n"
+else
+    printf "\e[31mOffline! Um die Ergebnisse übermitteln zu können ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results!\e[1m\n"
+    printf "\e[37m\e[0m\n"
+    rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
+    exit 1
+fi
 
 curl -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
 
 rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
-#printf "\e[32mSysteminfos erfolgreich übermittelt. Beende... / Systeminformations successfully transferred. Exit...\e[0m\n"
+printf "\e[32mSysteminfos erfolgreich übermittelt. Beende... / Systeminformations successfully transferred. Exit...\e[0m\n"
 exit 0;
