@@ -13,19 +13,19 @@ started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
 if [ "$(id -u)" -ne 0 ]; then
-    printf "\e[31mSie sind nicht 'root', aber '$(whoami)'. Oder etwa nicht?! / You aren't 'root', but '$(whoami)'. Aren't you?!\e[1m\n"
+    printf "\e[31msysteminfos.sh muss mit root Rechten ausgeführt werden! / systeminfos.sh must be executed with root privileges! \e[1m\n"
     printf "\e[37m\e[0m\n"
-    exec sudo su -c "bash '$(basename $0)' $1"
+    exec sudo su -c "sh '$(basename $0)' $1"
 fi
 
 # Check Internet connection
-printf "Überprüfe Internetverbindung... / Checking Internet connection...\n"
+printf "Überprüfe Internetverbindung... / Checking Internet connection... \n"
 wget -q --spider https://tuxedocomputers.com
 if [ $? -eq 0 ]; then
     printf "\e[32mOnline\e[0m\n"
     printf "\e[37m\e[0m\n"
 else
-    printf "\e[31mOffline! Um das Skript ausführen zu können ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script!\e[1m\n"
+    printf "\e[31mOffline! Um das Skript ausführen zu können ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script! \e[1m\n"
     printf "\e[37m\e[0m\n"
     exit 1
 fi
@@ -33,19 +33,19 @@ fi
 
 if [ -z $ticketnumber ]; then
     printf "\n"
-    printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen / What is your ticket number? Confirm with [ENTER]\n"
-    printf "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. / We cannot proceed your inquire without ticket number!\n"
-    printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. / To get an ticket number you can contact us by mail to tux[at]tuxedocomputers.com\n"
-    printf "\e[31mWenn sie keine Ticketnummer haben, beenden sie das Skript bitte JETZT mit Strg + C / If you do not have a ticket number, please exit the script NOW with Ctrl + C.\e[1m\n"
-    printf "\e[31mDas Script sammelt keinerlei persönliche Daten und keine Zugangsdaten! / The script does not collect any personal data and no access data!\e[1m\n"
-    printf "\e[31mEs werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. / Only information about your hardware and software configuration is collected.\e[1m\n"
+    printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen / What is your ticket number? Confirm with [ENTER] \n"
+    printf "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. / We cannot proceed your inquire without ticket number! \n"
+    printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. / To get an ticket number you can contact us by mail to tux[at]tuxedocomputers.com \n"
+    printf "\e[31mWenn sie keine Ticketnummer haben, beenden sie das Skript bitte JETZT mit Strg + C / If you do not have a ticket number, please exit the script NOW with Ctrl + C. \e[1m\n"
+    printf "\e[31mDas Script sammelt keinerlei persönliche Daten und keine Zugangsdaten! / The script does not collect any personal data and no access data! \e[1m\n"
+    printf "\e[31mEs werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. / Only information about your hardware and software configuration is collected. \e[1m\n"
     printf "\n"
     printf "Bitte beachten sie dass sie nur für Ubuntu und openSUSE Support von TUXEDO Computers erhalten. / Please note that you only get support for Ubuntu and openSUSE from TUXEDO Computers."
     printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren. / You can ignore any error messages that may appear"
     printf "\e[37m\e[0m\n"
     read -p "Ticket#: " ticketnumber
     if [ -z $ticketnumber ]; then
-        printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticker number given. Quitting.\e[1m\n"
+        printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticker number given. Quitting. \e[1m\n"
         printf "\e[37m\e[0m\n"
         exit 1
     fi
@@ -58,7 +58,7 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 # elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
 #    pacman -Sy curl zip > /dev/null 2>&1
 else
-    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip...\n"
+    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip... \n"
 fi
 
 
@@ -79,28 +79,18 @@ lsb_release -a >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "XDG_SESSION_TYPE\n\n" >> $infoFileName
-echo $XDG_SESSION_TYPE >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
 printf "lsusb\n\n" >> $infoFileName
 lsusb >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $infoFileName
-grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
+printf "lsblk\n\n" >> $infoFileName
+lsblk >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
 printf "xinput\n\n" >> $infoFileName
 xinput >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
-printf "lsblk\n\n" >> $infoFileName
-lsblk >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
@@ -114,6 +104,11 @@ free -h >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
+printf "lsmod\n\n" >> $infoFileName
+lsmod >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
 printf "dkms status\n\n" >> $infoFileName
 dkms status >> $infoFileName
 
@@ -124,13 +119,18 @@ upower -i $(upower -e | grep 'BAT') >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "lsmod\n\n" >> $infoFileName
-lsmod >> $infoFileName
+printf "glxinfo|grep vendor\n\n" >> $infoFileName
+glxinfo|grep vendor >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "glxinfo|grep vendor\n\n" >> $infoFileName
-glxinfo|grep vendor >> $infoFileName
+printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $infoFileName
+grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
+printf "XDG_SESSION_TYPE\n\n" >> $infoFileName
+echo $XDG_SESSION_TYPE >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
@@ -147,28 +147,15 @@ cat /etc/systemd/system/display-manager.service >> $infoFileName
 if [ -f /var/log/tuxedo-install.log ]; then
     head -n 1 /var/log/tuxedo-install.log >> $logFileName
     cat /var/log/tuxedo-install.log | grep "Starting FAI execution" >> $logFileName
-fi
-
-printf "\n\n\n" >> $logFileName
-
-if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
-    printf "/var/log/apt/history.log\n\n" >> $logFileName
-    cat /var/log/apt/history.log >> $logFileName
     printf "\n\n\n" >> $logFileName
-
-elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
-    printf "/var/log/zypp/history\n\n" >> $logFileName
-    cat /var/log/zypp/history >> $logFileName
-    printf "\n\n\n" >> $logFileName
-# elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-#    cat /var/log/pacman.log >> $logFileName
-#    printf "\n\n\n" >> $logFileName
-else
-    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip...\n"
 fi
 
 printf "cat /var/log/syslog\n\n" >> $logFileName
 cat /var/log/syslog >> $logFileName
+
+printf "\n\n\n" >> $logFileName
+
+printf "journalctl --system -e\n\n" >> $logFileName
 journalctl --system -e >> $logFileName
 
 printf "\n\n\n" >> $logFileName
@@ -219,18 +206,8 @@ lshw >> $boardFileName
 
 ### $lspciFileName Section
 
-printf "lspci\n\n" >> $lspciFileName
-lspci >> $lspciFileName
-
-printf "\n\n\n" >> $lspciFileName
-
-printf "lspci -vv\n\n" >> $lspciFileName
-lspci -vv >> $lspciFileName
-
-printf "\n\n\n" >> $lspciFileName
-
-printf "lspci -vnn\n\n" >> $lspciFileName
-lspci -vnn >> $lspciFileName
+printf "lspci -vvnn\n\n" >> $lspciFileName
+lspci -vvnn >> $lspciFileName
 
 ### $audioFileName Section
 
@@ -327,13 +304,18 @@ if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
 
     printf "\n\n\n" >> $packagesFileName
 
+    printf "dpkg -l | grep tuxedo\n\n" >> $packagesFileName
+    dpkg -l|grep tuxedo >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
     printf "dpkg -l | grep nvidia\n\n" >> $packagesFileName
     dpkg -l|grep nvidia >> $packagesFileName
 
     printf "\n\n\n" >> $packagesFileName
 
-    printf "dpkg -l | grep tuxedo\n\n" >> $packagesFileName
-    dpkg -l|grep tuxedo >> $packagesFileName
+    printf "/var/log/apt/history.log\n\n" >> $packagesFileName
+    cat /var/log/apt/history.log >> $packagesFileName
 
 # openSUSE
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
@@ -348,13 +330,19 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 
     printf "\n\n\n" >> $packagesFileName
 
+    printf "rpm -qa | grep tuxedo\n\n" >> $packagesFileName
+    rpm -qa | grep tuxedo >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
     printf "rpm -qa | grep nvidia\n\n" >> $packagesFileName
     rpm -qa | grep nvidia >> $packagesFileName
 
     printf "\n\n\n" >> $packagesFileName
 
-    printf "rpm -qa | grep tuxedo\n\n" >> $packagesFileName
-    rpm -qa | grep tuxedo >> $packagesFileName
+    printf "/var/log/zypp/history\n\n" >> $packagesFileName
+    cat /var/log/zypp/history >> $packagesFileName
+
 # Manjaro
 # elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
 #
@@ -373,10 +361,15 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 #    
 #    printf "pacman Repo's" >> $packagesFileName
 #    cat /etc/pacman.conf | grep -E 'core|extra|community|multilib' >> $packagesFileName
-else
-    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip...\n\n"
-fi
+#
+#    printf "\n\n\n" >> $packagesFileName
+#
+#    cat /var/log/pacman.log >> $packagesFileName
+#    printf "\n\n\n" >> $packagesFileName
 
+else
+    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip... \n\n"
+fi
 
 ### $udevFileName Section
 
@@ -412,13 +405,14 @@ mv $firmwareFileName firmware-$ticketnumber.txt
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 # Re-Check Internet connection before sending
-printf "Überprüfe Internetverbindung... / Checking Internet connection...\n"
+printf "\n"
+printf "Überprüfe Internetverbindung... / Checking Internet connection... \n"
 wget -q --spider https://tuxedocomputers.com
 if [ $? -eq 0 ]; then
     printf "\e[32mOnline\e[0m\n"
     printf "\e[37m\e[0m\n"
 else
-    printf "\e[31mOffline! Um die Ergebnisse übermitteln zu können ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results!\e[1m\n"
+    printf "\e[31mOffline! Um die Ergebnisse übermitteln zu können ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results! \e[1m\n"
     printf "\e[37m\e[0m\n"
     rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
     exit 1
@@ -427,5 +421,8 @@ fi
 curl -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
 
 rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
-printf "\e[32mSysteminfos erfolgreich übermittelt. Beende... / Systeminformations successfully transferred. Exit...\e[0m\n"
+
+printf "\n"
+printf "\e[32mSysteminfos erfolgreich übermittelt. Beende... / Systeminformations successfully transferred. Exit... \e[0m\n"
+printf "\e[37m\e[0m\n"
 exit 0;
