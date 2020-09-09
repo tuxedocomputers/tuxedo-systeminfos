@@ -129,6 +129,11 @@ grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $info
 
 printf "\n\n\n" >> $infoFileName
 
+printf "Display Info colormgr\n\n"
+colormgr get-devices-by-kind display >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
 printf "XDG_SESSION_TYPE\n\n" >> $infoFileName
 echo $XDG_SESSION_TYPE >> $infoFileName
 
