@@ -119,6 +119,11 @@ upower -i $(upower -e | grep 'BAT') >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
+printf "/sys/power/mem_sleep\n\n" >> $infoFileName
+cat /sys/power/mem_sleep >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
 printf "glxinfo|grep vendor\n\n" >> $infoFileName
 glxinfo|grep vendor >> $infoFileName
 
