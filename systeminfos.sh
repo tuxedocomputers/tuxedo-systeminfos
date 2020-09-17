@@ -74,6 +74,11 @@ uname -a >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
+printf "lscpu\n\n" >> $infoFileName
+lscpu >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
 printf "lsb_release -a\n\n" >> $infoFileName
 lsb_release -a >> $infoFileName
 
