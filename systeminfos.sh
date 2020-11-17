@@ -55,8 +55,8 @@ if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
     apt -y install curl zip > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     zypper in -y curl zip > /dev/null 2>&1
-# elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-#    pacman -Sy curl zip > /dev/null 2>&1
+elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
+    pacman -Sy curl zip > /dev/null 2>&1
 else
     printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip... \n"
 fi
@@ -359,28 +359,28 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     cat /var/log/zypp/history >> $packagesFileName
 
 # Manjaro
-# elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-#
-#    printf "cat /etc/pacman.conf" >> $packagesFileName
-#    cat /etc/pacman.conf >> $packagesFileName
-#
-#    printf "\n\n\n" >> $packagesFileName
-#
-#    printf "pacman -Qqe" >> $packagesFileName
-#    pacman -Qqe >> $packagesFileName
-#
-#    printf "pacman -Qqe | grep tuxedo" >> $packagesFileName
-#    pacman -Qqe | grep tuxedo >> $packagesFileName
-#
-#    printf "\n\n\n" >> $packagesFileName
-#    
-#    printf "pacman Repo's" >> $packagesFileName
-#    cat /etc/pacman.conf | grep -E 'core|extra|community|multilib' >> $packagesFileName
-#
-#    printf "\n\n\n" >> $packagesFileName
-#
-#    cat /var/log/pacman.log >> $packagesFileName
-#    printf "\n\n\n" >> $packagesFileName
+elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
+
+    printf "cat /etc/pacman.conf" >> $packagesFileName
+    cat /etc/pacman.conf >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "pacman -Qqe" >> $packagesFileName
+    pacman -Qqe >> $packagesFileName
+
+    printf "pacman -Qqe | grep tuxedo" >> $packagesFileName
+    pacman -Qqe | grep tuxedo >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+    
+    printf "pacman Repo's" >> $packagesFileName
+    cat /etc/pacman.conf | grep -E 'core|extra|community|multilib' >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    cat /var/log/pacman.log >> $packagesFileName
+    printf "\n\n\n" >> $packagesFileName
 
 else
     printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip... \n\n"
