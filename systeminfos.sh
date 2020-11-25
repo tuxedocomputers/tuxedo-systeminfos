@@ -157,6 +157,11 @@ printf "\n\n\n" >> $infoFileName
 printf "Display-Manager\n\n" >> $infoFileName
 cat /etc/systemd/system/display-manager.service >> $infoFileName
 
+printf "\n\n\n" >> $infoFileName
+
+printf "tuxedo_keyboard.conf\n\n" >> $infoFileName
+cat /etc/modprobe.d/tuxedo_keyboard.conf >> $infoFileName
+
 ### $logFileName Section
 
 if [ -f /var/log/tuxedo-install.log ]; then
