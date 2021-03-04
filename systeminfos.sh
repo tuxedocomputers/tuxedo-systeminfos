@@ -210,9 +210,9 @@ printf "\n\n\n" >> $boardFileName
 
 printf "/sys/devices/virtual/dmi/id/bios_version\n\n" >> $boardFileName
 cat /sys/devices/virtual/dmi/id/bios_version >> $boardFileName
-printf "\n\n"
-printf "EC-Version\n\n" >> $boardFileName
-dmidecode | grep "Firmware Revision" >> $boardFileName
+#printf "\n\n"
+#printf "EC-Version\n\n" >> $boardFileName
+#dmidecode | grep "Firmware Revision" >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
