@@ -210,11 +210,17 @@ printf "\n\n\n" >> $boardFileName
 
 printf "/sys/devices/virtual/dmi/id/bios_version\n\n" >> $boardFileName
 cat /sys/devices/virtual/dmi/id/bios_version >> $boardFileName
-#printf "\n\n"
-#printf "EC-Version\n\n" >> $boardFileName
-#dmidecode | grep "Firmware Revision" >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
+
+if [ -f /sys/class/dmi/id/ec_firmware_release ]; then
+    printf "/sys/class/dmi/id/ec_firmware_release\n\n" >> $boardFileName
+    cat /sys/class/dmi/id/ec_firmware_release >> $boardFileName
+
+    printf "\n\n\n" >> $boardFileName
+else
+    printf "EC-Version kann nicht ausgelesen werden! Überspringe... / EC-Version can't be read out! Skip... \n"
+fi
 
 printf "dmidecode\n\n" >> $boardFileName
 dmidecode >> $boardFileName
