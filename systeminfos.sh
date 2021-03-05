@@ -170,6 +170,11 @@ if [ -f /var/log/tuxedo-install.log ]; then
     printf "\n\n\n" >> $logFileName
 fi
 
+printf "cat /var/log/tomte/tomte.log\n\n" >> $logFileName
+cat /var/log/tomte/tomte.log >> $logFileName
+
+printf "\n\n\n" >> $logFileName
+
 printf "cat /var/log/syslog\n\n" >> $logFileName
 cat /var/log/syslog >> $logFileName
 
