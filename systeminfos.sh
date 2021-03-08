@@ -225,6 +225,10 @@ if [ -f /sys/class/dmi/id/ec_firmware_release ]; then
     printf "\n\n\n" >> $boardFileName
 else
     printf "EC-Version kann nicht ausgelesen werden! Überspringe... / EC-Version can't be read out! Skip... \n"
+    printf "EC-Version konnte nicht ausgelesen werden" >> $boardFileName
+
+    printf "\n\n\n" >> $boardFileName
+
 fi
 
 printf "dmidecode\n\n" >> $boardFileName
