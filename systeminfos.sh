@@ -264,6 +264,8 @@ printf "\n\n\n" >> $audioFileName
 printf "pacmd list-sink-inputs\n\n" >> $audioFileName
 pacmd list-sink-inputs >> $audioFileName
 
+printf "\n\n\n" >> $audioFileName
+
 printf "pa-info\n\n" >> $audioFileName
 pa-info >> $audioFileName
 
