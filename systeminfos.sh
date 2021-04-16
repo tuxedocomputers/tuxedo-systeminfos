@@ -15,7 +15,7 @@ ticketnumber=$1
 if [ "$(id -u)" -ne 0 ]; then
     printf "\e[31msysteminfos.sh muss mit root Rechten ausgeführt werden! / systeminfos.sh must be executed with root privileges! \e[1m\n"
     printf "\e[37m\e[0m\n"
-    exec sudo su -c "sh '$(basename $0)' $1"
+    exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh '$(basename $0)' $1"
 fi
 
 # Check Internet connection
