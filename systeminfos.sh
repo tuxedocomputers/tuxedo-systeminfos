@@ -162,6 +162,16 @@ printf "\n\n\n" >> $infoFileName
 printf "tuxedo_keyboard.conf\n\n" >> $infoFileName
 cat /etc/modprobe.d/tuxedo_keyboard.conf >> $infoFileName
 
+printf "\n\n\n" >> $infoFileName
+
+printf "xrandr\n\n" >> $infoFileName
+xrandr >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
+printf "disk usage (df -h)\n\n" >> $infoFileName
+df -h >> $infoFileName
+
 ### $logFileName Section
 
 if [ -f /var/log/tuxedo-install.log ]; then
