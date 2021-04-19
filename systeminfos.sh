@@ -114,6 +114,11 @@ lsmod >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
+printf "tuxedo-tomte list\n\n" >> $infoFileName
+tuxedo-tomte list >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
 printf "dkms status\n\n" >> $infoFileName
 dkms status >> $infoFileName
 
