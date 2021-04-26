@@ -183,11 +183,21 @@ if [ -f /var/log/tuxedo-install.log ]; then
     head -n 1 /var/log/tuxedo-install.log >> $logFileName
     cat /var/log/tuxedo-install.log | grep "Starting FAI execution" >> $logFileName
     printf "\n\n\n" >> $logFileName
+
+else
+    printf "WebFAI Install-Log konnte nicht gefunden werden." $logFileName
+    printf "Moeglicherweise handelt es sich um keine WebFAI Installation" >> $logFileName
+    printf "\n\n\n" >> $logFileName
+
 fi
 
 if [ -f /var/log/tomte/tomte.log ]; then
     printf "cat /var/log/tomte/tomte.log\n\n" >> $logFileName
     cat /var/log/tomte/tomte.log >> $logFileName
+    printf "\n\n\n" >> $logFileName
+
+else
+    printf "Tomte Log konnte nicht gefunden werden." >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 fi
