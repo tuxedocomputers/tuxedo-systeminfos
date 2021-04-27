@@ -164,8 +164,16 @@ cat /etc/systemd/system/display-manager.service >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "tuxedo_keyboard.conf\n\n" >> $infoFileName
-cat /etc/modprobe.d/tuxedo_keyboard.conf >> $infoFileName
+if [ -f /etc/modprobe.d/tuxedo_keyboard.conf ]; then
+    printf "tuxedo_keyboard.conf\n\n" >> $infoFileName
+    cat /etc/modprobe.d/tuxedo_keyboard.conf >> $infoFileName
+    printf "\n\n\n" >> $logFileName
+
+else
+    printf "TUXEDO Keyboard scheint nicht installiert zu sein." >> $logFileName
+    printf "\n\n\n" >> $logFileName
+
+fi
 
 printf "\n\n\n" >> $infoFileName
 
