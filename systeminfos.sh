@@ -124,10 +124,12 @@ dkms status >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "upower -i $(upower -e | grep 'BAT')\n\n" >> $infoFileName
-upower -i $(upower -e | grep 'BAT') >> $infoFileName
+if grep -q TUXEDO /sys/devices/virtual/dmi/id/board_vendor; then
+    printf "upower -i $(upower -e | grep 'BAT')\n\n" >> $infoFileName
+    upower -i $(upower -e | grep 'BAT') >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
+fi
 
 printf "/sys/power/mem_sleep\n\n" >> $infoFileName
 cat /sys/power/mem_sleep >> $infoFileName
