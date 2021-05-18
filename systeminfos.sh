@@ -37,7 +37,7 @@ if [ -z $ticketnumber ]; then
     printf "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. / We cannot proceed your inquire without ticket number! \n"
     printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. / To get an ticket number you can contact us by mail to tux[at]tuxedocomputers.com \n"
     printf "\e[31mWenn sie keine Ticketnummer haben, beenden sie das Skript bitte JETZT mit Strg + C / If you do not have a ticket number, please exit the script NOW with Ctrl + C. \e[1m\n"
-    printf "\e[31mDas Script sammelt keinerlei persönliche Daten und keine Zugangsdaten! / The script does not collect any personal data and no access data! \e[1m\n"
+    printf "\e[31mDas Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! / The script does not collect any personal data and no access data! \e[1m\n"
     printf "\e[31mEs werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. / Only information about your hardware and software configuration is collected. \e[1m\n"
     printf "\n"
     printf "Bitte beachten sie dass sie nur für Ubuntu und openSUSE Support von TUXEDO Computers erhalten. / Please note that you only get support for Ubuntu and openSUSE from TUXEDO Computers."
@@ -187,6 +187,11 @@ printf "\n\n\n" >> $infoFileName
 printf "disk usage (df -h)\n\n" >> $infoFileName
 df -h >> $infoFileName
 
+printf "\n\n\n" >> $infoFileName
+
+printf "lshw\n\n" >> $infoFileName
+lshw >> $infoFileName
+
 ### $logFileName Section
 
 if [ -f /var/log/tuxedo-install.log ]; then
@@ -208,10 +213,10 @@ if [ -f /var/log/tomte/tomte.log ]; then
 
 else
     printf "Tomte Log konnte nicht gefunden werden." >> $logFileName
+    printf "Moeglicherweise ist Tomte nicht installiert." >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 fi
-
 
 printf "cat /var/log/syslog\n\n" >> $logFileName
 cat /var/log/syslog >> $logFileName
@@ -237,22 +242,42 @@ systemctl status systemd-modules-load.service >> $logFileName
 ### $boardFileName Section
 
 printf "/sys/devices/virtual/dmi/id/board_vendor\n\n" >> $boardFileName
-cat /sys/devices/virtual/dmi/id/board_vendor >> $boardFileName
+cat /sys/class/dmi/id/board_vendor >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "/sys/devices/virtual/dmi/id/chassis_vendor\n\n" >> $boardFileName
+cat /sys/class/dmi/id/chassis_vendor >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "/sys/devices/virtual/dmi/id/sys_vendor\n\n" >> $boardFileName
+cat /sys/class/dmi/id/sys_vendor >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
 printf "/sys/devices/virtual/dmi/id/board_name\n\n" >> $boardFileName
-cat /sys/devices/virtual/dmi/id/board_name >> $boardFileName
+cat /sys/class/dmi/id/board_name >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "/sys/devices/virtual/dmi/id/product_name\n\n" >> $boardFileName
+cat /sys/class/dmi/id/product_name >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "/sys/devices/virtual/dmi/id/product_sku\n\n" >> $boardFileName
+cat /sys/class/dmi/id/product_sku >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
 printf "/sys/devices/virtual/dmi/id/board_serial\n\n" >> $boardFileName
-cat /sys/devices/virtual/dmi/id/board_serial >> $boardFileName
+cat /sys/class/dmi/id/board_serial >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
 printf "/sys/devices/virtual/dmi/id/bios_version\n\n" >> $boardFileName
-cat /sys/devices/virtual/dmi/id/bios_version >> $boardFileName
+cat /sys/class/dmi/id/bios_version >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
@@ -271,11 +296,6 @@ fi
 
 printf "dmidecode\n\n" >> $boardFileName
 dmidecode >> $boardFileName
-
-printf "\n\n\n" >> $boardFileName
-
-printf "lshw\n\n" >> $boardFileName
-lshw >> $boardFileName
 
 ### $lspciFileName Section
 
