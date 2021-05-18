@@ -124,7 +124,7 @@ dkms status >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-if grep -q TUXEDO /sys/devices/virtual/dmi/id/board_vendor; then
+if grep -q TUXEDO /sys/class/dmi/id/board_vendor; then
     printf "upower -i $(upower -e | grep 'BAT')\n\n" >> $infoFileName
     upower -i $(upower -e | grep 'BAT') >> $infoFileName
     printf "\n\n\n" >> $infoFileName
@@ -241,42 +241,42 @@ systemctl status systemd-modules-load.service >> $logFileName
 
 ### $boardFileName Section
 
-printf "/sys/devices/virtual/dmi/id/board_vendor\n\n" >> $boardFileName
+printf "/sys/class/dmi/id/board_vendor\n\n" >> $boardFileName
 cat /sys/class/dmi/id/board_vendor >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/chassis_vendor\n\n" >> $boardFileName
+printf "/sys/class/dmi/id/chassis_vendor\n\n" >> $boardFileName
 cat /sys/class/dmi/id/chassis_vendor >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/sys_vendor\n\n" >> $boardFileName
+printf "/sys/class/dmi/id/sys_vendor\n\n" >> $boardFileName
 cat /sys/class/dmi/id/sys_vendor >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/board_name\n\n" >> $boardFileName
+printf "/sys/class/dmi/id/board_name\n\n" >> $boardFileName
 cat /sys/class/dmi/id/board_name >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/product_name\n\n" >> $boardFileName
+printf "/sys/class/dmi/id/product_name\n\n" >> $boardFileName
 cat /sys/class/dmi/id/product_name >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/product_sku\n\n" >> $boardFileName
+printf "/sys/class/dmi/id/product_sku\n\n" >> $boardFileName
 cat /sys/class/dmi/id/product_sku >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/board_serial\n\n" >> $boardFileName
+printf "/sys/class/dmi/id/board_serial\n\n" >> $boardFileName
 cat /sys/class/dmi/id/board_serial >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/bios_version\n\n" >> $boardFileName
+printf "/sys/class/dmi/id/bios_version\n\n" >> $boardFileName
 cat /sys/class/dmi/id/bios_version >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
