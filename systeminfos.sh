@@ -56,7 +56,7 @@ if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     zypper in -y curl zip > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-    pacman -Sy curl zip > /dev/null 2>&1
+    pacman -Sy --no-confirm curl zip > /dev/null 2>&1
 else
     printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip... \n"
 fi
