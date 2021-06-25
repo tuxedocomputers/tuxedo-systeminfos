@@ -172,7 +172,8 @@ if [ -f /etc/modprobe.d/tuxedo_keyboard.conf ]; then
     printf "\n\n\n" >> $logFileName
 
 else
-    printf "TUXEDO Keyboard scheint nicht installiert zu sein." >> $logFileName
+    printf "TUXEDO Keyboard scheint nicht installiert zu sein.\n" >> $logFileName
+    printf "TUXEDO Keyboard seems not to be installed." >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 fi
@@ -200,8 +201,10 @@ if [ -f /var/log/tuxedo-install.log ]; then
     printf "\n\n\n" >> $logFileName
 
 else
-    printf "WebFAI Install-Log konnte nicht gefunden werden." $logFileName
-    printf "Moeglicherweise handelt es sich um keine WebFAI Installation" >> $logFileName
+    printf "WebFAI Install-Log konnte nicht gefunden werden.\n" >> $logFileName
+    printf "Moeglicherweise handelt es sich um keine WebFAI Installation.\n\n" >> $logFileName
+    printf "WebFAI Install-log could not be found.\n" >> $logFileName
+    printf "Maybe it's not a WebFAI installation." >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 fi
@@ -212,8 +215,10 @@ if [ -f /var/log/tomte/tomte.log ]; then
     printf "\n\n\n" >> $logFileName
 
 else
-    printf "Tomte Log konnte nicht gefunden werden." >> $logFileName
-    printf "Moeglicherweise ist Tomte nicht installiert." >> $logFileName
+    printf "Tomte Log konnte nicht gefunden werden.\n" >> $logFileName
+    printf "Moeglicherweise ist Tomte nicht installiert.\n\n" >> $logFileName
+    printf "Tomte Log could not be found.\n" >> $logFileName
+    printf "Maybe Tomte is not installed." >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 fi
@@ -287,9 +292,8 @@ if [ -f /sys/class/dmi/id/ec_firmware_release ]; then
 
     printf "\n\n\n" >> $boardFileName
 else
-    printf "EC-Version kann nicht ausgelesen werden! Überspringe... / EC-Version can't be read out! Skip... \n"
-    printf "EC-Version konnte nicht ausgelesen werden" >> $boardFileName
-
+    printf "EC-Version kann nicht ausgelesen werden! Überspringe...\n" >> $boardFileName
+    printf "EC-Version can't be read out! Skip..." >> $boardFileName
     printf "\n\n\n" >> $boardFileName
 
 fi
@@ -466,7 +470,8 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
     printf "\n\n\n" >> $packagesFileName
 
 else
-    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip... \n\n"
+    printf "Nicht unterstütze Distribution! Überspringe...\n"
+    printf "Unsupported Distribution! Skip... \n\n\n"
 fi
 
 ### $udevFileName Section
