@@ -306,6 +306,11 @@ else
 
 fi
 
+printf "configured memory speed\n\n" >> $boardFileName
+dmidecode | grep -i "configured memory speed" >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
 printf "dmidecode\n\n" >> $boardFileName
 dmidecode >> $boardFileName
 
