@@ -37,7 +37,7 @@ if [ -z $ticketnumber ]; then
     printf "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. / We cannot proceed your inquire without ticket number! \n"
     printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. / To get an ticket number you can contact us by mail to tux[at]tuxedocomputers.com \n"
     printf "\e[31mWenn sie keine Ticketnummer haben, beenden sie das Skript bitte JETZT mit Strg + C / If you do not have a ticket number, please exit the script NOW with Ctrl + C. \e[1m\n"
-    printf "\e[31mDas Script sammelt keinerlei persönliche Daten und keine Zugangsdaten! / The script does not collect any personal data and no access data! \e[1m\n"
+    printf "\e[31mDas Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! / The script does not collect any personal data and no access data! \e[1m\n"
     printf "\e[31mEs werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. / Only information about your hardware and software configuration is collected. \e[1m\n"
     printf "\n"
     printf "Bitte beachten sie dass sie nur für Ubuntu und openSUSE Support von TUXEDO Computers erhalten. / Please note that you only get support for Ubuntu and openSUSE from TUXEDO Computers."
@@ -56,7 +56,7 @@ if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     zypper in -y curl zip > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-    pacman -Sy curl zip > /dev/null 2>&1
+    pacman -Sy --no-confirm curl zip > /dev/null 2>&1
 else
     printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip... \n"
 fi
@@ -139,6 +139,11 @@ glxinfo|grep vendor >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
+printf "prime-select query\n\n" >> $infoFileName
+prime-select query >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
 printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $infoFileName
 grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
 
@@ -164,8 +169,17 @@ cat /etc/systemd/system/display-manager.service >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "tuxedo_keyboard.conf\n\n" >> $infoFileName
-cat /etc/modprobe.d/tuxedo_keyboard.conf >> $infoFileName
+if [ -f /etc/modprobe.d/tuxedo_keyboard.conf ]; then
+    printf "tuxedo_keyboard.conf\n\n" >> $infoFileName
+    cat /etc/modprobe.d/tuxedo_keyboard.conf >> $infoFileName
+    printf "\n\n\n" >> $logFileName
+
+else
+    printf "TUXEDO Keyboard scheint nicht installiert zu sein.\n" >> $logFileName
+    printf "TUXEDO Keyboard seems not to be installed." >> $logFileName
+    printf "\n\n\n" >> $logFileName
+
+fi
 
 printf "\n\n\n" >> $infoFileName
 
@@ -177,18 +191,45 @@ printf "\n\n\n" >> $infoFileName
 printf "disk usage (df -h)\n\n" >> $infoFileName
 df -h >> $infoFileName
 
+printf "\n\n\n" >> $infoFileName
+
+printf "lshw\n\n" >> $infoFileName
+lshw >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
+printf "journalctl -k --grep=tpm\n\n" >> $infoFileName
+journalctl -k --grep=tpm >> $infoFileName
+
 ### $logFileName Section
 
 if [ -f /var/log/tuxedo-install.log ]; then
     head -n 1 /var/log/tuxedo-install.log >> $logFileName
     cat /var/log/tuxedo-install.log | grep "Starting FAI execution" >> $logFileName
     printf "\n\n\n" >> $logFileName
+
+else
+    printf "WebFAI Install-Log konnte nicht gefunden werden.\n" >> $logFileName
+    printf "Moeglicherweise handelt es sich um keine WebFAI Installation.\n\n" >> $logFileName
+    printf "WebFAI Install-log could not be found.\n" >> $logFileName
+    printf "Maybe it's not a WebFAI installation." >> $logFileName
+    printf "\n\n\n" >> $logFileName
+
 fi
 
-printf "cat /var/log/tomte/tomte.log\n\n" >> $logFileName
-cat /var/log/tomte/tomte.log >> $logFileName
+if [ -f /var/log/tomte/tomte.log ]; then
+    printf "cat /var/log/tomte/tomte.log\n\n" >> $logFileName
+    cat /var/log/tomte/tomte.log >> $logFileName
+    printf "\n\n\n" >> $logFileName
 
-printf "\n\n\n" >> $logFileName
+else
+    printf "Tomte Log konnte nicht gefunden werden.\n" >> $logFileName
+    printf "Moeglicherweise ist Tomte nicht installiert.\n\n" >> $logFileName
+    printf "Tomte Log could not be found.\n" >> $logFileName
+    printf "Maybe Tomte is not installed." >> $logFileName
+    printf "\n\n\n" >> $logFileName
+
+fi
 
 printf "cat /var/log/syslog\n\n" >> $logFileName
 cat /var/log/syslog >> $logFileName
@@ -213,23 +254,43 @@ systemctl status systemd-modules-load.service >> $logFileName
 
 ### $boardFileName Section
 
-printf "/sys/devices/virtual/dmi/id/board_vendor\n\n" >> $boardFileName
-cat /sys/devices/virtual/dmi/id/board_vendor >> $boardFileName
+printf "/sys/class/dmi/id/board_vendor\n\n" >> $boardFileName
+cat /sys/class/dmi/id/board_vendor >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/board_name\n\n" >> $boardFileName
-cat /sys/devices/virtual/dmi/id/board_name >> $boardFileName
+printf "/sys/class/dmi/id/chassis_vendor\n\n" >> $boardFileName
+cat /sys/class/dmi/id/chassis_vendor >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/board_serial\n\n" >> $boardFileName
-cat /sys/devices/virtual/dmi/id/board_serial >> $boardFileName
+printf "/sys/class/dmi/id/sys_vendor\n\n" >> $boardFileName
+cat /sys/class/dmi/id/sys_vendor >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
-printf "/sys/devices/virtual/dmi/id/bios_version\n\n" >> $boardFileName
-cat /sys/devices/virtual/dmi/id/bios_version >> $boardFileName
+printf "/sys/class/dmi/id/board_name\n\n" >> $boardFileName
+cat /sys/class/dmi/id/board_name >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "/sys/class/dmi/id/product_name\n\n" >> $boardFileName
+cat /sys/class/dmi/id/product_name >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "/sys/class/dmi/id/product_sku\n\n" >> $boardFileName
+cat /sys/class/dmi/id/product_sku >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "/sys/class/dmi/id/board_serial\n\n" >> $boardFileName
+cat /sys/class/dmi/id/board_serial >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "/sys/class/dmi/id/bios_version\n\n" >> $boardFileName
+cat /sys/class/dmi/id/bios_version >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
 
@@ -239,20 +300,14 @@ if [ -f /sys/class/dmi/id/ec_firmware_release ]; then
 
     printf "\n\n\n" >> $boardFileName
 else
-    printf "EC-Version kann nicht ausgelesen werden! Überspringe... / EC-Version can't be read out! Skip... \n"
-    printf "EC-Version konnte nicht ausgelesen werden" >> $boardFileName
-
+    printf "EC-Version kann nicht ausgelesen werden! Überspringe...\n" >> $boardFileName
+    printf "EC-Version can't be read out! Skip..." >> $boardFileName
     printf "\n\n\n" >> $boardFileName
 
 fi
 
 printf "dmidecode\n\n" >> $boardFileName
 dmidecode >> $boardFileName
-
-printf "\n\n\n" >> $boardFileName
-
-printf "lshw\n\n" >> $boardFileName
-lshw >> $boardFileName
 
 ### $lspciFileName Section
 
@@ -423,7 +478,8 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
     printf "\n\n\n" >> $packagesFileName
 
 else
-    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip... \n\n"
+    printf "Nicht unterstütze Distribution! Überspringe...\n"
+    printf "Unsupported Distribution! Skip... \n\n\n"
 fi
 
 ### $udevFileName Section
