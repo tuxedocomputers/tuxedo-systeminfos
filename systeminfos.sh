@@ -536,7 +536,7 @@ else
     exit 1
 fi
 
-curl -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
+curl -F "file=@systeminfos-$ticketnumber_$timestamp.zip" $serverURI?ticketnumber=$ticketnumber
 
 rm systeminfos-$ticketnumber_$timestamp.zip *-$ticketnumber.txt
 
