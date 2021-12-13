@@ -437,7 +437,7 @@ if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
     cat /var/log/apt/history.log >> $packagesFileName
 
 # elementary OS
-if [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
+elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
 
     printf "sources.list\n\n" >> $packagesFileName
     cat /etc/apt/sources.list >> $packagesFileName
