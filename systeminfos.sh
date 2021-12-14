@@ -537,6 +537,14 @@ printf "\n\n\n" >> $udevFileName
 printf "/etc/udev/rules.d/ files\n\n" >> $udevFileName
 cat /etc/udev/rules.d/* >> $udevFileName
 
+printf "/lib/udev/rules.d/\n\n" >> $udevFileName
+ls /lib/udev/rules.d/ >> $udevFileName
+
+printf "\n\n\n" >> $udevFileName
+
+printf "/lib/udev/rules.d/ files\n\n" >> $udevFileName
+cat /lib/udev/rules.d/* >> $udevFileName
+
 # $firmwareFileName Section
 
 printf "ls -l /lib/firmware\n\n" >> $firmwareFileName
