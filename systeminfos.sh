@@ -330,7 +330,9 @@ aplay -l >> $audioFileName
 
 printf "\n\n\n" >> $audioFileName
 
+printf "echo 1 > /sys/module/snd_hda_codec/parameters/dump_coef\n" >> $audioFileName
 printf "cat /proc/asound/card*/codec*\n\n" >> $audioFileName
+echo 1 > /sys/module/snd_hda_codec/parameters/dump_coef
 cat /proc/asound/card*/codec* >> $audioFileName
 
 printf "\n\n\n" >> $audioFileName
