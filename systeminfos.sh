@@ -10,7 +10,6 @@ networkFileName=networkoutput.txt
 boardFileName=boardoutput.txt
 firmwareFileName=firmwareoutput.txt
 started=$(date +"%d.%m.%y-%H:%Mh")
-timestamp=$(date +"%d-%m-%y_%H-%Mh")
 ticketnumber=$1
 
 if [ "$(id -u)" -ne 0 ]; then
@@ -88,6 +87,11 @@ lsb_release -a >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
+printf "tuxedo-tomte list\n\n" >> $infoFileName
+tuxedo-tomte list >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
 printf "lsusb\n\n" >> $infoFileName
 lsusb >> $infoFileName
 
@@ -115,11 +119,6 @@ printf "\n\n\n" >> $infoFileName
 
 printf "lsmod\n\n" >> $infoFileName
 lsmod >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
-printf "tuxedo-tomte list\n\n" >> $infoFileName
-tuxedo-tomte list >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
@@ -568,7 +567,7 @@ mv $networkFileName network-$ticketnumber.txt
 mv $boardFileName boardinfo-$ticketnumber.txt
 mv $firmwareFileName firmware-$ticketnumber.txt
 
-zip -9 systeminfos-$ticketnumber_$timestamp.zip *-$ticketnumber.txt
+zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 # Re-Check Internet connection before sending
 printf "\n"
@@ -580,13 +579,13 @@ if [ $? -eq 0 ]; then
 else
     printf "\e[31mOffline! Um die Ergebnisse übermitteln zu können ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results! \e[1m\n"
     printf "\e[37m\e[0m\n"
-    rm systeminfos-$ticketnumber_$timestamp.zip *-$ticketnumber.txt
+    rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
     exit 1
 fi
 
-curl -F "file=@systeminfos-$ticketnumber_$timestamp.zip" $serverURI?ticketnumber=$ticketnumber
+curl -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
 
-rm systeminfos-$ticketnumber_$timestamp.zip *-$ticketnumber.txt
+rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 printf "\n"
 printf "\e[32mSysteminfos erfolgreich übermittelt. Beende... / Systeminformations successfully transferred. Exit... \e[0m\n"
