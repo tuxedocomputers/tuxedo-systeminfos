@@ -102,6 +102,11 @@ lsblk >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
+printf "fstab\n\n" >> $infoFileName
+cat /etc/fstab >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
 printf "xinput\n\n" >> $infoFileName
 xinput >> $infoFileName
 
