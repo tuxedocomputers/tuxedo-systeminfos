@@ -103,7 +103,7 @@ lsblk >> $infoFileName
 printf "\n\n\n" >> $infoFileName
 
 printf "fstab\n\n" >> $infoFileName
-cat /etc/fstab | grep -E "ext4|vfat|swap|datadisk" >> $infoFileName
+egrep -iv "cifs|nfs" /etc/fstab >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
