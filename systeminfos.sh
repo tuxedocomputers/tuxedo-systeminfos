@@ -371,11 +371,6 @@ lspci -nnk | grep -E -A3 -i "Ethernet|Network" >> $networkFileName
 
 printf "\n\n\n" >> $networkFileName
 
-printf "ifconfig\n\n" >> $networkFileName
-ifconfig >> $networkFileName
-
-printf "\n\n\n" >> $networkFileName
-
 printf "ip addr show\n\n" >> $networkFileName
 ip addr show >> $networkFileName
 
