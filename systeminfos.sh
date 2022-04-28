@@ -52,7 +52,9 @@ if [ -z $ticketnumber ]; then
     fi
 fi
 
-if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
+if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
+    apt -y install curl zip > /dev/null 2>&1
+elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
     apt -y install curl zip > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
     apt -y install curl zip > /dev/null 2>&1
@@ -401,8 +403,44 @@ iwconfig >> $networkFileName
 
 printf "\n\n\n" >> $packagesFileName
 
+# TUXEDO_OS
+if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
+
+    printf "sources.list\n\n" >> $packagesFileName
+    cat /etc/apt/sources.list >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "/etc/apt/sources.list.d\n\n" >> $packagesFileName
+    ls /etc/apt/sources.list.d >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "/etc/apt/sources.list.d ppa\n\n" >> $packagesFileName
+    cat /etc/apt/sources.list.d/* >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "dpkg -l\n\n" >> $packagesFileName
+    dpkg -l >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "dpkg -l | grep tuxedo\n\n" >> $packagesFileName
+    dpkg -l|grep tuxedo >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "dpkg -l | grep nvidia\n\n" >> $packagesFileName
+    dpkg -l|grep nvidia >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "/var/log/apt/history.log\n\n" >> $packagesFileName
+    cat /var/log/apt/history.log >> $packagesFileName
+
 # Ubuntu
-if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
+elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
 
     printf "sources.list\n\n" >> $packagesFileName
     cat /etc/apt/sources.list >> $packagesFileName
