@@ -1,5 +1,5 @@
 #!/bin/sh
-serverURI=https://px01.tuxedo.de/tuxedosysteminfos/systeminfo.php
+serverURI=https://systeminfo.tuxedo.de/systeminfo.php
 infoFileName=systeminfos.txt
 lspciFileName=lspcioutput.txt
 udevFileName=udevoutput.txt
