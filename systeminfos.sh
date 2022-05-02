@@ -20,7 +20,7 @@ fi
 
 # Check Internet connection
 printf "Überprüfe Internetverbindung... / Checking Internet connection... \n"
-wget -q --spider https://px01.tuxedo.de
+wget -q --spider https://www.tuxedocomputers.com
 if [ $? -eq 0 ]; then
     printf "\e[32mOnline\e[0m\n"
     printf "\e[37m\e[0m\n"
@@ -610,7 +610,7 @@ zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 # Re-Check Internet connection before sending
 printf "\n"
 printf "Überprüfe Internetverbindung... / Checking Internet connection... \n"
-wget -q --spider https://px01.tuxedo.de
+wget -q --spider https://www.tuxedocomputers.com
 if [ $? -eq 0 ]; then
     printf "\e[32mOnline\e[0m\n"
     printf "\e[37m\e[0m\n"
