@@ -243,8 +243,8 @@ else
 
 fi
 
-printf "cat /var/log/syslog\n\n" >> $logFileName
-cat /var/log/syslog >> $logFileName
+printf "/var/log/syslog\n\n" >> $logFileName
+tail --lines=1000 /var/log/syslog >> $logFileName
 
 printf "\n\n\n" >> $logFileName
 
@@ -253,8 +253,8 @@ journalctl --system -e >> $logFileName
 
 printf "\n\n\n" >> $logFileName
 
-printf "cat /var/log/boot.log\n\n" >> $logFileName
-cat /var/log/boot.log >> $logFileName
+printf "/var/log/boot.log\n\n" >> $logFileName
+tail --lines=1000 /var/log/boot.log >> $logFileName
 
 printf "\n\n\n" >> $logFileName
 
