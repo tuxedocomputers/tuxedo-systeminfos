@@ -246,20 +246,22 @@ fi
 printf "/var/log/syslog\n\n" >> $logFileName
 tail --lines=1000 /var/log/syslog >> $logFileName
 
-printf "\n\n\n" >> $logFileName
+printf "\n\n\n\n\n" >> $logFileName
 
 printf "journalctl --system -e\n\n" >> $logFileName
 journalctl --system -e >> $logFileName
 
-printf "\n\n\n" >> $logFileName
+printf "\n\n\n\n\n" >> $logFileName
 
 printf "/var/log/boot.log\n\n" >> $logFileName
 tail --lines=1000 /var/log/boot.log >> $logFileName
 
-printf "\n\n\n" >> $logFileName
+printf "\n\n\n\n\n" >> $logFileName
 
 printf "dmesg\n\n" >> $logFileName
 dmesg >> $logFileName
+
+printf "\n\n\n\n\n" >> $logFileName
 
 printf "systemctl status systemd-modules-load.service\n\n" >> $logFileName
 systemctl status systemd-modules-load.service >> $logFileName
