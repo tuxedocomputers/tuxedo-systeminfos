@@ -65,7 +65,7 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
     pacman -Sy --no-confirm curl zip nvme-cli > /dev/null 2>&1
 else
-    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip... \n"
+    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skipping... \n"
 fi
 
 
@@ -328,7 +328,7 @@ if [ -f /sys/class/dmi/id/ec_firmware_release ]; then
     printf "\n\n\n" >> $boardFileName
 else
     printf "EC-Version kann nicht ausgelesen werden! Überspringe...\n" >> $boardFileName
-    printf "EC-Version can't be read out! Skip..." >> $boardFileName
+    printf "EC-Version can't be read out! Skipping..." >> $boardFileName
     printf "\n\n\n" >> $boardFileName
 
 fi
@@ -616,7 +616,7 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
 
 else
     printf "Nicht unterstütze Distribution! Überspringe...\n"
-    printf "Unsupported Distribution! Skip... \n\n\n"
+    printf "Unsupported Distribution! Skipping... \n\n\n"
 fi
 
 ### $udevFileName Section
