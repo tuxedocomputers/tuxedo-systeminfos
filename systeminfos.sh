@@ -53,17 +53,17 @@ if [ -z $ticketnumber ]; then
 fi
 
 if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
-    apt -y install curl zip > /dev/null 2>&1
+    apt -y install curl zip nvme-cli > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
-    apt -y install curl zip > /dev/null 2>&1
+    apt -y install curl zip nvme-cli > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
-    apt -y install curl zip > /dev/null 2>&1
+    apt -y install curl zip nvme-cli > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
-    apt -y install curl zip > /dev/null 2>&1
+    apt -y install curl zip nvme-cli > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
-    zypper in -y curl zip > /dev/null 2>&1
+    zypper in -y curl zip nvme-cli > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-    pacman -Sy --no-confirm curl zip > /dev/null 2>&1
+    pacman -Sy --no-confirm curl zip nvme-cli > /dev/null 2>&1
 else
     printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip... \n"
 fi
@@ -212,6 +212,13 @@ printf "\n\n\n" >> $infoFileName
 
 printf "journalctl -k --grep=tpm\n\n" >> $infoFileName
 journalctl -k --grep=tpm >> $infoFileName
+
+if [ -d /sys/class/nvme ]; then
+    printf "\n\n\n" >> $infoFileName
+
+    printf "nvme list\n\n" >> $infoFileName
+    nvme list >> $infoFileName
+fi
 
 ### $logFileName Section
 
