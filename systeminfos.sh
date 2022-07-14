@@ -213,10 +213,12 @@ printf "\n\n\n" >> $infoFileName
 printf "journalctl -k --grep=tpm\n\n" >> $infoFileName
 journalctl -k --grep=tpm >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
+if [ -d /sys/class/nvme ]; then
+    printf "\n\n\n" >> $infoFileName
 
-printf "nvme list\n\n" >> $infoFileName
-nvme list >> $infoFileName
+    printf "nvme list\n\n" >> $infoFileName
+    nvme list >> $infoFileName
+fi
 
 ### $logFileName Section
 
