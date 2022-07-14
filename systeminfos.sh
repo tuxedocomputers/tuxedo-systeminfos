@@ -65,7 +65,7 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
     pacman -Sy --no-confirm curl zip nvme-cli > /dev/null 2>&1
 else
-    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skip... \n"
+    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skipping... \n"
 fi
 
 
@@ -151,13 +151,19 @@ glxinfo|grep vendor >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "prime-select query\n\n" >> $infoFileName
-prime-select query >> $infoFileName
+if (grep -q 0x10de /sys/class/drm/card1/device/vendor) then
+    printf "prime-select query\n\n" >> $infoFileName
+    prime-select query >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+fi
 
-printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $infoFileName
-grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
+if (grep -q 0x8086 /sys/class/drm/card0/device/vendor) then
+    printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $infoFileName
+    grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
+
+    printf "\n\n\n" >> $infoFileName
+fi
 
 printf "\n\n\n" >> $infoFileName
 
@@ -322,7 +328,7 @@ if [ -f /sys/class/dmi/id/ec_firmware_release ]; then
     printf "\n\n\n" >> $boardFileName
 else
     printf "EC-Version kann nicht ausgelesen werden! Überspringe...\n" >> $boardFileName
-    printf "EC-Version can't be read out! Skip..." >> $boardFileName
+    printf "EC-Version can't be read out! Skipping..." >> $boardFileName
     printf "\n\n\n" >> $boardFileName
 
 fi
@@ -610,7 +616,7 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
 
 else
     printf "Nicht unterstütze Distribution! Überspringe...\n"
-    printf "Unsupported Distribution! Skip... \n\n\n"
+    printf "Unsupported Distribution! Skipping... \n\n\n"
 fi
 
 ### $udevFileName Section
