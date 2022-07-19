@@ -514,6 +514,11 @@ dmesg|grep firmware >> $firmwareFileName
 printf "cat /etc/tcc/settings\n\n" >> $tccFileName
 cat /etc/tcc/settings >> $tccFileName
 
+printf "\n\n\n" >> $tccFileName
+
+printf "systemctl is-active tccd.service" >> $tccFileName
+systemctl is-active tccd.service >> $tccFileName
+
 # Rename files
 mv $infoFileName systeminfos-$ticketnumber.txt
 mv $lspciFileName lspci-$ticketnumber.txt
