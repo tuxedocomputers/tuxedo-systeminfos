@@ -573,6 +573,11 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 
     printf "\n\n\n" >> $packagesFileName
 
+    printf "zypper sources lists\n\n" >> $packagesFileName
+    cat /etc/zypp/repos.d/* >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
     printf "rpm -qa\n\n" >> $packagesFileName
     rpm -qa >> $packagesFileName
 
