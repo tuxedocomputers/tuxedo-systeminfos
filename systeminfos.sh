@@ -9,6 +9,7 @@ audioFileName=audiooutput.txt
 networkFileName=networkoutput.txt
 boardFileName=boardoutput.txt
 firmwareFileName=firmwareoutput.txt
+tccFileName=tccoutput.txt
 started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
@@ -70,9 +71,9 @@ fi
 
 
 printf "\n"
-echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName
-echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName
-printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName
+echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName
+echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName
+printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName
 
 ### $infoFileName Section
 
@@ -646,6 +647,16 @@ printf "\n\n\n" >> $firmwareFileName
 
 printf "dmesg|grep firmware\n\n" >> $firmwareFileName
 dmesg|grep firmware >> $firmwareFileName
+
+# $tccFileName Section
+
+printf "cat /etc/tcc/settings\n\n" >> $tccFileName
+cat /etc/tcc/settings >> $tccFileName
+
+printf "\n\n\n" >> $tccFileName
+
+printf "systemctl is-active tccd.service" >> $tccFileName
+systemctl is-active tccd.service >> $tccFileName
 
 # Rename files
 mv $infoFileName systeminfos-$ticketnumber.txt
