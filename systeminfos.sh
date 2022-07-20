@@ -39,10 +39,8 @@ if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
     printf "Die Ticketnummer beginnt mit 990 \n"
     printf "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. \n"
     printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine E-Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. \n"
-
     printf "\e[31mWenn sie keine Ticketnummer haben, beenden sie das Skript bitte JETZT mit Strg + C \n"
     printf "\e[37m\e[0m"
-
     printf "Das Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! \n"
     printf "Es werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. \n"
     printf "Bitte beachten sie dass sie nur für TUXEDO OS, Ubuntu und openSUSE Support von TUXEDO Computers erhalten. \n"
