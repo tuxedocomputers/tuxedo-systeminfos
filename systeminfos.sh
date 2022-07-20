@@ -673,6 +673,7 @@ mv $audioFileName audio-$ticketnumber.txt
 mv $networkFileName network-$ticketnumber.txt
 mv $boardFileName boardinfo-$ticketnumber.txt
 mv $firmwareFileName firmware-$ticketnumber.txt
+mv $tccFileName tcc-$ticketnumber.txt
 
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
