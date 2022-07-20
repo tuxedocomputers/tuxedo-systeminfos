@@ -31,20 +31,22 @@ else
     exit 1
 fi
 
+# clear terminal window befor printing messages
+clear
+
+printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen / What is your ticket number? Confirm with [ENTER] \n"
+printf "Die Ticketnummer beginnt mit 990 / The ticket number starts with 990 \n"
+printf "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. / We cannot proceed your inquire without ticket number! \n"
+printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. / To get an ticket number you can contact us by mail to tux[at]tuxedocomputers.com \n"
+printf "\e[31mWenn sie keine Ticketnummer haben, beenden sie das Skript bitte JETZT mit Strg + C / If you do not have a ticket number, please exit the script NOW with Ctrl + C. \e[1m\n"
+printf "\e[31mDas Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! / The script does not collect any personal data and no access data! \e[1m\n"
+printf "\e[31mEs werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. / Only information about your hardware and software configuration is collected. \e[1m\n"
+printf "\n"
+printf "Bitte beachten sie dass sie nur für TUXEDO OS, Ubuntu und openSUSE Support von TUXEDO Computers erhalten. / Please note that you only get support for TUXEDO OS, Ubuntu and openSUSE from TUXEDO Computers."
+printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren. / You can ignore any error messages that may appear"
+printf "\e[37m\e[0m\n"
 
 if [ -z $ticketnumber ]; then
-    printf "\n"
-    printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen / What is your ticket number? Confirm with [ENTER] \n"
-    printf "Die Ticketnummer beginnt mit 990 / The ticket number starts with 990 \n"
-    printf "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. / We cannot proceed your inquire without ticket number! \n"
-    printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. / To get an ticket number you can contact us by mail to tux[at]tuxedocomputers.com \n"
-    printf "\e[31mWenn sie keine Ticketnummer haben, beenden sie das Skript bitte JETZT mit Strg + C / If you do not have a ticket number, please exit the script NOW with Ctrl + C. \e[1m\n"
-    printf "\e[31mDas Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! / The script does not collect any personal data and no access data! \e[1m\n"
-    printf "\e[31mEs werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. / Only information about your hardware and software configuration is collected. \e[1m\n"
-    printf "\n"
-    printf "Bitte beachten sie dass sie nur für Ubuntu und openSUSE Support von TUXEDO Computers erhalten. / Please note that you only get support for Ubuntu and openSUSE from TUXEDO Computers."
-    printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren. / You can ignore any error messages that may appear"
-    printf "\e[37m\e[0m\n"
     read -p "Ticket#: " ticketnumber
     if [ -z $ticketnumber ]; then
         printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticker number given. Quitting. \e[1m\n"
@@ -54,13 +56,13 @@ if [ -z $ticketnumber ]; then
 fi
 
 if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
-    apt -y install curl zip nvme-cli > /dev/null 2>&1
+    apt-get -y install curl zip nvme-cli > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
-    apt -y install curl zip nvme-cli > /dev/null 2>&1
+    apt-get -y install curl zip nvme-cli > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
-    apt -y install curl zip nvme-cli > /dev/null 2>&1
+    apt-get -y install curl zip nvme-cli > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
-    apt -y install curl zip nvme-cli > /dev/null 2>&1
+    apt-get -y install curl zip nvme-cli > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     zypper in -y curl zip nvme-cli > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
@@ -71,9 +73,9 @@ fi
 
 
 printf "\n"
-echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName
-echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName
-printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName
+echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName > /dev/null 2>&1
+echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName > /dev/null 2>&1
+printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName > /dev/null 2>&1
 
 ### $infoFileName Section
 
