@@ -38,13 +38,13 @@ printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen / What is your tic
 printf "Die Ticketnummer beginnt mit 990 / The ticket number starts with 990 \n"
 printf "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. / We cannot proceed your inquire without ticket number! \n"
 printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. / To get an ticket number you can contact us by mail to tux[at]tuxedocomputers.com \n"
-printf "\e[31mWenn sie keine Ticketnummer haben, beenden sie das Skript bitte JETZT mit Strg + C / If you do not have a ticket number, please exit the script NOW with Ctrl + C. \e[1m\n"
-printf "\e[31mDas Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! / The script does not collect any personal data and no access data! \e[1m\n"
-printf "\e[31mEs werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. / Only information about your hardware and software configuration is collected. \e[1m\n"
-printf "\n"
-printf "Bitte beachten sie dass sie nur für TUXEDO OS, Ubuntu und openSUSE Support von TUXEDO Computers erhalten. / Please note that you only get support for TUXEDO OS, Ubuntu and openSUSE from TUXEDO Computers."
+printf "\e[31mWenn sie keine Ticketnummer haben, beenden sie das Skript bitte JETZT mit Strg + C / If you do not have a ticket number, please exit the script NOW with Ctrl + C. \n"
+printf "\e[37m\e[0m"
+printf "Das Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! / The script does not collect any personal data and no access data! \n"
+printf "Es werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. / Only information about your hardware and software configuration is collected. \n"
+printf "Bitte beachten sie dass sie nur für TUXEDO OS, Ubuntu und openSUSE Support von TUXEDO Computers erhalten. / Please note that you only get support for TUXEDO OS, Ubuntu and openSUSE from TUXEDO Computers. \n"
 printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren. / You can ignore any error messages that may appear"
-printf "\e[37m\e[0m\n"
+printf "\n"
 
 if [ -z $ticketnumber ]; then
     read -p "Ticket#: " ticketnumber
