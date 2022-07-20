@@ -55,7 +55,7 @@ else
     printf "\e[37m\e[0m"
     printf "The script does not collect any personal data and no access data!  \n"
     printf "Only information about your hardware and software configuration is collected. \n"
-    printf "You can ignore any error messages that may appear \n"
+    printf "You can ignore any error messages that may appear"
     printf "\n"
 fi
 
