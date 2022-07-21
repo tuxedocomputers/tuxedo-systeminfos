@@ -123,7 +123,7 @@ lsblk >> $infoFileName
 printf "\n\n\n" >> $infoFileName
 
 printf "fstab\n\n" >> $infoFileName
-egrep -iv "cifs|nfs" /etc/fstab >> $infoFileName
+egrep -iv "cifs|nfs|davfs|http" /etc/fstab >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
