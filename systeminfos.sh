@@ -675,7 +675,7 @@ cat /etc/tcc/settings >> $tccFileName
 
 printf "\n\n\n" >> $tccFileName
 
-printf "systemctl is-active tccd.service" >> $tccFileName
+printf "systemctl is-active tccd.service\n\n" >> $tccFileName
 systemctl is-active tccd.service >> $tccFileName
 
 # Rename files
