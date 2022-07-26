@@ -10,6 +10,7 @@ networkFileName=networkoutput.txt
 boardFileName=boardoutput.txt
 firmwareFileName=firmwareoutput.txt
 tccFileName=tccoutput.txt
+modprobeFileName=modprobeoutput.txt
 started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
@@ -86,9 +87,9 @@ fi
 
 
 printf "\n"
-echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName > /dev/null 2>&1
-echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName > /dev/null 2>&1
-printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName > /dev/null 2>&1
+echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName> /dev/null 2>&1
+echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName > /dev/null 2>&1
+printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName > /dev/null 2>&1
 
 ### $infoFileName Section
 
@@ -626,7 +627,7 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
     pacman -Qqe | grep tuxedo >> $packagesFileName
 
     printf "\n\n\n" >> $packagesFileName
-    
+
     printf "pacman Repo's" >> $packagesFileName
     cat /etc/pacman.conf | grep -E 'core|extra|community|multilib' >> $packagesFileName
 
@@ -678,6 +679,16 @@ printf "\n\n\n" >> $tccFileName
 printf "systemctl is-active tccd.service\n\n" >> $tccFileName
 systemctl is-active tccd.service >> $tccFileName
 
+#
+
+printf "/etc/modprobe.d/\n\n" >> $modprobeFileName
+ls /etc/modprobe.d/ >> $modprobeFileName
+
+printf "\n\n\n" >> $modprobeFileName
+
+printf "/etc/modprobe.d/ files\n\n" >> $modprobeFileName
+cat /etc/modprobe.d/* >> $modprobeFileName
+
 # Rename files
 mv $infoFileName systeminfos-$ticketnumber.txt
 mv $lspciFileName lspci-$ticketnumber.txt
@@ -689,6 +700,7 @@ mv $networkFileName network-$ticketnumber.txt
 mv $boardFileName boardinfo-$ticketnumber.txt
 mv $firmwareFileName firmware-$ticketnumber.txt
 mv $tccFileName tcc-$ticketnumber.txt
+mv $modprobeFileName modprobe-$ticketnumber.txt
 
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
