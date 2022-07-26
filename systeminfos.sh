@@ -679,7 +679,7 @@ printf "\n\n\n" >> $tccFileName
 printf "systemctl is-active tccd.service\n\n" >> $tccFileName
 systemctl is-active tccd.service >> $tccFileName
 
-#
+# $modprobeFileName Section
 
 printf "/etc/modprobe.d/\n\n" >> $modprobeFileName
 ls /etc/modprobe.d/ >> $modprobeFileName
