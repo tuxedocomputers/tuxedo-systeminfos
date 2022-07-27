@@ -21,7 +21,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Check Internet connection
-printf "Ueberprüfe Internetverbindung... / Checking Internet connection... \n"
+printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
 wget -q --spider https://www.tuxedocomputers.com
 if [ $? -eq 0 ]; then
     printf "\e[32mOnline\e[0m\n"
@@ -700,13 +700,13 @@ zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 # Re-Check Internet connection before sending
 printf "\n"
-printf "Ueberprüfe Internetverbindung... / Checking Internet connection... \n"
+printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
 wget -q --spider https://www.tuxedocomputers.com
 if [ $? -eq 0 ]; then
     printf "\e[32mOnline\e[0m\n"
     printf "\e[37m\e[0m\n"
 else
-    printf "\e[31mOffline! Um die Ergebnisse übermitteln zu koennen ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results! \e[1m\n"
+    printf "\e[31mOffline! Um die Ergebnisse uebermitteln zu koennen ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results! \e[1m\n"
     printf "\e[37m\e[0m\n"
     rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
     exit 1
