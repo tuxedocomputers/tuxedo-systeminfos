@@ -273,14 +273,15 @@ else
 
 fi
 
-if [ -f /etc/tomte/UPDATES_ONLY ]; then
-    printf "Tomte ist so konfiguriert dass nur Aktualisierungen ueber Tomte verarbeitet werden\n" >> $infoFileName
+
+if [ -f /etc/tomte/AUTOMATIC ]; then
+    printf "Tomte wird in den vorgesehenen Standardeinstellungen verwendet\n" >> $logFileName
     printf "\n\n\n" >> $logFileName
 elif [ -f /etc/tomte/DONT_CONFIGURE ]; then
     printf "Tomte ist so konfiguriert dass nur die als "notwendig" (prerequisite) markierten Module konfiguriert werden\n" >> $logFileName
     printf "\n\n\n" >> $logFileName
-elif [ -f /etc/tomte/AUTOMATIC ]; then
-    printf "Tomte wird in den vorgesehenen Standardeinstellungen verwendet\n" >> $logFileName
+elif [ -f /etc/tomte/UPDATES_ONLY ]; then
+    printf "Tomte ist so konfiguriert dass nur Aktualisierungen ueber Tomte verarbeitet werden\n" >> $infoFileName
     printf "\n\n\n" >> $logFileName
 else
     printf "Tomte wird in den Standardeinstellungen verwendet\n" >> $logFileName
