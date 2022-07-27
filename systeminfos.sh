@@ -15,19 +15,19 @@ started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
 if [ "$(id -u)" -ne 0 ]; then
-    printf "\e[31msysteminfos.sh muss mit root Rechten ausgeführt werden! / systeminfos.sh must be executed with root privileges! \e[1m\n"
+    printf "\e[31msysteminfos.sh muss mit root Rechten ausgefuehrt werden! / systeminfos.sh must be executed with root privileges! \e[1m\n"
     printf "\e[37m\e[0m\n"
     exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh '$(basename $0)' $1"
 fi
 
 # Check Internet connection
-printf "Überprüfe Internetverbindung... / Checking Internet connection... \n"
+printf "Ueberprüfe Internetverbindung... / Checking Internet connection... \n"
 wget -q --spider https://www.tuxedocomputers.com
 if [ $? -eq 0 ]; then
     printf "\e[32mOnline\e[0m\n"
     printf "\e[37m\e[0m\n"
 else
-    printf "\e[31mOffline! Um das Skript ausführen zu können ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script! \e[1m\n"
+    printf "\e[31mOffline! Um das Skript ausfuehren zu koennen ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script! \e[1m\n"
     printf "\e[37m\e[0m\n"
     exit 1
 fi
@@ -82,7 +82,7 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
     pacman -Sy --no-confirm curl zip nvme-cli > /dev/null 2>&1
 else
-    printf "Nicht unterstütze Distribution! Überspringe... / Unsupported Distribution! Skipping... \n"
+    printf "Nicht unterstuetze Distribution! Ueberspringe... / Unsupported Distribution! Skipping... \n"
 fi
 
 
@@ -210,8 +210,7 @@ if [ -f /etc/modprobe.d/tuxedo_keyboard.conf ]; then
     printf "\n\n\n" >> $logFileName
 
 else
-    printf "TUXEDO Keyboard scheint nicht installiert zu sein.\n" >> $logFileName
-    printf "TUXEDO Keyboard seems not to be installed." >> $logFileName
+    printf "TUXEDO Keyboard scheint nicht installiert zu sein" >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 fi
@@ -252,9 +251,7 @@ if [ -f /var/log/tuxedo-install.log ]; then
 
 else
     printf "WebFAI Install-Log konnte nicht gefunden werden.\n" >> $logFileName
-    printf "Moeglicherweise handelt es sich um keine WebFAI Installation.\n\n" >> $logFileName
-    printf "WebFAI Install-log could not be found.\n" >> $logFileName
-    printf "Maybe it's not a WebFAI installation." >> $logFileName
+    printf "Moeglicherweise handelt es sich um keine WebFAI Installation.\n" >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 fi
@@ -266,9 +263,7 @@ if [ -f /var/log/tomte/tomte.log ]; then
 
 else
     printf "Tomte Log konnte nicht gefunden werden.\n" >> $logFileName
-    printf "Moeglicherweise ist Tomte nicht installiert.\n\n" >> $logFileName
-    printf "Tomte Log could not be found.\n" >> $logFileName
-    printf "Maybe Tomte is not installed." >> $logFileName
+    printf "Moeglicherweise ist Tomte nicht installiert.\n" >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 fi
@@ -344,8 +339,7 @@ if [ -f /sys/class/dmi/id/ec_firmware_release ]; then
 
     printf "\n\n\n" >> $boardFileName
 else
-    printf "EC-Version kann nicht ausgelesen werden! Überspringe...\n" >> $boardFileName
-    printf "EC-Version can't be read out! Skipping..." >> $boardFileName
+    printf "EC-Version kann nicht ausgelesen werden \n" >> $boardFileName
     printf "\n\n\n" >> $boardFileName
 
 fi
@@ -637,7 +631,7 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
     printf "\n\n\n" >> $packagesFileName
 
 else
-    printf "Nicht unterstütze Distribution! Überspringe...\n"
+    printf "Nicht unterstuetze Distribution! Ueberspringe...\n"
     printf "Unsupported Distribution! Skipping... \n\n\n"
 fi
 
@@ -706,13 +700,13 @@ zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 # Re-Check Internet connection before sending
 printf "\n"
-printf "Überprüfe Internetverbindung... / Checking Internet connection... \n"
+printf "Ueberprüfe Internetverbindung... / Checking Internet connection... \n"
 wget -q --spider https://www.tuxedocomputers.com
 if [ $? -eq 0 ]; then
     printf "\e[32mOnline\e[0m\n"
     printf "\e[37m\e[0m\n"
 else
-    printf "\e[31mOffline! Um die Ergebnisse übermitteln zu können ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results! \e[1m\n"
+    printf "\e[31mOffline! Um die Ergebnisse übermitteln zu koennen ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results! \e[1m\n"
     printf "\e[37m\e[0m\n"
     rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
     exit 1
@@ -723,6 +717,6 @@ curl -k -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticket
 rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 printf "\n"
-printf "\e[32mSysteminfos erfolgreich übermittelt. Beende... / Systeminformations successfully transferred. Exit... \e[0m\n"
+printf "\e[32mSysteminfos erfolgreich uebermittelt. Beende... / Systeminformations successfully transferred. Exit... \e[0m\n"
 printf "\e[37m\e[0m\n"
 exit 0;
