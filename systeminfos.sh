@@ -36,28 +36,31 @@ fi
 clear
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+    printf "Das Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! \n"
+    printf "Es werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. \n"
+    printf "Bitte beachten sie dass sie nur für TUXEDO OS, Ubuntu und openSUSE Support von TUXEDO Computers erhalten. \n"
+    printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren. \n"
+else
+    printf "The script does not collect any personal data and no access data! \n"
+    printf "Only information about your hardware and software configuration is collected. \n"
+    printf "Please note that you will only receive support for TUXEDO OS, Ubuntu and openSUSE from TUXEDO Computers. \n"
+    printf "You can ignore any error messages that may appear. \n"
+fi
+
+# 5 seconds before next textbox. Clear screen again before next textbox appears
+sleep 5
+clear
+
+if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
     printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen \n"
     printf "Die Ticketnummer beginnt mit 990 \n"
     printf "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. \n"
     printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine E-Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. \n"
-    printf "\e[31mWenn sie keine Ticketnummer haben, beenden sie das Skript bitte JETZT mit Strg + C \n"
-    printf "\e[37m\e[0m"
-    printf "Das Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! \n"
-    printf "Es werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. \n"
-    printf "Bitte beachten sie dass sie nur für TUXEDO OS, Ubuntu und openSUSE Support von TUXEDO Computers erhalten. \n"
-    printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren."
-    printf "\n"
 else
     printf "What is your ticket number? Confirm with [ENTER] \n"
     printf "The ticket number starts with 990 \n"
     printf "We cannot proceed your inquire without ticket number! \n"
     printf "To get an ticket number you can contact us by e-mail to tux[at]tuxedocomputers.com \n"
-    printf "\e[31mIf you do not have a ticket number, please exit the script NOW with Ctrl + C. \n"
-    printf "\e[37m\e[0m"
-    printf "The script does not collect any personal data and no access data!  \n"
-    printf "Only information about your hardware and software configuration is collected. \n"
-    printf "You can ignore any error messages that may appear"
-    printf "\n"
 fi
 
 if [ -z $ticketnumber ]; then
