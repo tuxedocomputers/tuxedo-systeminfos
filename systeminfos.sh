@@ -734,7 +734,16 @@ curl -k -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticket
 
 rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
-printf "\n"
-printf "\e[32mSysteminfos erfolgreich uebermittelt. Beende... / Systeminformations successfully transferred. Exit... \e[0m\n"
-printf "\e[37m\e[0m\n"
+if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+    printf "\n"
+    printf "Systeminfos erfolgreich uebermittelt. \n"
+    printf "Wir werden die eingesendeten Systeminfos nun auswerten und uns bei Ihnen melden. \n"
+    printf "Bitte haben Sie etwas Geduld. \n"
+else
+    printf "\n"
+    printf "Systeminformations successfully transferred. \n"
+    printf "We will now evaluate the submitted system information and get back to you. \n"
+    printf "Please be patient. \n"
+fi
+
 exit 0;
