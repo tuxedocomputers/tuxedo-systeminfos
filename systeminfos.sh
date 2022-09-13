@@ -186,19 +186,13 @@ glxinfo|grep vendor >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-if (grep -q 0x10de /sys/class/drm/card1/device/vendor) then
-    printf "prime-select query\n\n" >> $infoFileName
-    prime-select query >> $infoFileName
+printf "prime-select query\n\n" >> $infoFileName
+prime-select query >> $infoFileName
 
-    printf "\n\n\n" >> $infoFileName
-fi
+printf "\n\n\n" >> $infoFileName
 
-if (grep -q 0x8086 /sys/class/drm/card0/device/vendor) then
-    printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $infoFileName
-    grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
-
-    printf "\n\n\n" >> $infoFileName
-fi
+printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $infoFileName
+grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
