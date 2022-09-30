@@ -187,19 +187,13 @@ glxinfo|grep vendor >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-if (grep -q 0x10de /sys/class/drm/card1/device/vendor) then
-    printf "prime-select query\n\n" >> $infoFileName
-    prime-select query >> $infoFileName
+printf "prime-select query\n\n" >> $infoFileName
+prime-select query >> $infoFileName
 
-    printf "\n\n\n" >> $infoFileName
-fi
+printf "\n\n\n" >> $infoFileName
 
-if (grep -q 0x8086 /sys/class/drm/card0/device/vendor) then
-    printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $infoFileName
-    grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
-
-    printf "\n\n\n" >> $infoFileName
-fi
+printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $infoFileName
+grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
@@ -778,7 +772,16 @@ curl -k -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticket
 
 rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
-printf "\n"
-printf "\e[32mSysteminfos erfolgreich uebermittelt. Beende... / Systeminformations successfully transferred. Exit... \e[0m\n"
-printf "\e[37m\e[0m\n"
+if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+    printf "\n"
+    printf "Systeminfos erfolgreich uebermittelt. \n"
+    printf "Wir werden die eingesendeten Systeminfos nun auswerten und uns bei Ihnen melden. \n"
+    printf "Bitte haben Sie etwas Geduld. \n"
+else
+    printf "\n"
+    printf "Systeminformations successfully transferred. \n"
+    printf "We will now evaluate the submitted system information and get back to you. \n"
+    printf "Please be patient. \n"
+fi
+
 exit 0;
