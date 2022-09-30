@@ -698,6 +698,11 @@ cat /etc/modprobe.d/* >> $modprobeFileName
 
 # $securebootFileName section
 
+printf "mokutil --sb-state" >> $securebootFileName
+mokutil --sb-state >> $securebootFileName
+
+printf "\n\n\n" >> $securebootFileName
+
 printf "mokutil --pk" >> $securebootFileName
 mokutil --pk >> $securebootFileName
 
