@@ -11,6 +11,7 @@ boardFileName=boardoutput.txt
 firmwareFileName=firmwareoutput.txt
 tccFileName=tccoutput.txt
 modprobeFileName=modprobeoutput.txt
+securebootFileName=securebootoutput.txt
 started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
@@ -90,9 +91,9 @@ fi
 
 
 printf "\n"
-echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName> /dev/null 2>&1
-echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName > /dev/null 2>&1
-printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName > /dev/null 2>&1
+echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName > /dev/null 2>&1
+echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName > /dev/null 2>&1
+printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName > /dev/null 2>&1
 
 ### $infoFileName Section
 
@@ -695,6 +696,53 @@ printf "\n\n\n" >> $modprobeFileName
 printf "/etc/modprobe.d/ files\n\n" >> $modprobeFileName
 cat /etc/modprobe.d/* >> $modprobeFileName
 
+# $securebootFileName section
+
+printf "mokutil --sb-state\n\n" >> $securebootFileName
+mokutil --sb-state >> $securebootFileName
+
+printf "\n\n\n" >> $securebootFileName
+
+printf "mokutil --pk\n\n" >> $securebootFileName
+mokutil --pk >> $securebootFileName
+
+printf "\n\n\n" >> $securebootFileName
+
+printf "mokutil --kek\n\n" >> $securebootFileName
+mokutil --kek >> $securebootFileName
+
+printf "\n\n\n" >> $securebootFileName
+
+printf "mokutil --db\n\n" >> $securebootFileName
+mmokutil --db >> $securebootFileName
+
+printf "\n\n\n" >> $securebootFileName
+
+printf "mokutil --dbx\n\n" >> $securebootFileName
+mmokutil --dbx >> $securebootFileName
+
+printf "\n\n\n" >> $securebootFileName
+
+printf "mokutil --list-enrolled\n\n" >> $securebootFileName
+mokutil --list-enrolled >> $securebootFileName
+
+printf "\n\n\n" >> $securebootFileName
+
+printf "mokutil --list-new\n\n" >> $securebootFileName
+mokutil --list-new >> $securebootFileName
+
+printf "\n\n\n" >> $securebootFileName
+
+printf "mokutil --list-delete\n\n" >> $securebootFileName
+mokutil --list-delete >> $securebootFileName
+
+printf "\n\n\n" >> $securebootFileName
+
+printf "mokutil --mokx\n\n" >> $securebootFileName
+mokutil --mokx >> $securebootFileName
+
+printf "\n\n\n" >> $securebootFileName
+
 # Rename files
 mv $infoFileName systeminfos-$ticketnumber.txt
 mv $lspciFileName lspci-$ticketnumber.txt
@@ -707,6 +755,7 @@ mv $boardFileName boardinfo-$ticketnumber.txt
 mv $firmwareFileName firmware-$ticketnumber.txt
 mv $tccFileName tcc-$ticketnumber.txt
 mv $modprobeFileName modprobe-$ticketnumber.txt
+mv $securebootFileName secureboot-$ticketnumber.txt
 
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
