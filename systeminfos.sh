@@ -698,47 +698,47 @@ cat /etc/modprobe.d/* >> $modprobeFileName
 
 # $securebootFileName section
 
-printf "mokutil --sb-state" >> $securebootFileName
+printf "mokutil --sb-state\n\n" >> $securebootFileName
 mokutil --sb-state >> $securebootFileName
 
 printf "\n\n\n" >> $securebootFileName
 
-printf "mokutil --pk" >> $securebootFileName
+printf "mokutil --pk\n\n" >> $securebootFileName
 mokutil --pk >> $securebootFileName
 
 printf "\n\n\n" >> $securebootFileName
 
-printf "mokutil --kek" >> $securebootFileName
+printf "mokutil --kek\n\n" >> $securebootFileName
 mokutil --kek >> $securebootFileName
 
 printf "\n\n\n" >> $securebootFileName
 
-printf "mokutil --db" >> $securebootFileName
+printf "mokutil --db\n\n" >> $securebootFileName
 mmokutil --db >> $securebootFileName
 
 printf "\n\n\n" >> $securebootFileName
 
-printf "mokutil --dbx" >> $securebootFileName
+printf "mokutil --dbx\n\n" >> $securebootFileName
 mmokutil --dbx >> $securebootFileName
 
 printf "\n\n\n" >> $securebootFileName
 
-printf "mokutil --list-enrolled" >> $securebootFileName
+printf "mokutil --list-enrolled\n\n" >> $securebootFileName
 mokutil --list-enrolled >> $securebootFileName
 
 printf "\n\n\n" >> $securebootFileName
 
-printf "mokutil --list-new" >> $securebootFileName
+printf "mokutil --list-new\n\n" >> $securebootFileName
 mokutil --list-new >> $securebootFileName
 
 printf "\n\n\n" >> $securebootFileName
 
-printf "mokutil --list-delete" >> $securebootFileName
+printf "mokutil --list-delete\n\n" >> $securebootFileName
 mokutil --list-delete >> $securebootFileName
 
 printf "\n\n\n" >> $securebootFileName
 
-printf "mokutil --mokx" >> $securebootFileName
+printf "mokutil --mokx\n\n" >> $securebootFileName
 mokutil --mokx >> $securebootFileName
 
 printf "\n\n\n" >> $securebootFileName
