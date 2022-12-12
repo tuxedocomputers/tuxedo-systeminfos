@@ -97,7 +97,12 @@ printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $
 
 ### $infoFileName Section
 
-printf 'uname -a\n\n' >> $infoFileName
+printf "/sys/class/rtc/rtc0/date\n\n" >> $infoFileName
+cat /sys/class/rtc/rtc0/date >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
+printf "uname -a\n\n" >> $infoFileName
 uname -a >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
