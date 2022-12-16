@@ -254,12 +254,17 @@ printf "\n\n\n" >> $infoFileName
 printf "journalctl -k --grep=tpm\n\n" >> $infoFileName
 journalctl -k --grep=tpm >> $infoFileName
 
-if [ -d /sys/class/nvme ]; then
-    printf "\n\n\n" >> $infoFileName
+printf "\n\n\n" >> $infoFileName
 
+if [ -d /sys/class/nvme ]; then
     printf "nvme list\n\n" >> $infoFileName
     nvme list >> $infoFileName
 fi
+
+printf "efibootmgr\n\n" >> $infoFileName
+efibootmgr -v >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
 
 ### $logFileName Section
 
