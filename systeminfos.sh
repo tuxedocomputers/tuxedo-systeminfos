@@ -226,11 +226,11 @@ printf "\n\n\n" >> $infoFileName
 if [ -f /etc/modprobe.d/tuxedo_keyboard.conf ]; then
     printf "tuxedo_keyboard.conf\n\n" >> $infoFileName
     cat /etc/modprobe.d/tuxedo_keyboard.conf >> $infoFileName
-    printf "\n\n\n" >> $logFileName
+    printf "\n\n\n" >> $infoFileName
 
 else
-    printf "TUXEDO Keyboard scheint nicht installiert zu sein" >> $logFileName
-    printf "\n\n\n" >> $logFileName
+    printf "TUXEDO Keyboard scheint nicht installiert zu sein" >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
 
 fi
 
