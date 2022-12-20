@@ -261,10 +261,14 @@ if [ -d /sys/class/nvme ]; then
     nvme list >> $infoFileName
 fi
 
-printf "efibootmgr\n\n" >> $infoFileName
-efibootmgr -v >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
+if [ -d /sys/firmware/efi ]; then
+   printf "efibootmgr\n\n" >> $infoFileName
+   efibootmgr -v >> $infoFileName
+   printf "\n\n\n" >> $infoFileName
+else
+   printf "Es wird Legacy genutzt" >> $infoFileName
+   printf "\n\n\n" >> $infoFileName
+fi
 
 ### $logFileName Section
 
