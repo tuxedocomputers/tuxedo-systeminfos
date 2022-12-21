@@ -281,10 +281,10 @@ systemctl status systemd-modules-load.service >> $logFileName
 
 ### $boardFileName Section
 
-printf "BIOS date and time\n\n" >> $infoFileName
-cat /sys/class/rtc/rtc0/date >> $infoFileName
-printf "\n"  >> $infoFileName
-cat /sys/class/rtc/rtc0/time >> $infoFileName
+printf "BIOS date and time\n\n" >> $boardFileName
+cat /sys/class/rtc/rtc0/date >> $boardFileName
+printf "\n"  >> $boardFileName
+cat /sys/class/rtc/rtc0/time >> $boardFileName
 
 printf "\n\n\n" >> $infoFileName
 
