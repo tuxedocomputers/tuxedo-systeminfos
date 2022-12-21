@@ -12,6 +12,8 @@ firmwareFileName=firmwareoutput.txt
 tccFileName=tccoutput.txt
 modprobeFileName=modprobeoutput.txt
 securebootFileName=securebootoutput.txt
+tomteFileName=tomteoutput.txt
+displayFileName=displayoutput.txt
 started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
@@ -91,20 +93,19 @@ fi
 
 
 printf "\n"
-echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName > /dev/null 2>&1
-echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName > /dev/null 2>&1
-printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName > /dev/null 2>&1
+echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName > /dev/null 2>&1
+echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName > /dev/null 2>&1
+printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName > /dev/null 2>&1
 
 ### $infoFileName Section
 
-printf "BIOS date and time\n\n" >> $infoFileName
-cat /sys/class/rtc/rtc0/date >> $infoFileName
-cat /sys/class/rtc/rtc0/time >> $infoFileName
+printf "uname -a\n\n" >> $infoFileName
+uname -a >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "uname -a\n\n" >> $infoFileName
-uname -a >> $infoFileName
+printf "lsb_release -a\n\n" >> $infoFileName
+lsb_release -a >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
@@ -118,30 +119,15 @@ lscpu -e >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "lsb_release -a\n\n" >> $infoFileName
-lsb_release -a >> $infoFileName
+printf "free -h\n\n" >> $infoFileName
+free -h >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "tuxedo-tomte list\n\n" >> $infoFileName
-tuxedo-tomte list >> $infoFileName
+printf "/sys/power/mem_sleep\n\n" >> $infoFileName
+cat /sys/power/mem_sleep >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
-
-if [ -f /etc/tomte/AUTOMATIC ]; then
-    printf "Tomte wird in den vorgesehenen Standardeinstellungen verwendet\n" >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-elif [ -f /etc/tomte/DONT_CONFIGURE ]; then
-    printf "Tomte ist so konfiguriert, dass nur die als "notwendig" (prerequisite) markierten Module konfiguriert werden\n" >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-elif [ -f /etc/tomte/UPDATES_ONLY ]; then
-    printf "Tomte ist so konfiguriert, dass nur Aktualisierungen ueber Tomte verarbeitet werden\n" >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-else
-    printf "Tomte wird in den Standardeinstellungen verwendet\n" >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-fi
-
 
 printf "lsusb\n\n" >> $infoFileName
 lsusb >> $infoFileName
@@ -158,6 +144,11 @@ egrep -iv "cifs|nfs|davfs|http" /etc/fstab >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
+printf "disk usage (df -h)\n\n" >> $infoFileName
+df -h >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
 printf "xinput\n\n" >> $infoFileName
 xinput >> $infoFileName
 
@@ -168,15 +159,21 @@ cat /etc/default/grub >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "free -h\n\n" >> $infoFileName
-free -h >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
 printf "lsmod\n\n" >> $infoFileName
 lsmod >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
+
+if [ -f /etc/modprobe.d/tuxedo_keyboard.conf ]; then
+    printf "tuxedo_keyboard.conf\n\n" >> $infoFileName
+    cat /etc/modprobe.d/tuxedo_keyboard.conf >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+else
+    printf "TUXEDO Keyboard scheint nicht installiert zu sein" >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+fi
 
 printf "dkms status\n\n" >> $infoFileName
 dkms status >> $infoFileName
@@ -188,28 +185,8 @@ upower -i $(upower -e | grep 'BAT') >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "/sys/power/mem_sleep\n\n" >> $infoFileName
-cat /sys/power/mem_sleep >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
-printf "glxinfo|grep vendor\n\n" >> $infoFileName
-glxinfo|grep vendor >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
 printf "prime-select query\n\n" >> $infoFileName
 prime-select query >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
-printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $infoFileName
-grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
-printf "Display Info colormgr\n\n"
-colormgr get-devices-by-kind display >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
@@ -228,26 +205,8 @@ cat /etc/systemd/system/display-manager.service >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-if [ -f /etc/modprobe.d/tuxedo_keyboard.conf ]; then
-    printf "tuxedo_keyboard.conf\n\n" >> $infoFileName
-    cat /etc/modprobe.d/tuxedo_keyboard.conf >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-else
-    printf "TUXEDO Keyboard scheint nicht installiert zu sein" >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-fi
-
-printf "\n\n\n" >> $infoFileName
-
 printf "xrandr\n\n" >> $infoFileName
 xrandr >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
-printf "disk usage (df -h)\n\n" >> $infoFileName
-df -h >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
@@ -321,6 +280,13 @@ printf "systemctl status systemd-modules-load.service\n\n" >> $logFileName
 systemctl status systemd-modules-load.service >> $logFileName
 
 ### $boardFileName Section
+
+printf "BIOS date and time\n\n" >> $infoFileName
+cat /sys/class/rtc/rtc0/date >> $infoFileName
+printf "\n"  >> $infoFileName
+cat /sys/class/rtc/rtc0/time >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
 
 printf "/sys/class/dmi/id/board_vendor\n\n" >> $boardFileName
 cat /sys/class/dmi/id/board_vendor >> $boardFileName
@@ -759,6 +725,44 @@ mokutil --mokx >> $securebootFileName
 
 printf "\n\n\n" >> $securebootFileName
 
+# $tomteFileName section
+
+printf "tuxedo-tomte list\n\n" >> $tomteFileName
+tuxedo-tomte list >> $tomteFileName
+
+printf "\n\n\n" >> $tomteFileName
+
+if [ -f /etc/tomte/AUTOMATIC ]; then
+    printf "Tomte wird in den vorgesehenen Standardeinstellungen verwendet\n" >> $tomteFileName
+    printf "\n\n\n" >> $tomteFileName
+elif [ -f /etc/tomte/DONT_CONFIGURE ]; then
+    printf "Tomte ist so konfiguriert, dass nur die als "notwendig" (prerequisite) markierten Module konfiguriert werden\n" >> $tomteFileName
+    printf "\n\n\n" >> $tomteFileName
+elif [ -f /etc/tomte/UPDATES_ONLY ]; then
+    printf "Tomte ist so konfiguriert, dass nur Aktualisierungen ueber Tomte verarbeitet werden\n" >> $tomteFileName
+    printf "\n\n\n" >> $tomteFileName
+else
+    printf "Tomte wird in den Standardeinstellungen verwendet\n" >> $tomteFileName
+    printf "\n\n\n" >> $tomteFileName
+fi
+
+# $displayFileName section
+
+printf "glxinfo|grep vendor\n\n" >> $displayFileName
+glxinfo|grep vendor >> $displayFileName
+
+printf "\n\n\n" >> $displayFileName
+
+printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $displayFileName
+grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $displayFileName
+
+printf "\n\n\n" >> $displayFileName
+
+printf "Display Info colormgr\n\n"
+colormgr get-devices-by-kind display >> $displayFileName
+
+printf "\n\n\n" >> $displayFileName
+
 # Rename files
 mv $infoFileName systeminfos-$ticketnumber.txt
 mv $lspciFileName lspci-$ticketnumber.txt
@@ -772,6 +776,8 @@ mv $firmwareFileName firmware-$ticketnumber.txt
 mv $tccFileName tcc-$ticketnumber.txt
 mv $modprobeFileName modprobe-$ticketnumber.txt
 mv $securebootFileName secureboot-$ticketnumber.txt
+mv $tomteFileName tomte-$ticketnumber.txt
+mv $displayFileName display-$ticketnumber.txt
 
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
