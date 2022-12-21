@@ -113,6 +113,11 @@ lscpu >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
+printf "lscpu -e\n\n" >> $infoFileName
+lscpu -e >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
 printf "lsb_release -a\n\n" >> $infoFileName
 lsb_release -a >> $infoFileName
 
