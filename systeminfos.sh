@@ -76,17 +76,17 @@ if [ -z $ticketnumber ]; then
 fi
 
 if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
-    apt-get -y install curl zip nvme-cli > /dev/null 2>&1
+    apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
-    apt-get -y install curl zip nvme-cli > /dev/null 2>&1
+    apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
-    apt-get -y install curl zip nvme-cli > /dev/null 2>&1
+    apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
-    apt-get -y install curl zip nvme-cli > /dev/null 2>&1
+    apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
-    zypper in -y curl zip nvme-cli > /dev/null 2>&1
+    zypper in -y curl zip nvme-cli edid-decode > /dev/null 2>&1
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-    pacman -Sy --noconfirm curl zip nvme-cli > /dev/null 2>&1
+    pacman -Sy --noconfirm curl zip nvme-cli edid-decode > /dev/null 2>&1
 else
     printf "Nicht unterstuetze Distribution! Ueberspringe... / Unsupported Distribution! Skipping... \n"
 fi
@@ -764,6 +764,16 @@ printf "\n\n\n" >> $displayFileName
 
 printf "Display Info colormgr\n\n"
 colormgr get-devices-by-kind display >> $displayFileName
+
+printf "\n\n\n" >> $displayFileName
+
+for f in /sys/class/drm/card*-*/edid; do
+    printf "====================\n" >> $displayFileName
+    printf "Decoding:" $f >> $displayFileName
+    printf "\n" >> $displayFileName
+    cat $f | edid-decode >> $displayFileName
+    printf "====================" >> $displayFileName
+done
 
 printf "\n\n\n" >> $displayFileName
 
