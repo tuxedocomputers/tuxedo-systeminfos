@@ -276,7 +276,7 @@ tail --lines=1000 /var/log/boot.log >> $logFileName
 printf "\n\n\n\n\n" >> $logFileName
 
 printf "/var/log/Xorg.0.log\n\n" >> $logFileName
-tail --lines=1000 /var/log/Xorg.0.log >> $logFileName
+tail --lines=2500 /var/log/Xorg.0.log >> $logFileName
 
 printf "\n\n\n\n\n" >> $logFileName
 
