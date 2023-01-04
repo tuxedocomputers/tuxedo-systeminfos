@@ -768,6 +768,8 @@ colormgr get-devices-by-kind display >> $displayFileName
 printf "\n\n\n" >> $displayFileName
 
 for f in /sys/class/drm/card*-*/edid; do
+    ls -la /sys/class/drm/card*-*/edid
+    printf "\n\n" >> $displayFileName
     printf "====================\n" >> $displayFileName
     printf "Decoding:" $f >> $displayFileName
     printf "\n" >> $displayFileName
