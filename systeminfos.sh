@@ -771,7 +771,7 @@ for f in /sys/class/drm/card*-*/edid; do
     ls -la /sys/class/drm/card*-*/edid
     printf "\n\n" >> $displayFileName
     printf "====================\n" >> $displayFileName
-    printf "Decoding:" $f >> $displayFileName
+    printf "Decoding: %s" $f >> $displayFileName
     printf "\n" >> $displayFileName
     cat $f | edid-decode >> $displayFileName
     printf "====================" >> $displayFileName
