@@ -275,6 +275,17 @@ tail --lines=1000 /var/log/boot.log >> $logFileName
 
 printf "\n\n\n\n\n" >> $logFileName
 
+printf "/var/log/Xorg.0.log\n\n" >> $logFileName
+if [ $(wc --lines /var/log/Xorg.0.log | cut --delimiter=" " --fields=1) -le 2500 ]; then
+    cat /var/log/Xorg.0.log >> $logFileName
+else
+    head --lines=1250 /var/log/Xorg.0.log >> $logFileName
+    echo [...] >> $logFileName
+    tail --lines=1250 /var/log/Xorg.0.log >> $logFileName
+fi
+
+printf "\n\n\n\n\n" >> $logFileName
+
 printf "dmesg\n\n" >> $logFileName
 dmesg >> $logFileName
 
