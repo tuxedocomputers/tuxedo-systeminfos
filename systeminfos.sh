@@ -1,4 +1,7 @@
 #!/bin/sh
+LC_ALL=C
+LANG=C
+LANGUAGE=C
 serverURI=https://systeminfo.tuxedo.de/systeminfo.php
 infoFileName=systeminfos.txt
 lspciFileName=lspcioutput.txt
