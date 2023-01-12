@@ -1,4 +1,7 @@
 #!/bin/sh
+LC_ALL=C
+LANG=C
+LANGUAGE=C
 serverURI=https://systeminfo.tuxedo.de/systeminfo.php
 infoFileName=systeminfos.txt
 lspciFileName=lspcioutput.txt
@@ -837,5 +840,9 @@ else
     printf "We will now evaluate the submitted system information and get back to you. \n"
     printf "Please be patient. \n"
 fi
+
+unset LC_ALL
+unset LANG
+unset LANGUAGE
 
 exit 0;
