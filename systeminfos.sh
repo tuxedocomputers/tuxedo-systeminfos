@@ -841,4 +841,8 @@ else
     printf "Please be patient. \n"
 fi
 
+unset LC_ALL
+unset LANG
+unset LANGUAGE
+
 exit 0;
