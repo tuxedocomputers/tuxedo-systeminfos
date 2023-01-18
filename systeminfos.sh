@@ -440,7 +440,7 @@ printf "\n\n\n" >> $networkFileName
 printf "iwconfig\n\n" >> $networkFileName
 iwconfig >> $networkFileName
 
-if [ -d /sys/class/wwan/wwan0 ]; then
+if [ -f /sys/class/wwan/wwan0 ]; then
     printf "\n\n\n" >> $networkFileName
 
     printf "mmcli\n\n" >> $infoFileName
