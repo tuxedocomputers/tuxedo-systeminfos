@@ -422,11 +422,6 @@ ip addr show >> $networkFileName
 
 printf "\n\n\n" >> $networkFileName
 
-printf "ip link show\n\n" >> $networkFileName
-ip link show >> $networkFileName
-
-printf "\n\n\n" >> $networkFileName
-
 printf "ip route show\n\n" >> $networkFileName
 ip route show >> $networkFileName
 
