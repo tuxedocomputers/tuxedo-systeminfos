@@ -437,7 +437,7 @@ iwconfig >> $networkFileName
 
 printf "\n\n\n" >> $networkFileName
 
-printf "mmcli\n\n" >> $infoFileName
+printf "mmcli\n\n" >> $networkFileName
 mmcli -m 0 | grep -v -e "imei:*" -e "equipment id:*" >> $networkFileName
 
 ### $packagesFileName Section
