@@ -20,24 +20,3 @@ What exactly does the script collect?
 * System log file
 * Audio devices
 
----
-
-Skript von TUXEDO Computers, um die notwendigen Informationen des Systems für den technischen Support zu erhalten. Weitere Informationen finden sie [hier](https://www.tuxedocomputers.com/de/Notebooks-PCs-systeminfossh.tuxedo).
-
-Was genau sammelt das Script?
-
-* Kernelversion
-* USB-Geräte
-* PCI-Geräte
-* Partitionierung
-* Netzwerkkonfiguration
-* Installierte Treiber/Firmware
-* WLAN-Konfiguration
-* Geladene Treiber/Firmware/Module
-* Geblockte Drahtlosgeräte
-* Grub-Bootloader-Konfiguration
-* Logfile des Bootvorgangs
-* Systemnachrichten (dmesg)
-* Mainboardfunktionen
-* Systemlogfile
-* Audio-Geräte
