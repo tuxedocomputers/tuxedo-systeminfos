@@ -240,8 +240,7 @@ fi
 ### $logFileName Section
 
 if [ -f /var/log/tuxedo-install.log ]; then
-    head -n 1 /var/log/tuxedo-install.log >> $logFileName
-    cat /var/log/tuxedo-install.log | grep "Starting FAI execution" >> $logFileName
+    cat /var/log/tuxedo-install.log >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 else
