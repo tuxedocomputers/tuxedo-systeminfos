@@ -138,7 +138,7 @@ lsusb >> $infoFileName
 printf "\n\n\n" >> $infoFileName
 
 printf "lsblk\n\n" >> $infoFileName
-lsblk >> $infoFileName
+lsblk -d -o NAME,SIZE,TYPE,TRAN >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
