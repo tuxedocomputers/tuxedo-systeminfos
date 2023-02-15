@@ -43,5 +43,5 @@ You will only receive official support for TUXEDO OS, Ubuntu and openSUSE from T
 - Tomte configuration
 
 ## What does the script do after collecting?
-- Sends the collected syteminformations to TUXEDO
+- Sends the collected system information to TUXEDO
 - Removes temporary files
