@@ -59,12 +59,12 @@ clear
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
     printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen \n"
-    printf "Die Ticketnummer beginnt mit 990 \n"
+    printf "Die Ticketnummer beginnt mit 990 oder 991 \n"
     printf "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. \n"
     printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine E-Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. \n"
 else
     printf "What is your ticket number? Confirm with [ENTER] \n"
-    printf "The ticket number starts with 990 \n"
+    printf "The ticket number starts with 990 oder 991 \n"
     printf "We cannot proceed your inquire without ticket number! \n"
     printf "To get an ticket number you can contact us by e-mail to tux[at]tuxedocomputers.com \n"
 fi
