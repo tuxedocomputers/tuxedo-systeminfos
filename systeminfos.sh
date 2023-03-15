@@ -80,22 +80,22 @@ fi
 
 if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
     apt-get update && apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait..."
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
     apt-get update && apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait..."
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
     apt-get update && apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait..."
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
     apt-get update && apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait..."
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     zypper in -y curl zip nvme-cli edid-decode > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait..."
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
     pacman -Sy --noconfirm curl zip nvme-cli edid-decode > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait..."
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 else
     printf "Nicht unterstuetze Distribution! Ueberspringe... / Unsupported Distribution! Skipping... \n"
 fi
