@@ -38,7 +38,7 @@ else
     exit 1
 fi
 
-# clear terminal window befor printing messages
+# clear terminal window before printing messages
 clear
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
