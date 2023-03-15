@@ -38,7 +38,7 @@ else
     exit 1
 fi
 
-# clear terminal window befor printing messages
+# clear terminal window before printing messages
 clear
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
@@ -59,13 +59,13 @@ clear
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
     printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen \n"
-    printf "Die Ticketnummer beginnt mit 990 oder 991 \n"
-    printf "Bitte beachten Sie, dass wir ohne Ticketnummer, Ihr Anliegen nicht bearbeiten können. \n"
+    printf "Die Ticketnummer beginnt mit 99 und ist neun Stellen lang \n"
+    printf "Eingesendete Systeminformationen ohne gültige Ticketnummer können nicht bearbeitet werden und werden unbearbeitet geschlossen \n"
     printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine E-Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. \n"
 else
     printf "What is your ticket number? Confirm with [ENTER] \n"
-    printf "The ticket number starts with 990 oder 991 \n"
-    printf "We cannot proceed your inquire without ticket number! \n"
+    printf "The ticket number starts with 99 and is nine digits long \n"
+    printf "Submitted system information without a valid ticket number can't be processed and will be closed unprocessed \n"
     printf "To get an ticket number you can contact us by e-mail to tux[at]tuxedocomputers.com \n"
 fi
 
@@ -79,17 +79,23 @@ if [ -z $ticketnumber ]; then
 fi
 
 if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
-    apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
-    apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
-    apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
-    apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode > /dev/null 2>&1
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     zypper in -y curl zip nvme-cli edid-decode > /dev/null 2>&1
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
     pacman -Sy --noconfirm curl zip nvme-cli edid-decode > /dev/null 2>&1
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 else
     printf "Nicht unterstuetze Distribution! Ueberspringe... / Unsupported Distribution! Skipping... \n"
 fi
