@@ -17,6 +17,7 @@ modprobeFileName=modprobeoutput.txt
 securebootFileName=securebootoutput.txt
 tomteFileName=tomteoutput.txt
 displayFileName=displayoutput.txt
+failogFilename=failogoutput.txt
 started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
@@ -96,9 +97,9 @@ fi
 
 
 printf "\n"
-echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName > /dev/null 2>&1
-echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName > /dev/null 2>&1
-printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName > /dev/null 2>&1
+echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename > /dev/null 2>&1
+echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename > /dev/null 2>&1
+printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename > /dev/null 2>&1
 
 ### $infoFileName Section
 
@@ -240,13 +241,11 @@ fi
 ### $logFileName Section
 
 if [ -f /var/log/tuxedo-install.log ]; then
-    cat /var/log/tuxedo-install.log >> $logFileName
-    printf "\n\n\n" >> $logFileName
+    cat /var/log/tuxedo-install.log >> $failogFilename
 
 else
-    printf "WebFAI Install-Log konnte nicht gefunden werden.\n" >> $logFileName
-    printf "Moeglicherweise handelt es sich um keine WebFAI Installation.\n" >> $logFileName
-    printf "\n\n\n" >> $logFileName
+    printf "WebFAI Install-Log konnte nicht gefunden werden.\n" >> $failogFilename
+    printf "Moeglicherweise handelt es sich um keine WebFAI Installation.\n" >> $failogFilename
 
 fi
 
@@ -807,6 +806,7 @@ mv $modprobeFileName modprobe-$ticketnumber.txt
 mv $securebootFileName secureboot-$ticketnumber.txt
 mv $tomteFileName tomte-$ticketnumber.txt
 mv $displayFileName display-$ticketnumber.txt
+mv $failogFilename failog-$ticketnumber.txt
 
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
