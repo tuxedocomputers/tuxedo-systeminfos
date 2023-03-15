@@ -94,6 +94,9 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     zypper in -y curl zip nvme-cli edid-decode > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
+elif [ "$(. /etc/os-release; echo $NAME)" = "Fedora Linux" ]; then
+    dnf in -y curl zip nvme-cli edid-decode > /dev/null 2>&1
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
     pacman -Sy --noconfirm curl zip nvme-cli edid-decode > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
@@ -622,6 +625,43 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 
     printf "/var/log/zypp/history\n\n" >> $packagesFileName
     cat /var/log/zypp/history >> $packagesFileName
+
+# Fedora
+elif [ "$(. /etc/os-release; echo $NAME)" = "Fedora Linux" ]; then
+
+    printf "/etc/yum.repos.d\n\n" >> $packagesFileName
+    ls -al /etc/yum.repos.d/ >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "dnf sources lists\n\n" >> $packagesFileName
+    cat /etc/yum.repos.d/* >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "rpm -qa\n\n" >> $packagesFileName
+    rpm -qa >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "rpm -qa | grep tuxedo\n\n" >> $packagesFileName
+    rpm -qa | grep tuxedo >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "rpm -qa | grep nvidia\n\n" >> $packagesFileName
+    rpm -qa | grep nvidia >> $packagesFileName
+
+    printf "\n\n\n" >> $packagesFileName
+
+    printf "/var/log/dnf.log\n\n" >> $packagesFileName
+    cat /var/log/dnf.log >> $packagesFileName
+
+    printf "/var/log/dnf.librepo.log\n\n" >> $packagesFileName
+    cat /var/log/dnf.librepo.log >> $packagesFileName
+
+    printf "/var/log/dnf.rpm.log\n\n" >> $packagesFileName
+    cat /var/log/dnf.rpm.log >> $packagesFileName
 
 # Manjaro
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
