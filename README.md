@@ -45,3 +45,10 @@ You will only receive official support for TUXEDO OS, Ubuntu and openSUSE from T
 ## What does the script do after collecting?
 - Sends the collected system information to TUXEDO
 - Removes temporary files
+
+
+### Run systeminfos.sh in debug mode
+*Note:* The debug mode is only for internal testing purposes
+- `sudo --preserve-env=HOME /usr/bin/env`
+- `sudo SYSINFOS_DEBUG=1 sh systeminfos.sh`
+
