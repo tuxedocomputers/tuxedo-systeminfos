@@ -870,6 +870,7 @@ else
     exit 1
 fi
 
+# NOTE: SYSINFOS_DEBUG is only for internal testing purposes.
 if [ $SYSINFOS_DEBUG -eq 1 ]; then
     rm systeminfos-$ticketnumber.zip
     unset LC_ALL
