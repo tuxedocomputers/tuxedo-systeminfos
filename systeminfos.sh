@@ -871,6 +871,7 @@ else
 fi
 
 if [ $SYSINFOS_DEBUG -eq 1 ]; then
+    rm systeminfos-$ticketnumber.zip
     unset LC_ALL
     unset LANG
     unset LANGUAGE
