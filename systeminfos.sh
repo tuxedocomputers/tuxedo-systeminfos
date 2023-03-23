@@ -870,9 +870,15 @@ else
     exit 1
 fi
 
-curl -k -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
-
-rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
+if [ $SYSINFOS_DEBUG -eq 1 ]; then
+    unset LC_ALL
+    unset LANG
+    unset LANGUAGE
+    exit 0;
+else
+    curl -k -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
+    rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
+fi
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
     printf "\n"
