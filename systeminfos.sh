@@ -869,18 +869,23 @@ mv $failogFilename failog-$ticketnumber.txt
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 fi
 
-# Re-Check Internet connection before sending
-printf "\n"
-printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
-wget -q --spider https://www.tuxedocomputers.com
-if [ $? -eq 0 ]; then
-    printf "\e[32mOnline\e[0m\n"
-    printf "\e[37m\e[0m\n"
+# NOTE: SYSINFOS_DEBUG is only for internal testing purposes.
+if [ $SYSINFOS_DEBUG -eq 1 ]; then
+    printf "Running in debug mode\n"
 else
-    printf "\e[31mOffline! Um die Ergebnisse uebermitteln zu koennen ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results! \e[1m\n"
-    printf "\e[37m\e[0m\n"
-    rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
-    exit 1
+    # Re-Check Internet connection before sending
+    printf "\n"
+    printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
+    wget -q --spider https://www.tuxedocomputers.com
+    if [ $? -eq 0 ]; then
+        printf "\e[32mOnline\e[0m\n"
+        printf "\e[37m\e[0m\n"
+    else
+        printf "\e[31mOffline! Um die Ergebnisse uebermitteln zu koennen ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results! \e[1m\n"
+        printf "\e[37m\e[0m\n"
+        rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
+        exit 1
+    fi
 fi
 
 # NOTE: SYSINFOS_DEBUG is only for internal testing purposes.
