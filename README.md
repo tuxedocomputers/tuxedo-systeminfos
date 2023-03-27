@@ -13,6 +13,7 @@ The script uses some distribution specific commands. distribution specific comma
 - elementary OS
 - KDE neon
 - Manjaro
+- Fedora
 
 You will only receive official support for TUXEDO OS, Ubuntu and openSUSE from TUXEDO Computers
 
