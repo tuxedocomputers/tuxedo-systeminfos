@@ -70,12 +70,16 @@ else
     printf "To get an ticket number you can contact us by e-mail to tux[at]tuxedocomputers.com \n"
 fi
 
-if [ -z $ticketnumber ]; then
-    read -p "Ticket#: " ticketnumber
+if [ $SYSINFOS_DEBUG -eq 1 ]; then
+    printf "Running in debug mode\n"
+else
     if [ -z $ticketnumber ]; then
-        printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticker number given. Quitting. \e[1m\n"
-        printf "\e[37m\e[0m\n"
-        exit 1
+        read -p "Ticket#: " ticketnumber
+        if [ -z $ticketnumber ]; then
+            printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticker number given. Quitting. \e[1m\n"
+            printf "\e[37m\e[0m\n"
+            exit 1
+        fi
     fi
 fi
 
@@ -106,7 +110,11 @@ fi
 
 
 printf "\n"
-echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename > /dev/null 2>&1
+if [ $SYSINFOS_DEBUG -eq 1 ]; then
+    printf "Running in debug mode\n"
+else
+    echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename > /dev/null 2>&1
+fi
 echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename > /dev/null 2>&1
 printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename > /dev/null 2>&1
 
