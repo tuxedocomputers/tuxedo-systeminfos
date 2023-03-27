@@ -837,6 +837,10 @@ done
 
 printf "\n\n\n" >> $displayFileName
 
+# NOTE: SYSINFOS_DEBUG is only for internal testing purposes.
+if [ $SYSINFOS_DEBUG -eq 1 ]; then
+    printf "Running in debug mode\n"
+else
 # Rename files
 mv $infoFileName systeminfos-$ticketnumber.txt
 mv $lspciFileName lspci-$ticketnumber.txt
@@ -855,6 +859,7 @@ mv $displayFileName display-$ticketnumber.txt
 mv $failogFilename failog-$ticketnumber.txt
 
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
+fi
 
 # Re-Check Internet connection before sending
 printf "\n"
@@ -872,7 +877,6 @@ fi
 
 # NOTE: SYSINFOS_DEBUG is only for internal testing purposes.
 if [ $SYSINFOS_DEBUG -eq 1 ]; then
-    rm systeminfos-$ticketnumber.zip
     unset LC_ALL
     unset LANG
     unset LANGUAGE
