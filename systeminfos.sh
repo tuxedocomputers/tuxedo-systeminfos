@@ -27,52 +27,53 @@ if [ "$(id -u)" -ne 0 ]; then
     exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh '$(basename $0)' $1"
 fi
 
-# Check Internet connection
-printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
-wget -q --spider https://www.tuxedocomputers.com
-if [ $? -eq 0 ]; then
-    printf "\e[32mOnline\e[0m\n"
-    printf "\e[37m\e[0m\n"
-else
-    printf "\e[31mOffline! Um das Skript ausfuehren zu koennen ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script! \e[1m\n"
-    printf "\e[37m\e[0m\n"
-    exit 1
-fi
-
-# clear terminal window before printing messages
-clear
-
-if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
-    printf "Das Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! \n"
-    printf "Es werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. \n"
-    printf "Bitte beachten sie dass sie nur für TUXEDO OS, Ubuntu und openSUSE Support von TUXEDO Computers erhalten. \n"
-    printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren. \n"
-else
-    printf "The script does not collect any personal data and no access data! \n"
-    printf "Only information about your hardware and software configuration is collected. \n"
-    printf "Please note that you will only receive support for TUXEDO OS, Ubuntu and openSUSE from TUXEDO Computers. \n"
-    printf "You can ignore any error messages that may appear. \n"
-fi
-
-# 5 seconds before next textbox. Clear screen again before next textbox appears
-sleep 5
-clear
-
-if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
-    printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen \n"
-    printf "Die Ticketnummer beginnt mit 99 und ist neun Stellen lang \n"
-    printf "Eingesendete Systeminformationen ohne gültige Ticketnummer können nicht bearbeitet werden und werden unbearbeitet geschlossen \n"
-    printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine E-Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. \n"
-else
-    printf "What is your ticket number? Confirm with [ENTER] \n"
-    printf "The ticket number starts with 99 and is nine digits long \n"
-    printf "Submitted system information without a valid ticket number can't be processed and will be closed unprocessed \n"
-    printf "To get an ticket number you can contact us by e-mail to tux[at]tuxedocomputers.com \n"
-fi
-
+# NOTE: SYSINFOS_DEBUG is only for internal testing purposes.
 if [ $SYSINFOS_DEBUG -eq 1 ]; then
     printf "Running in debug mode\n"
 else
+    # Check Internet connection
+    printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
+    wget -q --spider https://www.tuxedocomputers.com
+    if [ $? -eq 0 ]; then
+        printf "\e[32mOnline\e[0m\n"
+        printf "\e[37m\e[0m\n"
+    else
+        printf "\e[31mOffline! Um das Skript ausfuehren zu koennen ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script! \e[1m\n"
+        printf "\e[37m\e[0m\n"
+        exit 1
+    fi
+
+    # clear terminal window before printing messages
+    clear
+
+    if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+        printf "Das Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! \n"
+        printf "Es werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. \n"
+        printf "Bitte beachten sie dass sie nur für TUXEDO OS, Ubuntu und openSUSE Support von TUXEDO Computers erhalten. \n"
+        printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren. \n"
+    else
+        printf "The script does not collect any personal data and no access data! \n"
+        printf "Only information about your hardware and software configuration is collected. \n"
+        printf "Please note that you will only receive support for TUXEDO OS, Ubuntu and openSUSE from TUXEDO Computers. \n"
+        printf "You can ignore any error messages that may appear. \n"
+    fi
+
+    # 5 seconds before next textbox. Clear screen again before next textbox appears
+    sleep 5
+    clear
+
+    if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+        printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen \n"
+        printf "Die Ticketnummer beginnt mit 99 und ist neun Stellen lang \n"
+        printf "Eingesendete Systeminformationen ohne gültige Ticketnummer können nicht bearbeitet werden und werden unbearbeitet geschlossen \n"
+        printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine E-Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. \n"
+    else
+        printf "What is your ticket number? Confirm with [ENTER] \n"
+        printf "The ticket number starts with 99 and is nine digits long \n"
+        printf "Submitted system information without a valid ticket number can't be processed and will be closed unprocessed \n"
+        printf "To get an ticket number you can contact us by e-mail to tux[at]tuxedocomputers.com \n"
+    fi
+
     if [ -z $ticketnumber ]; then
         read -p "Ticket#: " ticketnumber
         if [ -z $ticketnumber ]; then
