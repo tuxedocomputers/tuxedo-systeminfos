@@ -21,6 +21,12 @@ failogFilename=failogoutput.txt
 started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
+if [ $SYSINFOS_DEBUG -eq 1 ]; then
+    printf "Running in debug mode\n"
+else
+    SYSINFOS_DEBUG=0
+fi
+
 if [ "$(id -u)" -ne 0 ]; then
     printf "\e[31msysteminfos.sh muss mit root Rechten ausgefuehrt werden! / systeminfos.sh must be executed with root privileges! \e[1m\n"
     printf "\e[37m\e[0m\n"
