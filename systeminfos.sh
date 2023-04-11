@@ -83,7 +83,7 @@ else
     if [ -z $ticketnumber ]; then
         read -p "Ticket#: " ticketnumber
         if [ -z $ticketnumber ]; then
-            printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticker number given. Quitting. \e[1m\n"
+            printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticket number given. Quitting. \e[1m\n"
             printf "\e[37m\e[0m\n"
             exit 1
         fi
