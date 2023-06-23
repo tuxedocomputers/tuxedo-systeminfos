@@ -328,56 +328,10 @@ cat /sys/class/rtc/rtc0/time >> $boardFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "/sys/class/dmi/id/board_vendor\n\n" >> $boardFileName
-cat /sys/class/dmi/id/board_vendor >> $boardFileName
+printf "find /sys/class/dmi/id/ -maxdepth 1 -type f -print -exec cat {}  \; -exec echo \;\n\n" >> $boardFileName
+find /sys/class/dmi/id/ -maxdepth 1 -type f -print -exec cat {}  \; -exec echo \; >> $boardFileName
 
 printf "\n\n\n" >> $boardFileName
-
-printf "/sys/class/dmi/id/chassis_vendor\n\n" >> $boardFileName
-cat /sys/class/dmi/id/chassis_vendor >> $boardFileName
-
-printf "\n\n\n" >> $boardFileName
-
-printf "/sys/class/dmi/id/sys_vendor\n\n" >> $boardFileName
-cat /sys/class/dmi/id/sys_vendor >> $boardFileName
-
-printf "\n\n\n" >> $boardFileName
-
-printf "/sys/class/dmi/id/board_name\n\n" >> $boardFileName
-cat /sys/class/dmi/id/board_name >> $boardFileName
-
-printf "\n\n\n" >> $boardFileName
-
-printf "/sys/class/dmi/id/product_name\n\n" >> $boardFileName
-cat /sys/class/dmi/id/product_name >> $boardFileName
-
-printf "\n\n\n" >> $boardFileName
-
-printf "/sys/class/dmi/id/product_sku\n\n" >> $boardFileName
-cat /sys/class/dmi/id/product_sku >> $boardFileName
-
-printf "\n\n\n" >> $boardFileName
-
-printf "/sys/class/dmi/id/board_serial\n\n" >> $boardFileName
-cat /sys/class/dmi/id/board_serial >> $boardFileName
-
-printf "\n\n\n" >> $boardFileName
-
-printf "/sys/class/dmi/id/bios_version\n\n" >> $boardFileName
-cat /sys/class/dmi/id/bios_version >> $boardFileName
-
-printf "\n\n\n" >> $boardFileName
-
-if [ -f /sys/class/dmi/id/ec_firmware_release ]; then
-    printf "/sys/class/dmi/id/ec_firmware_release\n\n" >> $boardFileName
-    cat /sys/class/dmi/id/ec_firmware_release >> $boardFileName
-
-    printf "\n\n\n" >> $boardFileName
-else
-    printf "EC-Version kann nicht ausgelesen werden \n" >> $boardFileName
-    printf "\n\n\n" >> $boardFileName
-
-fi
 
 printf "dmidecode -t memory\n\n" >> $boardFileName
 dmidecode -t memory >> $boardFileName
