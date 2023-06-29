@@ -669,6 +669,16 @@ else
     printf "Unsupported Distribution! Skipping... \n\n\n"
 fi
 
+### flatpakpackagesFileName
+
+printf "flatpak list --app --show-details\n\n" >> $flatpakpackagesFileName
+flatpak list --app --show-details >> $flatpakpackagesFileName
+
+### snappakpackagesFileName
+
+printf "snap list\n\n" >> $snappakpackagesFileName
+snap list >> $snappakpackagesFileName
+
 ### $udevFileName Section
 
 printf "/etc/udev/rules.d/\n\n" >> $udevFileName
