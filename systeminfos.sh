@@ -9,6 +9,7 @@ udevFileName=udevoutput.txt
 logFileName=logoutput.txt
 normalpackagesFileName=normalpackagesoutput.txt
 flatpakpackagesFileName=flatpakpackagesoutput.txt
+snappackagesFileName=snappakpackagesoutput.txt
 audioFileName=audiooutput.txt
 networkFileName=networkoutput.txt
 boardFileName=boardoutput.txt
@@ -121,10 +122,10 @@ printf "\n"
 if [ $SYSINFOS_DEBUG -eq 1 ]; then
     printf "Running in debug mode\n"
 else
-    echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName > /dev/null 2>&1
+    echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
 fi
-echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName > /dev/null 2>&1
-printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName > /dev/null 2>&1
+echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
+printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
 
 ### $infoFileName Section
 
@@ -824,6 +825,7 @@ mv $udevFileName udev-$ticketnumber.txt
 mv $logFileName log-$ticketnumber.txt
 mv $normalpackagesFileName packages-normal-$ticketnumber.txt
 mv $flatpakpackagesFileName packages-flatpak-$ticketnumber.txt
+mv $snappackagesFileName packages-snap-$ticketnumber.txt
 mv $audioFileName audio-$ticketnumber.txt
 mv $networkFileName network-$ticketnumber.txt
 mv $boardFileName boardinfo-$ticketnumber.txt
