@@ -9,7 +9,7 @@ udevFileName=udevoutput.txt
 logFileName=logoutput.txt
 normalpackagesFileName=normalpackagesoutput.txt
 flatpakpackagesFileName=flatpakpackagesoutput.txt
-snappackagesFileName=snappakpackagesoutput.txt
+snappackagesFileName=snappackagesoutput.txt
 audioFileName=audiooutput.txt
 networkFileName=networkoutput.txt
 boardFileName=boardoutput.txt
@@ -674,10 +674,10 @@ fi
 printf "flatpak list --app --show-details\n\n" >> $flatpakpackagesFileName
 flatpak list --app --show-details >> $flatpakpackagesFileName
 
-### snappakpackagesFileName
+### snappackagesFileName
 
-printf "snap list\n\n" >> $snappakpackagesFileName
-snap list >> $snappakpackagesFileName
+printf "snap list\n\n" >> $snappackagesFileName
+snap list >> $snappackagesFileName
 
 ### $udevFileName Section
 
