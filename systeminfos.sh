@@ -672,7 +672,7 @@ fi
 ### flatpakpackagesFileName
 
 printf "flatpak list --app --show-details\n\n" >> $flatpakpackagesFileName
-flatpak list --app --show-details >> $flatpakpackagesFileName
+flatpak list >> $flatpakpackagesFileName
 
 ### snappackagesFileName
 
