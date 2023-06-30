@@ -7,7 +7,9 @@ infoFileName=systeminfos.txt
 lspciFileName=lspcioutput.txt
 udevFileName=udevoutput.txt
 logFileName=logoutput.txt
-packagesFileName=packagesoutput.txt
+normalpackagesFileName=normalpackagesoutput.txt
+flatpakpackagesFileName=flatpakpackagesoutput.txt
+snappackagesFileName=snappackagesoutput.txt
 audioFileName=audiooutput.txt
 networkFileName=networkoutput.txt
 boardFileName=boardoutput.txt
@@ -120,10 +122,10 @@ printf "\n"
 if [ $SYSINFOS_DEBUG -eq 1 ]; then
     printf "Running in debug mode\n"
 else
-    echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename > /dev/null 2>&1
+    echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
 fi
-echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename > /dev/null 2>&1
-printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $packagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename > /dev/null 2>&1
+echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
+printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
 
 ### $infoFileName Section
 
@@ -422,250 +424,260 @@ printf "\n\n\n" >> $networkFileName
 printf "mmcli\n\n" >> $networkFileName
 mmcli -m 0 | grep -v -e "imei:*" -e "equipment id:*" >> $networkFileName
 
-### $packagesFileName Section
+### $normalpackagesFileName Section
 
-printf "\n\n\n" >> $packagesFileName
+printf "\n\n\n" >> $normalpackagesFileName
 
 # TUXEDO_OS
 if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
 
-    printf "sources.list\n\n" >> $packagesFileName
-    cat /etc/apt/sources.list >> $packagesFileName
+    printf "sources.list\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/etc/apt/sources.list.d\n\n" >> $packagesFileName
-    ls /etc/apt/sources.list.d >> $packagesFileName
+    printf "/etc/apt/sources.list.d\n\n" >> $normalpackagesFileName
+    ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/etc/apt/sources.list.d ppa\n\n" >> $packagesFileName
-    cat /etc/apt/sources.list.d/* >> $packagesFileName
+    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l\n\n" >> $packagesFileName
-    dpkg -l >> $packagesFileName
+    printf "dpkg -l\n\n" >> $normalpackagesFileName
+    dpkg -l >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l | grep tuxedo\n\n" >> $packagesFileName
-    dpkg -l|grep tuxedo >> $packagesFileName
+    printf "dpkg -l | grep tuxedo\n\n" >> $normalpackagesFileName
+    dpkg -l|grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l | grep nvidia\n\n" >> $packagesFileName
-    dpkg -l|grep nvidia >> $packagesFileName
+    printf "dpkg -l | grep nvidia\n\n" >> $normalpackagesFileName
+    dpkg -l|grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/var/log/apt/history.log\n\n" >> $packagesFileName
-    cat /var/log/apt/history.log >> $packagesFileName
+    printf "/var/log/apt/history.log\n\n" >> $normalpackagesFileName
+    cat /var/log/apt/history.log >> $normalpackagesFileName
 
 # Ubuntu
 elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
 
-    printf "sources.list\n\n" >> $packagesFileName
-    cat /etc/apt/sources.list >> $packagesFileName
+    printf "sources.list\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/etc/apt/sources.list.d\n\n" >> $packagesFileName
-    ls /etc/apt/sources.list.d >> $packagesFileName
+    printf "/etc/apt/sources.list.d\n\n" >> $normalpackagesFileName
+    ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/etc/apt/sources.list.d ppa\n\n" >> $packagesFileName
-    cat /etc/apt/sources.list.d/* >> $packagesFileName
+    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l\n\n" >> $packagesFileName
-    dpkg -l >> $packagesFileName
+    printf "dpkg -l\n\n" >> $normalpackagesFileName
+    dpkg -l >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l | grep tuxedo\n\n" >> $packagesFileName
-    dpkg -l|grep tuxedo >> $packagesFileName
+    printf "dpkg -l | grep tuxedo\n\n" >> $normalpackagesFileName
+    dpkg -l|grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l | grep nvidia\n\n" >> $packagesFileName
-    dpkg -l|grep nvidia >> $packagesFileName
+    printf "dpkg -l | grep nvidia\n\n" >> $normalpackagesFileName
+    dpkg -l|grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/var/log/apt/history.log\n\n" >> $packagesFileName
-    cat /var/log/apt/history.log >> $packagesFileName
+    printf "/var/log/apt/history.log\n\n" >> $normalpackagesFileName
+    cat /var/log/apt/history.log >> $normalpackagesFileName
 
 # elementary OS
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
 
-    printf "sources.list\n\n" >> $packagesFileName
-    cat /etc/apt/sources.list >> $packagesFileName
+    printf "sources.list\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/etc/apt/sources.list.d\n\n" >> $packagesFileName
-    ls /etc/apt/sources.list.d >> $packagesFileName
+    printf "/etc/apt/sources.list.d\n\n" >> $normalpackagesFileName
+    ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/etc/apt/sources.list.d ppa\n\n" >> $packagesFileName
-    cat /etc/apt/sources.list.d/* >> $packagesFileName
+    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l\n\n" >> $packagesFileName
-    dpkg -l >> $packagesFileName
+    printf "dpkg -l\n\n" >> $normalpackagesFileName
+    dpkg -l >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l | grep tuxedo\n\n" >> $packagesFileName
-    dpkg -l|grep tuxedo >> $packagesFileName
+    printf "dpkg -l | grep tuxedo\n\n" >> $normalpackagesFileName
+    dpkg -l|grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l | grep nvidia\n\n" >> $packagesFileName
-    dpkg -l|grep nvidia >> $packagesFileName
+    printf "dpkg -l | grep nvidia\n\n" >> $normalpackagesFileName
+    dpkg -l|grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/var/log/apt/history.log\n\n" >> $packagesFileName
-    cat /var/log/apt/history.log >> $packagesFileName
+    printf "/var/log/apt/history.log\n\n" >> $normalpackagesFileName
+    cat /var/log/apt/history.log >> $normalpackagesFileName
 
 # KDE neon
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
 
-    printf "sources.list\n\n" >> $packagesFileName
-    cat /etc/apt/sources.list >> $packagesFileName
+    printf "sources.list\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/etc/apt/sources.list.d\n\n" >> $packagesFileName
-    ls /etc/apt/sources.list.d >> $packagesFileName
+    printf "/etc/apt/sources.list.d\n\n" >> $normalpackagesFileName
+    ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/etc/apt/sources.list.d ppa\n\n" >> $packagesFileName
-    cat /etc/apt/sources.list.d/* >> $packagesFileName
+    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l\n\n" >> $packagesFileName
-    dpkg -l >> $packagesFileName
+    printf "dpkg -l\n\n" >> $normalpackagesFileName
+    dpkg -l >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l | grep tuxedo\n\n" >> $packagesFileName
-    dpkg -l|grep tuxedo >> $packagesFileName
+    printf "dpkg -l | grep tuxedo\n\n" >> $normalpackagesFileName
+    dpkg -l|grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dpkg -l | grep nvidia\n\n" >> $packagesFileName
-    dpkg -l|grep nvidia >> $packagesFileName
+    printf "dpkg -l | grep nvidia\n\n" >> $normalpackagesFileName
+    dpkg -l|grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/var/log/apt/history.log\n\n" >> $packagesFileName
-    cat /var/log/apt/history.log >> $packagesFileName
+    printf "/var/log/apt/history.log\n\n" >> $normalpackagesFileName
+    cat /var/log/apt/history.log >> $normalpackagesFileName
 
 # openSUSE
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 
-    printf "/etc/zypp/repos.d\n\n" >> $packagesFileName
-    ls -al /etc/zypp/repos.d/ >> $packagesFileName
+    printf "/etc/zypp/repos.d\n\n" >> $normalpackagesFileName
+    ls -al /etc/zypp/repos.d/ >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "zypper sources lists\n\n" >> $packagesFileName
-    cat /etc/zypp/repos.d/* >> $packagesFileName
+    printf "zypper sources lists\n\n" >> $normalpackagesFileName
+    cat /etc/zypp/repos.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "rpm -qa\n\n" >> $packagesFileName
-    rpm -qa >> $packagesFileName
+    printf "rpm -qa\n\n" >> $normalpackagesFileName
+    rpm -qa >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "rpm -qa | grep tuxedo\n\n" >> $packagesFileName
-    rpm -qa | grep tuxedo >> $packagesFileName
+    printf "rpm -qa | grep tuxedo\n\n" >> $normalpackagesFileName
+    rpm -qa | grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "rpm -qa | grep nvidia\n\n" >> $packagesFileName
-    rpm -qa | grep nvidia >> $packagesFileName
+    printf "rpm -qa | grep nvidia\n\n" >> $normalpackagesFileName
+    rpm -qa | grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/var/log/zypp/history\n\n" >> $packagesFileName
-    cat /var/log/zypp/history >> $packagesFileName
+    printf "/var/log/zypp/history\n\n" >> $normalpackagesFileName
+    cat /var/log/zypp/history >> $normalpackagesFileName
 
 # Fedora
 elif [ "$(. /etc/os-release; echo $NAME)" = "Fedora Linux" ]; then
 
-    printf "/etc/yum.repos.d\n\n" >> $packagesFileName
-    ls -al /etc/yum.repos.d/ >> $packagesFileName
+    printf "/etc/yum.repos.d\n\n" >> $normalpackagesFileName
+    ls -al /etc/yum.repos.d/ >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "dnf sources lists\n\n" >> $packagesFileName
-    cat /etc/yum.repos.d/* >> $packagesFileName
+    printf "dnf sources lists\n\n" >> $normalpackagesFileName
+    cat /etc/yum.repos.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "rpm -qa\n\n" >> $packagesFileName
-    rpm -qa >> $packagesFileName
+    printf "rpm -qa\n\n" >> $normalpackagesFileName
+    rpm -qa >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "rpm -qa | grep tuxedo\n\n" >> $packagesFileName
-    rpm -qa | grep tuxedo >> $packagesFileName
+    printf "rpm -qa | grep tuxedo\n\n" >> $normalpackagesFileName
+    rpm -qa | grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "rpm -qa | grep nvidia\n\n" >> $packagesFileName
-    rpm -qa | grep nvidia >> $packagesFileName
+    printf "rpm -qa | grep nvidia\n\n" >> $normalpackagesFileName
+    rpm -qa | grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/var/log/dnf.log\n\n" >> $packagesFileName
-    cat /var/log/dnf.log >> $packagesFileName
+    printf "/var/log/dnf.log\n\n" >> $normalpackagesFileName
+    cat /var/log/dnf.log >> $normalpackagesFileName
 
-    printf "/var/log/dnf.librepo.log\n\n" >> $packagesFileName
-    cat /var/log/dnf.librepo.log >> $packagesFileName
+    printf "/var/log/dnf.librepo.log\n\n" >> $normalpackagesFileName
+    cat /var/log/dnf.librepo.log >> $normalpackagesFileName
 
-    printf "/var/log/dnf.rpm.log\n\n" >> $packagesFileName
-    cat /var/log/dnf.rpm.log >> $packagesFileName
+    printf "/var/log/dnf.rpm.log\n\n" >> $normalpackagesFileName
+    cat /var/log/dnf.rpm.log >> $normalpackagesFileName
 
 # Manjaro
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
 
-    printf "cat /etc/pacman.conf" >> $packagesFileName
-    cat /etc/pacman.conf >> $packagesFileName
+    printf "cat /etc/pacman.conf" >> $normalpackagesFileName
+    cat /etc/pacman.conf >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "pacman -Qqe" >> $packagesFileName
-    pacman -Qqe >> $packagesFileName
+    printf "pacman -Qqe" >> $normalpackagesFileName
+    pacman -Qqe >> $normalpackagesFileName
 
-    printf "pacman -Qqe | grep tuxedo" >> $packagesFileName
-    pacman -Qqe | grep tuxedo >> $packagesFileName
+    printf "pacman -Qqe | grep tuxedo" >> $normalpackagesFileName
+    pacman -Qqe | grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "pacman Repo's" >> $packagesFileName
-    cat /etc/pacman.conf | grep -E 'core|extra|community|multilib' >> $packagesFileName
+    printf "pacman Repo's" >> $normalpackagesFileName
+    cat /etc/pacman.conf | grep -E 'core|extra|community|multilib' >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $packagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
-    cat /var/log/pacman.log >> $packagesFileName
-    printf "\n\n\n" >> $packagesFileName
+    cat /var/log/pacman.log >> $normalpackagesFileName
+    printf "\n\n\n" >> $normalpackagesFileName
 
 else
     printf "Nicht unterstuetze Distribution! Ueberspringe...\n"
     printf "Unsupported Distribution! Skipping... \n\n\n"
 fi
+
+### flatpakpackagesFileName
+
+printf "flatpak list --app --show-details\n\n" >> $flatpakpackagesFileName
+flatpak list >> $flatpakpackagesFileName
+
+### snappackagesFileName
+
+printf "snap list\n\n" >> $snappackagesFileName
+snap list >> $snappackagesFileName
 
 ### $udevFileName Section
 
@@ -821,7 +833,9 @@ mv $infoFileName systeminfos-$ticketnumber.txt
 mv $lspciFileName lspci-$ticketnumber.txt
 mv $udevFileName udev-$ticketnumber.txt
 mv $logFileName log-$ticketnumber.txt
-mv $packagesFileName packages-$ticketnumber.txt
+mv $normalpackagesFileName packages-normal-$ticketnumber.txt
+mv $flatpakpackagesFileName packages-flatpak-$ticketnumber.txt
+mv $snappackagesFileName packages-snap-$ticketnumber.txt
 mv $audioFileName audio-$ticketnumber.txt
 mv $networkFileName network-$ticketnumber.txt
 mv $boardFileName boardinfo-$ticketnumber.txt
