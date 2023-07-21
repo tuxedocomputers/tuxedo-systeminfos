@@ -104,6 +104,9 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
     apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
+elif [ "$(. /etc/os-release; echo $NAME)" = "Linux Mint" ]; then
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr > /dev/null 2>&1
+    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     zypper in -y curl zip nvme-cli edid-decode efibootmgr > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
@@ -571,6 +574,43 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
 
     printf "/var/log/apt/history.log\n\n" >> $normalpackagesFileName
     cat /var/log/apt/history.log >> $normalpackagesFileName
+
+# Linux Mint
+elif [ "$(. /etc/os-release; echo $NAME)" = "Linux Mint" ]; then
+
+    printf "sources.list\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list >> $normalpackagesFileName
+
+    printf "\n\n\n" >> $normalpackagesFileName
+
+    printf "/etc/apt/sources.list.d\n\n" >> $normalpackagesFileName
+    ls /etc/apt/sources.list.d >> $normalpackagesFileName
+
+    printf "\n\n\n" >> $normalpackagesFileName
+
+    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
+
+    printf "\n\n\n" >> $normalpackagesFileName
+
+    printf "dpkg -l\n\n" >> $normalpackagesFileName
+    dpkg -l >> $normalpackagesFileName
+
+    printf "\n\n\n" >> $normalpackagesFileName
+
+    printf "dpkg -l | grep tuxedo\n\n" >> $normalpackagesFileName
+    dpkg -l|grep tuxedo >> $normalpackagesFileName
+
+    printf "\n\n\n" >> $normalpackagesFileName
+
+    printf "dpkg -l | grep nvidia\n\n" >> $normalpackagesFileName
+    dpkg -l|grep nvidia >> $normalpackagesFileName
+
+    printf "\n\n\n" >> $normalpackagesFileName
+
+    printf "/var/log/apt/history.log\n\n" >> $normalpackagesFileName
+    cat /var/log/apt/history.log >> $normalpackagesFileName
+
 
 # openSUSE
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
