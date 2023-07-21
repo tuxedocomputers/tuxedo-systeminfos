@@ -902,7 +902,7 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
     apt-get -y purge nvme-cli edid-decode > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Linux Mint" ]; then
-    aapt-get -y purge nvme-cli edid-decode > /dev/null 2>&1
+    apt-get -y purge nvme-cli edid-decode > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     zypper remove -y nvme-cli edid-decode > /dev/null 2>&1
