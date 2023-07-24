@@ -942,7 +942,7 @@ if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
     apt-get -y purge nvme-cli edid-decode lm-sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
-    aapt-get -y purge nvme-cli edid-decode lm-sensors > /dev/null 2>&1
+    apt-get -y purge nvme-cli edid-decode lm-sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
     apt-get -y purge nvme-cli edid-decode lm-sensors > /dev/null 2>&1
