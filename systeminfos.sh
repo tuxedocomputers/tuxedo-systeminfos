@@ -93,28 +93,28 @@ else
 fi
 
 if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Linux Mint" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
-    zypper in -y curl zip nvme-cli edid-decode efibootmgr > /dev/null 2>&1
+    zypper in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Fedora Linux" ]; then
-    dnf in -y curl zip nvme-cli edid-decode efibootmgr > /dev/null 2>&1
+    dnf in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-    pacman -Sy --noconfirm curl zip nvme-cli edid-decode efibootmgr > /dev/null 2>&1
+    pacman -Sy --noconfirm curl zip nvme-cli edid-decode efibootmgr lm_sensors > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 else
     printf "Nicht unterstuetze Distribution! Ueberspringe... / Unsupported Distribution! Skipping... \n"
@@ -262,6 +262,7 @@ printf "\n\n\n" >> $infoFileName
 if [ -d /sys/class/nvme ]; then
     printf "nvme list\n\n" >> $infoFileName
     nvme list >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
 fi
 
 if [ -d /sys/firmware/efi ]; then
@@ -272,6 +273,11 @@ else
    printf "Es wird Legacy genutzt" >> $infoFileName
    printf "\n\n\n" >> $infoFileName
 fi
+
+printf "lm-sensors\n\n" >> $infoFileName
+sensors >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
 
 ### $logFileName Section
 
@@ -933,25 +939,25 @@ else
 fi
 
 if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
-    apt-get -y purge nvme-cli edid-decode > /dev/null 2>&1
+    apt-get -y purge nvme-cli edid-decode lm-sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
-    aapt-get -y purge nvme-cli edid-decode > /dev/null 2>&1
+    apt-get -y purge nvme-cli edid-decode lm-sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
-    apt-get -y purge nvme-cli edid-decode > /dev/null 2>&1
+    apt-get -y purge nvme-cli edid-decode lm-sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Linux Mint" ]; then
-    apt-get -y purge nvme-cli edid-decode > /dev/null 2>&1
+    apt-get -y purge nvme-cli edid-decode lm-sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
-    zypper remove -y nvme-cli edid-decode > /dev/null 2>&1
+    zypper remove -y nvme-cli edid-decode lm_sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Fedora Linux" ]; then
-    dnf remove -y nvme-cli edid-decode > /dev/null 2>&1
+    dnf remove -y nvme-cli edid-decode lm_sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 elif [ "$(. Deinstalliere; echo $NAME)" = "Manjaro Linux" ]; then
-    pacman -R --noconfirm nvme-cli edid-decode > /dev/null 2>&1
+    pacman -R --noconfirm nvme-cli edid-decode lm_sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 else
     printf "Nicht unterstuetze Distribution! Ueberspringe... / Unsupported Distribution! Skipping... \n"
