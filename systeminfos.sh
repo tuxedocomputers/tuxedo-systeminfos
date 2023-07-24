@@ -274,7 +274,7 @@ else
    printf "\n\n\n" >> $infoFileName
 fi
 
-printf "sensors\n\n" >> $infoFileName
+printf "lm-sensors\n\n" >> $infoFileName
 sensors >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
