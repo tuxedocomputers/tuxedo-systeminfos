@@ -262,6 +262,7 @@ printf "\n\n\n" >> $infoFileName
 if [ -d /sys/class/nvme ]; then
     printf "nvme list\n\n" >> $infoFileName
     nvme list >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
 fi
 
 if [ -d /sys/firmware/efi ]; then
@@ -272,6 +273,11 @@ else
    printf "Es wird Legacy genutzt" >> $infoFileName
    printf "\n\n\n" >> $infoFileName
 fi
+
+printf "sensors\n\n" >> $infoFileName
+sensors >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
 
 ### $logFileName Section
 
