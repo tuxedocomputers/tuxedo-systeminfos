@@ -956,7 +956,7 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 elif [ "$(. /etc/os-release; echo $NAME)" = "Fedora Linux" ]; then
     dnf remove -y nvme-cli edid-decode lm_sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
-elif [ "$(. Deinstalliere; echo $NAME)" = "Manjaro Linux" ]; then
+elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
     pacman -R --noconfirm nvme-cli edid-decode lm_sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 else
