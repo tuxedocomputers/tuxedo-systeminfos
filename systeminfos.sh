@@ -279,6 +279,28 @@ sensors >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
+if [ -f /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile ]; then
+    printf "charging_profile\n\n" >> $infoFileName
+    cat /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+else
+    printf "Modell unterstuetzt kein charging_profile" >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+fi
+
+if [ -f /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio ]; then
+    printf "charging_prio\n\n" >> $infoFileName
+    cat /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+else
+    printf "Modell unterstuetzt kein charging_prio" >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+fi
+
 ### $logFileName Section
 
 if [ -f /var/log/tuxedo-install.log ]; then
