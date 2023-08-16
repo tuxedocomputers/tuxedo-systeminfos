@@ -47,6 +47,8 @@ else
         printf "\e[37m\e[0m\n"
     else
         printf "\e[31mOffline! Um das Skript ausfuehren zu koennen ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script! \e[1m\n"
+        printf "Sollten Sie sich in einem Firmennetzwerk befinden, führen Sie das Skript bitte außerhalb des Firmennetzwerkes erneut aus. / If you are in a corporate network, please run the script again outside the corporate network. \n"
+        printf "In manchen Firmennetzwerken werden Skripte als nicht vertrauenswürdig eingestuft und blockiert. / In some corporate networks, scripts are classified as untrusted and blocked. \n"
         printf "\e[37m\e[0m\n"
         exit 1
     fi
