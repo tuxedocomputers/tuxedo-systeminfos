@@ -41,8 +41,8 @@ if [ $SYSINFOS_DEBUG -eq 1 ]; then
 else
     # Check Internet connection
     printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
-    wget -q --spider https://www.tuxedocomputers.com
-    if [ $? -eq 0 ]; then
+    scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
+    if [ $script$isonline -eq 200 0 ]; then
         printf "\e[32mOnline\e[0m\n"
         printf "\e[37m\e[0m\n"
     else
@@ -900,11 +900,10 @@ fi
 if [ $SYSINFOS_DEBUG -eq 1 ]; then
     printf "Running in debug mode\n"
 else
-    # Re-Check Internet connection before sending
-    printf "\n"
+    # Check Internet connection
     printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
-    wget -q --spider https://www.tuxedocomputers.com
-    if [ $? -eq 0 ]; then
+    scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
+    if [ $script$isonline -eq 200 0 ]; then
         printf "\e[32mOnline\e[0m\n"
         printf "\e[37m\e[0m\n"
     else
