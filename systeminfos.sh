@@ -42,7 +42,7 @@ else
     # Check Internet connection
     printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
     scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
-    if [ $script$isonline -eq 200 0 ]; then
+    if [ $scriptisonline -eq 200 ]; then
         printf "\e[32mOnline\e[0m\n"
         printf "\e[37m\e[0m\n"
     else
@@ -905,7 +905,7 @@ else
     # Check Internet connection
     printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
     scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
-    if [ $script$isonline -eq 200 0 ]; then
+    if [ $scriptisonline -eq 200 ]; then
         printf "\e[32mOnline\e[0m\n"
         printf "\e[37m\e[0m\n"
     else
