@@ -303,27 +303,26 @@ else
 
 fi
 
-if [ -f /sys/class/power_supply/BAT0/charge_type ]; then
+if [ -f /sys/class/power_supply/BAT*/charge_type ]; then
     printf "charge_type\n\n" >> $infoFileName
-    /sys/class/power_supply/BAT0/charge_type >> $infoFileName
+    /sys/class/power_supply/BAT*/charge_type >> $infoFileName
     printf "\n\n\n" >> $infoFileName
 
     printf "charge_control_start_threshold\n\n" >> $infoFileName
-    /sys/class/power_supply/BAT0/charge_control_start_threshold >> $infoFileName
+    /sys/class/power_supply/BAT*/charge_control_start_threshold >> $infoFileName
     printf "\n\n\n" >> $infoFileName
 
     printf "charge_control_end_threshold\n\n" >> $infoFileName
-    /sys/class/power_supply/BAT0/charge_control_end_threshold >> $infoFileName
+    /sys/class/power_supply/BAT*/charge_control_end_threshold >> $infoFileName
     printf "\n\n\n" >> $infoFileName
 
     printf "available_start_thresholds\n\n" >> $infoFileName
-    /sys/class/power_supply/BAT0/charge_control_start_available_thresholds >> $infoFileName
+    /sys/class/power_supply/BAT*/charge_control_start_available_thresholds >> $infoFileName
     printf "\n\n\n" >> $infoFileName
 
     printf "available_end_thresholds\n\n" >> $infoFileName
-    /sys/class/power_supply/BAT0/charge_control_end_available_thresholds >> $infoFileName
+    /sys/class/power_supply/BAT*/charge_control_end_available_thresholds >> $infoFileName
     printf "\n\n\n" >> $infoFileName
-
 
 else
     printf "Modell unterstuetzt kein Flexicharger" >> $infoFileName
