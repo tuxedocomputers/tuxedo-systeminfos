@@ -221,8 +221,8 @@ dkms status >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "upower -i $(upower -e | grep 'BAT')\n\n" >> $infoFileName
-upower -i $(upower -e | grep 'BAT') >> $infoFileName
+printf "upower -d\n\n" >> $infoFileName
+upower -d >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
