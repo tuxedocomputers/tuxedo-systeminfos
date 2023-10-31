@@ -961,7 +961,9 @@ else
     printf "Please be patient. \n"
 fi
 
-if [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
+if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
+    printf "TUXEDO OS erkannt. Ueberspringe... / TUXEDO OS detected. Skipping... \n"
+elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
     apt-get -y purge nvme-cli edid-decode lm-sensors > /dev/null 2>&1
     printf "Deinstalliere benoetigte Abhaengigkeiten. Bitte warten... / Uninstall required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
