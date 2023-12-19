@@ -303,6 +303,35 @@ else
 
 fi
 
+if [ -f /sys/class/power_supply/BAT*/charge_type ]; then
+    printf "charge_type\n\n" >> $infoFileName
+    cat /sys/class/power_supply/BAT*/charge_type >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+    printf "charge_control_start_threshold\n\n" >> $infoFileName
+    cat /sys/class/power_supply/BAT*/charge_control_start_threshold >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+    printf "charge_control_end_threshold\n\n" >> $infoFileName
+    cat /sys/class/power_supply/BAT*/charge_control_end_threshold >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+    printf "available_start_thresholds\n\n" >> $infoFileName
+    cat /sys/class/power_supply/BAT*/charge_control_start_available_thresholds >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+    printf "available_end_thresholds\n\n" >> $infoFileName
+    cat /sys/class/power_supply/BAT*/charge_control_end_available_thresholds >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+else
+    printf "Modell unterstuetzt kein Flexicharger" >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+
+fi
+
+
+
 ### $logFileName Section
 
 if [ -f /var/log/tuxedo-install.log ]; then
