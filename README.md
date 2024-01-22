@@ -15,7 +15,7 @@ The script uses some distribution specific commands. distribution specific comma
 - Manjaro
 - Fedora
 
-You will only receive official support for TUXEDO OS, Ubuntu and openSUSE 15.x from TUXEDO Computers
+You will only receive official support for TUXEDO OS, Ubuntu and openSUSE Leap 15.x from TUXEDO Computers
 
 ## Before you running the script
 - Check if you got a ticketnumber. If you don't have a ticket number: contact us by e-mail to `tux[at]tuxedocomputers.com`
