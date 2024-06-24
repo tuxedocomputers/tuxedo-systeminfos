@@ -808,8 +808,13 @@ dmesg|grep firmware >> $firmwareFileName
 
 # $tccFileName Section
 
-printf "cat /etc/tcc/settings\n\n" >> $tccFileName
-cat /etc/tcc/settings >> $tccFileName
+printf "/etc/tcc/settings\n\n" >> $tccFileName
+cat /etc/tcc/settings | python -m json.tool >> $tccFileName
+
+printf "\n\n\n" >> $tccFileName
+
+printf "/etc/tcc/profiless\n\n" >> $tccFileName
+cat /etc/tcc/profiles | python -m json.tool >> $tccFileName
 
 printf "\n\n\n" >> $tccFileName
 
