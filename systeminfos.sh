@@ -343,6 +343,18 @@ else
 
 fi
 
+if [ -f /var/log/fai-tomte.log ]; then
+    printf "cat /var/log/fai-tomte.log\n\n" >> $logFileName
+    cat /var/log/fai-tomte.log >> $logFileName
+    printf "\n\n\n" >> $logFileName
+
+else
+    printf "Tomte FAI Log konnte nicht gefunden werden.\n" >> $logFileName
+    printf "Moeglicherweise handelt es sich nicht um eine WebFAI Installation oder diese Distribution wird nicht von Tomte unterstuetzt.\n" >> $logFileName
+    printf "\n\n\n" >> $logFileName
+
+fi
+
 if [ -f /var/log/tomte/tomte.log ]; then
     printf "cat /var/log/tomte/tomte.log\n\n" >> $logFileName
     cat /var/log/tomte/tomte.log >> $logFileName
