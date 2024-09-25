@@ -356,8 +356,8 @@ else
 fi
 
 if [ -f /var/log/tomte/tomte.log ]; then
-    printf "cat /var/log/tomte/tomte.log\n\n" >> $logFileName
-    cat /var/log/tomte/tomte.log >> $logFileName
+    printf "/var/log/tomte/tomte.log\n\n" >> $logFileName
+    tail --lines=1000 /var/log/tomte/tomte.log >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 else
