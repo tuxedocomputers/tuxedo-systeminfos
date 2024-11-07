@@ -95,28 +95,28 @@ else
 fi
 
 if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Linux Mint" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors > /dev/null 2>&1
+    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
-    zypper in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors > /dev/null 2>&1
+    zypper in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Fedora Linux" ]; then
-    dnf in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors > /dev/null 2>&1
+    dnf in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-    pacman -Sy --noconfirm curl zip nvme-cli edid-decode efibootmgr lm_sensors > /dev/null 2>&1
+    pacman -Sy --noconfirm curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
     printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
 else
     printf "Nicht unterstuetze Distribution! Ueberspringe... / Unsupported Distribution! Skipping... \n"
@@ -814,8 +814,13 @@ dmesg|grep firmware >> $firmwareFileName
 
 # $tccFileName Section
 
-printf "cat /etc/tcc/settings\n\n" >> $tccFileName
-cat /etc/tcc/settings >> $tccFileName
+printf "/etc/tcc/settings\n\n" >> $tccFileName
+cat /etc/tcc/settings | jq >> $tccFileName
+
+printf "\n\n\n" >> $tccFileName
+
+printf "/etc/tcc/profiless\n\n" >> $tccFileName
+cat /etc/tcc/profiles | jq >> $tccFileName
 
 printf "\n\n\n" >> $tccFileName
 
