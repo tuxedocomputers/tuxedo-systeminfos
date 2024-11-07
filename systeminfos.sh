@@ -134,12 +134,6 @@ printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $
 
 ### $infoFileName Section
 
-printf "/etc/machine-id\n\n" >> $infoFileName
-cat /etc/machine-id >> $infoFileName
-
-printf "/var/lib/dbus/machine-id\n\n" >> $infoFileName
-cat /var/lib/dbus/machine-id >> $infoFileName
-
 printf "uname -a\n\n" >> $infoFileName
 uname -a >> $infoFileName
 
