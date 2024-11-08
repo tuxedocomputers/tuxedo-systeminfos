@@ -194,6 +194,11 @@ cat /etc/default/grub >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
+printf "/etc/default/grub.d\n\n" >> $infoFileName
+cat /etc/default/grub.d/* >> $infoFileName
+
+printf "\n\n\n" >> $infoFileName
+
 printf "lsmod\n\n" >> $infoFileName
 lsmod >> $infoFileName
 
