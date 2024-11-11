@@ -59,12 +59,12 @@ else
     if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
         printf "Das Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! \n"
         printf "Es werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. \n"
-        printf "Bitte beachten sie dass sie nur für TUXEDO OS, Ubuntu und openSUSE Support von TUXEDO Computers erhalten. \n"
-        printf "Eventuell auftauchende Fehlermeldungen können sie ignorieren. \n"
+        printf "Bitte beachten Sie, dass Sie nur für TUXEDO OS und Ubuntu technischen Support von TUXEDO Computers erhalten. \n"
+        printf "Eventuell auftauchende Fehlermeldungen können Sie ignorieren. \n"
     else
         printf "The script does not collect any personal data and no access data! \n"
         printf "Only information about your hardware and software configuration is collected. \n"
-        printf "Please note that you will only receive support for TUXEDO OS, Ubuntu and openSUSE from TUXEDO Computers. \n"
+        printf "Please note that you will only receive technical support for TUXEDO OS and Ubuntu from TUXEDO Computers. \n"
         printf "You can ignore any error messages that may appear. \n"
     fi
 
