@@ -514,8 +514,13 @@ if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
 
     printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
-    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
+    if [ "$(. /etc/os-release; echo $VERSION_ID)" = "24.04" ]; then
+        printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+        awk 'FNR==1{print ""}1' /etc/apt/sources.list.d/*.sources >> $normalpackagesFileName
+    else
+        printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+        cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
+    fi
 
     printf "\n\n\n" >> $normalpackagesFileName
 
@@ -550,8 +555,13 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
 
     printf "\n\n\n" >> $normalpackagesFileName
 
-    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
-    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
+    if [ "$(. /etc/os-release; echo $VERSION_ID)" = "24.04" ]; then
+        printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+        awk 'FNR==1{print ""}1' /etc/apt/sources.list.d/*.sources >> $normalpackagesFileName
+    else
+        printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+        cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
+    fi
 
     printf "\n\n\n" >> $normalpackagesFileName
 
@@ -948,7 +958,14 @@ mv $infoFileName systeminfos-$ticketnumber.txt
 mv $lspciFileName lspci-$ticketnumber.txt
 mv $udevFileName udev-$ticketnumber.txt
 mv $logFileName log-$ticketnumber.txt
-mv $normalpackagesFileName packages-normal-$ticketnumber.txt
+
+if [ "$(. /etc/os-release; echo $VERSION_ID)" = "24.04" ]; then
+    sed -i '/Signed-By: -----BEGIN PGP PUBLIC KEY BLOCK-----/,/-----END PGP PUBLIC KEY BLOCK----/d' $normalpackagesFileName
+    mv $normalpackagesFileName packages-normal-$ticketnumber.txt
+else
+    mv $normalpackagesFileName packages-normal-$ticketnumber.txt
+fi
+
 mv $flatpakpackagesFileName packages-flatpak-$ticketnumber.txt
 mv $snappackagesFileName packages-snap-$ticketnumber.txt
 mv $audioFileName audio-$ticketnumber.txt
