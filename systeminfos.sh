@@ -20,7 +20,7 @@ securebootFileName=securebootoutput.txt
 tomteFileName=tomteoutput.txt
 displayFileName=displayoutput.txt
 failogFilename=failogoutput.txt
-started=$(date +"%d.%m.%y-%H:%Mh")
+started=$(date +"%Y-%m-%d %H:%M %Z %:z")
 ticketnumber=$1
 
 if [ $SYSINFOS_DEBUG -eq 1 ]; then
