@@ -329,7 +329,13 @@ else
 
 fi
 
-
+if [ -d /etc/default/grub.d ]; then
+    printf "ls -lah /etc/default/grub.d\n\n" >> $infoFileName
+    ls -lah /etc/default/grub.d >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+    cat /etc/default/grub.d/* >> $infoFileName
+    printf "\n\n\n" >> $infoFileName
+fi
 
 ### $logFileName Section
 
