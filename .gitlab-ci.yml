@@ -1,0 +1,3 @@
+include:
+  - project: "tuxedocomputers/development/installation-testing/package-build-gitlab-ci-yaml"
+    file: "/simple-package-creator.yml"

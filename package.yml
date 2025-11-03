@@ -1,0 +1,12 @@
+
+name: "tuxedo-systeminfos"
+description: "TUXEDO Systeminfos Script"
+dependencies: ["curl, edid-decode, efibootmgr, jq, lm-sensors, mesa-utils, nvme-cli, zip"]
+ci_upload_dir: "tuxedo-systeminfos"
+
+changelog:
+  - version: "20251103.1"
+    author: "Steven Seifried"
+    date: 2025-11-03 08:45:00
+    entries:
+      - "Use simple-package-creator for packaging"
