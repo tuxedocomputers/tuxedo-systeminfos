@@ -1,0 +1,15 @@
+Source: tuxedo-systeminfos
+Section: fixes
+Priority: optional
+Maintainer: TUXEDO Computers GmbH <tux@tuxedocomputers.com>
+Build-Depends: debhelper-compat (= 13)
+Rules-Requires-Root: no
+Standards-Version: 4.6.0
+Homepage: https://tuxedocomputers.com
+Vcs-Browser: https://gitlab.com/tuxedocomputers/development/packages/fixes/tuxedo-systeminfos
+Vcs-Git: https://gitlab.com/tuxedocomputers/development/packages/fixes/tuxedo-systeminfos.git
+
+Package: tuxedo-systeminfos
+Architecture: all
+Depends: ${misc:Depends}, curl, edid-decode, efibootmgr, jq, lm-sensors, mesa-utils, nvme-cli, zip 
+Description: TUXEDO Systeminfos Script

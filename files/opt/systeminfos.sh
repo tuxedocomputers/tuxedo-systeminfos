@@ -20,7 +20,7 @@ securebootFileName=securebootoutput.txt
 tomteFileName=tomteoutput.txt
 displayFileName=displayoutput.txt
 failogFilename=failogoutput.txt
-started=$(date +"%Y-%m-%d %H:%M %Z %:z")
+started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
 if [ $SYSINFOS_DEBUG -eq 1 ]; then
@@ -93,35 +93,6 @@ else
         fi
     fi
 fi
-
-if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
-elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
-elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
-elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
-elif [ "$(. /etc/os-release; echo $NAME)" = "Linux Mint" ]; then
-    apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
-elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
-    zypper in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
-elif [ "$(. /etc/os-release; echo $NAME)" = "Fedora Linux" ]; then
-    dnf in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
-elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
-    pacman -Sy --noconfirm curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
-    printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
-else
-    printf "Nicht unterstuetze Distribution! Ueberspringe... / Unsupported Distribution! Skipping... \n"
-fi
-
 
 printf "\n"
 if [ $SYSINFOS_DEBUG -eq 1 ]; then
@@ -329,13 +300,7 @@ else
 
 fi
 
-if [ -d /etc/default/grub.d ]; then
-    printf "ls -lah /etc/default/grub.d\n\n" >> $infoFileName
-    ls -lah /etc/default/grub.d >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-    cat /etc/default/grub.d/* >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-fi
+
 
 ### $logFileName Section
 
@@ -520,13 +485,8 @@ if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
 
     printf "\n\n\n" >> $normalpackagesFileName
 
-    if [ "$(. /etc/os-release; echo $VERSION_ID)" = "24.04" ]; then
-        printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
-        awk 'FNR==1{print ""}1' /etc/apt/sources.list.d/*.sources >> $normalpackagesFileName
-    else
-        printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
-        cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
-    fi
+    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
 
     printf "\n\n\n" >> $normalpackagesFileName
 
@@ -561,13 +521,8 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
 
     printf "\n\n\n" >> $normalpackagesFileName
 
-    if [ "$(. /etc/os-release; echo $VERSION_ID)" = "24.04" ]; then
-        printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
-        awk 'FNR==1{print ""}1' /etc/apt/sources.list.d/*.sources >> $normalpackagesFileName
-    else
-        printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
-        cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
-    fi
+    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
 
     printf "\n\n\n" >> $normalpackagesFileName
 
@@ -964,14 +919,7 @@ mv $infoFileName systeminfos-$ticketnumber.txt
 mv $lspciFileName lspci-$ticketnumber.txt
 mv $udevFileName udev-$ticketnumber.txt
 mv $logFileName log-$ticketnumber.txt
-
-if [ "$(. /etc/os-release; echo $VERSION_ID)" = "24.04" ]; then
-    sed -i '/Signed-By: -----BEGIN PGP PUBLIC KEY BLOCK-----/,/-----END PGP PUBLIC KEY BLOCK----/d' $normalpackagesFileName
-    mv $normalpackagesFileName packages-normal-$ticketnumber.txt
-else
-    mv $normalpackagesFileName packages-normal-$ticketnumber.txt
-fi
-
+mv $normalpackagesFileName packages-normal-$ticketnumber.txt
 mv $flatpakpackagesFileName packages-flatpak-$ticketnumber.txt
 mv $snappackagesFileName packages-snap-$ticketnumber.txt
 mv $audioFileName audio-$ticketnumber.txt

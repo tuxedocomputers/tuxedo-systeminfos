@@ -1,15 +1,16 @@
+include:
+  - project: "tuxedocomputers/development/installation-testing/package-build-gitlab-ci-yaml"
+    file: "/full-packaging-jobs.yml"
+
 variables:
-  SYS_INFO_URL: "https://www.mytuxedo.de/remote.php/webdav/systeminfo-sh/systeminfos.sh"
+  BUILD_DOCKER_CONTAINER_SIZE: tiny
+  BUILD_DOCKER_IMAGE_URL: registry.gitlab.com/tuxedocomputers/development/installation-testing/docker-images/deb-builder:debian-latest
 
-stages:
-  - deploy
+  STATIC_SERVER_UPLOAD_USER: deploy-deb-fixes
+  STATIC_SERVER_UPLOAD_TARGET_RELATIVE_BASE_DIR: deb/tuxedo-systeminfos/$CI_PROJECT_NAME
 
-upload_mytuxedo:
-  stage: deploy
-  only:
-    refs:
-      - master
-    changes:
-      - systeminfos.sh
-  script:
-    - curl -T ./systeminfos.sh --user ${K8S_SECRET_WEBDAV_USER}:${K8S_SECRET_WEBDAV_PASSWORD} ${SYS_INFO_URL}
+.test-deb-package-template:
+  parallel:
+    matrix:
+      - test_deb_docker_image:
+          - registry.gitlab.com/tuxedocomputers/development/installation-testing/docker-images/deb-builder:tuxedo-os-4-latest
