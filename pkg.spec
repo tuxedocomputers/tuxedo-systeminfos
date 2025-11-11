@@ -4,15 +4,19 @@ Release:        1%{?dist}
 Summary:        TUXEDO Systeminfos Script
 
 License:        GPL-3.0-or-later
-URL:            https://gitlab.com/tuxedocomputers/development/packages/fixes/tuxedo-systeminfos
+Group:          Development
+Packager:       TUXEDO Computers GmbH <tux@tuxedocomputers.com>
+URL:            https://gitlab.com/tuxedocomputers/development/systeminfos-script
+
+source0:        https://gitlab.com/tuxedocomputers/development/systeminfos-script/releases/%{name}-%{version}.tar.gz
 
 BuildArch:      noarch
 Requires:       curl, edid-decode, efibootmgr, jq, lm-sensors, mesa-utils, nvme-cli, zip
-# Place generated rpms into the current directory
-%define _rpmdir .
 
 %description
 TUXEDO Systeminfos Script
+
+Script from TUXEDO Computers to get necessary information of the system for technical support purposes.
 
 %prep
 %setup -q
@@ -21,22 +25,24 @@ TUXEDO Systeminfos Script
 
 %install
 # Copy files to package build root
-cp -r  %{_builddir}/files/* %{buildroot}/
+cp -r files/* %{buildroot}/
 
 %files
 %license LICENSE
-/opt/systeminfos.sh
-/usr/local/bin/tuxedo-systeminfos
-/usr/local/bin/tuxedo-systeminfo.sh
-/usr/local/bin/tuxedo-systeminfo
-/usr/local/bin/systeminfos.sh
-/usr/local/bin/tuxedo-systeminfos.sh
-/usr/local/bin/systeminfos
+/usr/bin/tuxedo-systeminfos
+/usr/bin/tuxedo-systeminfos.sh
+/usr/bin/tuxedo-systeminfo.sh
+/usr/bin/tuxedo-systeminfo
+/usr/bin/systeminfos
+/usr/bin/systeminfos.sh
+/usr/share/applications/tuxedo-systeminfos.desktop
+/usr/share/icons/hicolor/64x64/apps/tuxedo-systeminfos.png
+/usr/share/metainfo/tuxedo-systeminfos.metainfo.xml
 
 
 
 
 
 %changelog
-* Mon Nov 03 2025 Steven Seifried <tux@tuxedocomputers.com> - 20251103.1
+* Mon Nov 03 2025 Steven Seifried <tux@tuxedocomputers.com> - 20251103.1-1
 - Use simple-package-creator for packaging

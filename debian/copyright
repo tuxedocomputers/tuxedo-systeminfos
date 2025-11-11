@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: tuxedo-systeminfos
 Upstream-Contact: tux@tuxedocomputers.com
-Source: https://gitlab.com/tuxedocomputers/development/packages/fixes/tuxedo-systeminfos
+Source: https://gitlab.com/tuxedocomputers/development/systeminfos-script
 
 Files: *
 Copyright: 2025 TUXEDO Computers GmbH <tux@tuxedocomputers.com>

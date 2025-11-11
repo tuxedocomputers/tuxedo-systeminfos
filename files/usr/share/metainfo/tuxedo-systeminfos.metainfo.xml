@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="generic">
+  <id>com.tuxedocomputers.tuxedo-systeminfos</id>
+  <name>tuxedo-systeminfos</name>
+  <summary>Script from TUXEDO Computers to get necessary information of the system for technical support purposes.</summary>
+  <metadata_license>FSFAP</metadata_license>
+  <project_license>GPL-2.0+</project_license>
+
+  <url type="homepage">
+      https://gitlab.com/tuxedocomputers
+  </url>
+
+
+  <description>
+    <p>
+        Script from TUXEDO Computers to get necessary information of the system for technical support purposes.
+    </p>
+  </description>
+
+  <provides>
+    <binary>tuxedo-systeminfos</binary>
+    <binary>tuxedo-systeminfos.sh</binary>
+    <binary>tuxedo-systeminfo.sh</binary>
+    <binary>tuxedo-systeminfo</binary>
+    <binary>systeminfos</binary>
+    <binary>systeminfos.sh</binary>
+  </provides>
+
+  <releases>
+    <release version="20251103.1" date="2025-11-03">
+      <description>
+        <p>Use simple-package-creator for packaging</p>
+      </description>
+    </release>
+  </releases>
+</component>
