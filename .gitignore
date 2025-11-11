@@ -1,0 +1,8 @@
+# Files from simple-package-creator
+build/
+*.buildinfo
+*.changes
+*.deb
+*.dsc
+*.rpm
+*.tar.xz
