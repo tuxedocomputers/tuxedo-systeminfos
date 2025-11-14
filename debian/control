@@ -13,4 +13,5 @@ Package: tuxedo-systeminfos
 Architecture: all
 Depends: ${misc:Depends}, curl, edid-decode, efibootmgr, jq, lm-sensors, mesa-utils, nvme-cli, zip 
 Description: TUXEDO Systeminfos Script
- Script from TUXEDO Computers to get necessary information of the system for technical support purposes.
+ Script from TUXEDO Computers to get necessary information of the system for
+ technical support purposes.

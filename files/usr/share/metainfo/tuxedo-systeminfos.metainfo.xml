@@ -2,7 +2,7 @@
 <component type="generic">
   <id>com.tuxedocomputers.tuxedo-systeminfos</id>
   <name>tuxedo-systeminfos</name>
-  <summary>Script from TUXEDO Computers to get necessary information of the system for technical support purposes.</summary>
+  <summary>TUXEDO Systeminfos Script</summary>
   <metadata_license>FSFAP</metadata_license>
   <project_license>GPL-2.0+</project_license>
 

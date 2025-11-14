@@ -2,7 +2,7 @@
 Version    = 1.5
 Type       = Application
 Name       = tuxedo-systeminfos
-Comment    = Script from TUXEDO Computers to get necessary information of the system for technical support purposes.
+Comment    = TUXEDO Systeminfos Script
 Icon       = tuxedo-systeminfos
 Categories = System;
 Hidden     = true

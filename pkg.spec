@@ -16,7 +16,8 @@ Requires:       curl, edid-decode, efibootmgr, jq, lm-sensors, mesa-utils, nvme-
 %description
 TUXEDO Systeminfos Script
 
-Script from TUXEDO Computers to get necessary information of the system for technical support purposes.
+Script from TUXEDO Computers to get necessary information of the system for
+technical support purposes.
 
 %prep
 %setup -q

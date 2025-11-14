@@ -6,8 +6,8 @@ variables:
   BUILD_DOCKER_CONTAINER_SIZE: tiny
   BUILD_DOCKER_IMAGE_URL: registry.gitlab.com/tuxedocomputers/development/installation-testing/docker-images/deb-builder:debian-latest
 
-  STATIC_SERVER_UPLOAD_USER: deploy-deb-fixes
-  STATIC_SERVER_UPLOAD_TARGET_RELATIVE_BASE_DIR: deb/tuxedo-systeminfos/$CI_PROJECT_NAME
+  STATIC_SERVER_UPLOAD_USER: deploy-deb-tuxedo
+  STATIC_SERVER_UPLOAD_TARGET_RELATIVE_BASE_DIR: deb/tuxedo-systeminfos/tuxedo-systeminfos
 
 .test-deb-package-template:
   parallel:

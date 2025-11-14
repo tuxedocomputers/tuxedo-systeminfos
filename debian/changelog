@@ -2,5 +2,5 @@ tuxedo-systeminfos (20251103.1) noble; urgency=medium
 
   * Use simple-package-creator for packaging
 
- -- Steven Seifried <tux@tuxedocomputers.com>  Mon, 03 Nov 2025 08:45:00 +0000
+ -- Steven Seifried <tux@tuxedocomputers.com>  Mon, 03 Nov 2025 08:45:01 +0000
 
