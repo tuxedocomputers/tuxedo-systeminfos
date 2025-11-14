@@ -11,6 +11,6 @@ ci_upload_dir: "tuxedo-systeminfos"
 changelog:
   - version: "20251103.1"
     author: "Steven Seifried"
-    date: 2025-11-03 08:45:00
+    date: 2025-11-03 08:45:01
     entries:
       - "Use simple-package-creator for packaging"
