@@ -4,6 +4,8 @@ description: "Script from TUXEDO Computers to get necessary information of the s
 git-url: "https://gitlab.com/tuxedocomputers/development/systeminfos-script"
 dependencies:
   ["curl, edid-decode, efibootmgr, jq, lm-sensors, mesa-utils, nvme-cli, zip"]
+
+ci_deploy_user: "deploy-deb-tuxedo"
 ci_upload_dir: "tuxedo-systeminfos"
 
 changelog:
