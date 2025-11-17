@@ -9,6 +9,16 @@ ci_deploy_user: "deploy-deb-tuxedo-systeminfos"
 ci_upload_dir: "tuxedo-systeminfos"
 
 changelog:
+  - version: "20251117.2"
+    author: "Steven Seifried"
+    date: 2025-11-17 10:30:00
+    entries:
+      - "Remove not working '$(basename $0)' and change '$1' to '$0'"
+  - version: "20251117.1"
+    author: "Steven Seifried"
+    date: 2025-11-17 08:05:00
+    entries:
+      - "Remove 'SYSINFOS_DEBUG' due to bugs and less usage"
   - version: "20251103.1"
     author: "Steven Seifried"
     date: 2025-11-03 08:45:01
