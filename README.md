@@ -46,10 +46,3 @@ If there is no Internet connection, the script will be aborted. Please make sure
 ## What does the script do after collecting?
 - Sends the collected system information to TUXEDO
 - Removes temporary files
-
-
-### Run systeminfos.sh in debug mode
-*Note:* The debug mode is only for internal testing purposes
-- `sudo --preserve-env=HOME /usr/bin/env`
-- `sudo SYSINFOS_DEBUG=1 sh systeminfos.sh`
-
