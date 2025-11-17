@@ -1,5 +1,5 @@
 pkgname='tuxedo-systeminfos'
-pkgver='20251103.1'
+pkgver='20251117.2'
 pkgrel='1'
 pkgdesc='TUXEDO Systeminfos Script'
 arch=(any)

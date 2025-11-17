@@ -27,6 +27,16 @@
   </provides>
 
   <releases>
+    <release version="20251117.2" date="2025-11-17">
+      <description>
+        <p>Remove not working '$(basename $0)' and change '$1' to '$0'</p>
+      </description>
+    </release>
+    <release version="20251117.1" date="2025-11-17">
+      <description>
+        <p>Remove 'SYSINFOS_DEBUG' due to bugs and less usage</p>
+      </description>
+    </release>
     <release version="20251103.1" date="2025-11-03">
       <description>
         <p>Use simple-package-creator for packaging</p>

@@ -23,83 +23,70 @@ failogFilename=failogoutput.txt
 started=$(date +"%d.%m.%y-%H:%Mh")
 ticketnumber=$1
 
-if [ $SYSINFOS_DEBUG -eq 1 ]; then
-    printf "Running in debug mode\n"
-else
-    SYSINFOS_DEBUG=0
-fi
-
 if [ "$(id -u)" -ne 0 ]; then
     printf "\e[31msysteminfos.sh muss mit root Rechten ausgefuehrt werden! / systeminfos.sh must be executed with root privileges! \e[1m\n"
     printf "\e[37m\e[0m\n"
-    exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh '$(basename $0)' $1"
+    exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh $0"
 fi
 
-# NOTE: SYSINFOS_DEBUG is only for internal testing purposes.
-if [ $SYSINFOS_DEBUG -eq 1 ]; then
-    printf "Running in debug mode\n"
+# Check Internet connection
+printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
+scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
+if [ $scriptisonline -eq 200 ]; then
+    printf "\e[32mOnline\e[0m\n"
+    printf "\e[37m\e[0m\n"
 else
-    # Check Internet connection
-    printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
-    scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
-    if [ $scriptisonline -eq 200 ]; then
-        printf "\e[32mOnline\e[0m\n"
-        printf "\e[37m\e[0m\n"
-    else
-        printf "\e[31mOffline! Um das Skript ausfuehren zu koennen ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script! \e[1m\n"
-        printf "Sollten Sie sich in einem Firmennetzwerk befinden, führen Sie das Skript bitte außerhalb des Firmennetzwerkes erneut aus. / If you are in a corporate network, please run the script again outside the corporate network. \n"
-        printf "In manchen Firmennetzwerken werden Skripte als nicht vertrauenswürdig eingestuft und blockiert. / In some corporate networks, scripts are classified as untrusted and blocked. \n"
+    printf "\e[31mOffline! Um das Skript ausfuehren zu koennen ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script! \e[1m\n"
+    printf "Sollten Sie sich in einem Firmennetzwerk befinden, führen Sie das Skript bitte außerhalb des Firmennetzwerkes erneut aus. / If you are in a corporate network, please run the script again outside the corporate network. \n"
+    printf "In manchen Firmennetzwerken werden Skripte als nicht vertrauenswürdig eingestuft und blockiert. / In some corporate networks, scripts are classified as untrusted and blocked. \n"
+    printf "\e[37m\e[0m\n"
+    exit 1
+fi
+
+# clear terminal window before printing messages
+clear
+
+if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+    printf "Das Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! \n"
+    printf "Es werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. \n"
+    printf "Bitte beachten Sie, dass Sie nur für TUXEDO OS und Ubuntu technischen Support von TUXEDO Computers erhalten. \n"
+    printf "Eventuell auftauchende Fehlermeldungen können Sie ignorieren. \n"
+else
+    printf "The script does not collect any personal data and no access data! \n"
+    printf "Only information about your hardware and software configuration is collected. \n"
+    printf "Please note that you will only receive technical support for TUXEDO OS and Ubuntu from TUXEDO Computers. \n"
+    printf "You can ignore any error messages that may appear. \n"
+fi
+
+# 5 seconds before next textbox. Clear screen again before next textbox appears
+sleep 5
+clear
+
+if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+    printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen \n"
+    printf "Die Ticketnummer beginnt mit 99 und ist neun Stellen lang \n"
+    printf "Eingesendete Systeminformationen ohne gültige Ticketnummer können nicht bearbeitet werden und werden unbearbeitet geschlossen \n"
+    printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine E-Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. \n"
+else
+    printf "What is your ticket number? Confirm with [ENTER] \n"
+    printf "The ticket number starts with 99 and is nine digits long \n"
+    printf "Submitted system information without a valid ticket number can't be processed and will be closed unprocessed \n"
+    printf "To get an ticket number you can contact us by e-mail to tux[at]tuxedocomputers.com \n"
+fi
+
+if [ -z $ticketnumber ]; then
+    read -p "Ticket#: " ticketnumber
+    if [ -z $ticketnumber ]; then
+        printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticket number given. Quitting. \e[1m\n"
         printf "\e[37m\e[0m\n"
         exit 1
-    fi
-
-    # clear terminal window before printing messages
-    clear
-
-    if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
-        printf "Das Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! \n"
-        printf "Es werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. \n"
-        printf "Bitte beachten Sie, dass Sie nur für TUXEDO OS und Ubuntu technischen Support von TUXEDO Computers erhalten. \n"
-        printf "Eventuell auftauchende Fehlermeldungen können Sie ignorieren. \n"
-    else
-        printf "The script does not collect any personal data and no access data! \n"
-        printf "Only information about your hardware and software configuration is collected. \n"
-        printf "Please note that you will only receive technical support for TUXEDO OS and Ubuntu from TUXEDO Computers. \n"
-        printf "You can ignore any error messages that may appear. \n"
-    fi
-
-    # 5 seconds before next textbox. Clear screen again before next textbox appears
-    sleep 5
-    clear
-
-    if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
-        printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen \n"
-        printf "Die Ticketnummer beginnt mit 99 und ist neun Stellen lang \n"
-        printf "Eingesendete Systeminformationen ohne gültige Ticketnummer können nicht bearbeitet werden und werden unbearbeitet geschlossen \n"
-        printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine E-Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. \n"
-    else
-        printf "What is your ticket number? Confirm with [ENTER] \n"
-        printf "The ticket number starts with 99 and is nine digits long \n"
-        printf "Submitted system information without a valid ticket number can't be processed and will be closed unprocessed \n"
-        printf "To get an ticket number you can contact us by e-mail to tux[at]tuxedocomputers.com \n"
-    fi
-
-    if [ -z $ticketnumber ]; then
-        read -p "Ticket#: " ticketnumber
-        if [ -z $ticketnumber ]; then
-            printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticket number given. Quitting. \e[1m\n"
-            printf "\e[37m\e[0m\n"
-            exit 1
-        fi
     fi
 fi
 
 printf "\n"
-if [ $SYSINFOS_DEBUG -eq 1 ]; then
-    printf "Running in debug mode\n"
-else
-    echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
-fi
+
+echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
+
 echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
 printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
 
@@ -910,10 +897,6 @@ done
 
 printf "\n\n\n" >> $displayFileName
 
-# NOTE: SYSINFOS_DEBUG is only for internal testing purposes.
-if [ $SYSINFOS_DEBUG -eq 1 ]; then
-    printf "Running in debug mode\n"
-else
 # Rename files
 mv $infoFileName systeminfos-$ticketnumber.txt
 mv $lspciFileName lspci-$ticketnumber.txt
@@ -934,36 +917,23 @@ mv $displayFileName display-$ticketnumber.txt
 mv $failogFilename failog-$ticketnumber.txt
 
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
-fi
 
-# NOTE: SYSINFOS_DEBUG is only for internal testing purposes.
-if [ $SYSINFOS_DEBUG -eq 1 ]; then
-    printf "Running in debug mode\n"
-else
-    # Check Internet connection
-    printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
-    scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
-    if [ $scriptisonline -eq 200 ]; then
-        printf "\e[32mOnline\e[0m\n"
-        printf "\e[37m\e[0m\n"
-    else
-        printf "\e[31mOffline! Um die Ergebnisse uebermitteln zu koennen ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results! \e[1m\n"
-        printf "\e[37m\e[0m\n"
-        rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
-        exit 1
-    fi
-fi
 
-# NOTE: SYSINFOS_DEBUG is only for internal testing purposes.
-if [ $SYSINFOS_DEBUG -eq 1 ]; then
-    unset LC_ALL
-    unset LANG
-    unset LANGUAGE
-    exit 0;
+# Check Internet connection
+printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
+scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
+if [ $scriptisonline -eq 200 ]; then
+    printf "\e[32mOnline\e[0m\n"
+    printf "\e[37m\e[0m\n"
 else
-    curl -k -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
+    printf "\e[31mOffline! Um die Ergebnisse uebermitteln zu koennen ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results! \e[1m\n"
+    printf "\e[37m\e[0m\n"
     rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
+    exit 1
 fi
+
+curl -k -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
+rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
     printf "\n"

@@ -1,5 +1,5 @@
 Name:           tuxedo-systeminfos
-Version:        20251103.1
+Version:        20251117.2
 Release:        1%{?dist}
 Summary:        TUXEDO Systeminfos Script
 
@@ -45,5 +45,9 @@ cp -r files/* %{buildroot}/
 
 
 %changelog
+* Mon Nov 17 2025 Steven Seifried <tux@tuxedocomputers.com> - 20251117.2-1
+- Remove not working '$(basename $0)' and change '$1' to '$0'
+* Mon Nov 17 2025 Steven Seifried <tux@tuxedocomputers.com> - 20251117.1-1
+- Remove 'SYSINFOS_DEBUG' due to bugs and less usage
 * Mon Nov 03 2025 Steven Seifried <tux@tuxedocomputers.com> - 20251103.1-1
 - Use simple-package-creator for packaging
