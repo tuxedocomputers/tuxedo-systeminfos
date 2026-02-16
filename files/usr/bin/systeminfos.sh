@@ -179,11 +179,6 @@ dkms status >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
-printf "upower -d\n\n" >> $infoFileName
-upower -d >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
 printf "prime-select query\n\n" >> $infoFileName
 prime-select query >> $infoFileName
 
@@ -847,6 +842,11 @@ printf "\n\n\n" >> $displayFileName
 
 # batteryFileName section
 
+printf "upower -d\n\n" >> $batteryFileName
+upower -d >> $batteryFileName
+
+printf "\n\n\n" >> $batteryFileName
+
 if [ -f /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile ]; then
     printf "charging_profile\n\n" >> $batteryFileName
     cat /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile >> $batteryFileName
@@ -902,7 +902,7 @@ if [ -f /sys/class/power_supply/BAT*/raw_cycle_count ]; then
     raw_cycle_count=$(cat /sys/class/power_supply/BAT*/raw_cycle_count)
     printf "\n\n\n" >> $batteryFileName
 
-    printf "raw_xif1\n\n" >> $infoFilbatteryFileName
+    printf "raw_xif1\n\n" >> $batteryFileName
     cat /sys/class/power_supply/BAT*/raw_xif1 >> $batteryFileName
     raw_xif1=$(cat /sys/class/power_supply/BAT*/raw_xif1)
     printf "\n\n\n" >> $batteryFileName
@@ -913,7 +913,7 @@ if [ -f /sys/class/power_supply/BAT*/raw_cycle_count ]; then
     printf "\n\n\n" >> $batteryFileName
 
     printf "Cycles:  $raw_cycle_count\n" >> $batteryFileName
-    printf "Health:  $(expr $raw_xif2 \* 100 / $raw_xif1)%" >> $batteryFileName
+    printf "Health:  $(expr $raw_xif2 \* 100 / $raw_xif1)%%\n" >> $batteryFileName
 
 else
     printf "Kein NB02 Geraet" >> $batteryFileName
