@@ -6,7 +6,7 @@ Version:        20260216.1.0
 Release:        1%{?dist}
 Summary:        TUXEDO Systeminfos Script
 
-License:        GPL-3.0-or-later
+License:        GPL-2.0-only
 Group:          Development
 Packager:       TUXEDO Computers GmbH <tux@tuxedocomputers.com>
 URL:            https://gitlab.com/tuxedocomputers/development/systeminfos-script
@@ -34,12 +34,12 @@ cp -r files/* %{buildroot}/
 
 %files
 %license LICENSE
-/usr/bin/tuxedo-systeminfo
-/usr/bin/tuxedo-systeminfo.sh
 /usr/bin/tuxedo-systeminfos.sh
+/usr/bin/tuxedo-systeminfos
 /usr/bin/systeminfos.sh
 /usr/bin/systeminfos
-/usr/bin/tuxedo-systeminfos
+/usr/bin/tuxedo-systeminfo
+/usr/bin/tuxedo-systeminfo.sh
 /usr/share/applications/tuxedo-systeminfos.desktop
 /usr/share/icons/hicolor/64x64/apps/tuxedo-systeminfos.png
 /usr/share/metainfo/tuxedo-systeminfos.metainfo.xml
