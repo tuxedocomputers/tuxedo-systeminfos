@@ -4,7 +4,7 @@
   <name>tuxedo-systeminfos</name>
   <summary>TUXEDO Systeminfos Script</summary>
   <metadata_license>FSFAP</metadata_license>
-  <project_license>GPL-2.0+</project_license>
+  <project_license>GPL-3.0-or-later</project_license>
 
   <url type="homepage">
       https://gitlab.com/tuxedocomputers
@@ -19,25 +19,30 @@
 
   <provides>
     <binary>tuxedo-systeminfos</binary>
-    <binary>tuxedo-systeminfos.sh</binary>
     <binary>tuxedo-systeminfo.sh</binary>
     <binary>tuxedo-systeminfo</binary>
-    <binary>systeminfos</binary>
     <binary>systeminfos.sh</binary>
+    <binary>tuxedo-systeminfos.sh</binary>
+    <binary>systeminfos</binary>
   </provides>
 
   <releases>
-    <release version="20251117.2" date="2025-11-17">
+    <release version="20260216.1.0" date="2026-02-16">
+      <description>
+        <p>Add NB02 battery information (introduced with tuxedo-drivers 4.20.0)</p>
+      </description>
+    </release>
+    <release version="20251117.2.0" date="2025-11-17">
       <description>
         <p>Remove not working '$(basename $0)' and change '$1' to '$0'</p>
       </description>
     </release>
-    <release version="20251117.1" date="2025-11-17">
+    <release version="20251117.1.0" date="2025-11-17">
       <description>
         <p>Remove 'SYSINFOS_DEBUG' due to bugs and less usage</p>
       </description>
     </release>
-    <release version="20251103.1" date="2025-11-03">
+    <release version="20251103.1.0" date="2025-11-03">
       <description>
         <p>Use simple-package-creator for packaging</p>
       </description>

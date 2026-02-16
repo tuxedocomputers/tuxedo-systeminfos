@@ -1,16 +1,22 @@
-tuxedo-systeminfos (20251117.2) noble; urgency=medium
+tuxedo-systeminfos (20260216.1.0) noble; urgency=medium
+
+  * Add NB02 battery information (introduced with tuxedo-drivers 4.20.0)
+
+ -- Steven Seifried <tux@tuxedocomputers.com>  Mon, 16 Feb 2026 08:15:00 +0000
+
+tuxedo-systeminfos (20251117.2.0) noble; urgency=medium
 
   * Remove not working '$(basename $0)' and change '$1' to '$0'
 
  -- Steven Seifried <tux@tuxedocomputers.com>  Mon, 17 Nov 2025 10:30:00 +0000
 
-tuxedo-systeminfos (20251117.1) noble; urgency=medium
+tuxedo-systeminfos (20251117.1.0) noble; urgency=medium
 
   * Remove 'SYSINFOS_DEBUG' due to bugs and less usage
 
  -- Steven Seifried <tux@tuxedocomputers.com>  Mon, 17 Nov 2025 08:05:00 +0000
 
-tuxedo-systeminfos (20251103.1) noble; urgency=medium
+tuxedo-systeminfos (20251103.1.0) noble; urgency=medium
 
   * Use simple-package-creator for packaging
 

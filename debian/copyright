@@ -4,7 +4,7 @@ Upstream-Contact: tux@tuxedocomputers.com
 Source: https://gitlab.com/tuxedocomputers/development/systeminfos-script
 
 Files: *
-Copyright: 2025 TUXEDO Computers GmbH <tux@tuxedocomputers.com>
+Copyright: 2026 TUXEDO Computers GmbH <tux@tuxedocomputers.com>
 License: GPL-3.0-or-later
 
 License: GPL-3.0-or-later
@@ -21,6 +21,6 @@ License: GPL-3.0-or-later
  You should have received a copy of the GNU General Public License along
  with this program; if not, see <https://www.gnu.org/licenses/>.
 Comment:
- On Debian systems, the complete text of the GNU Lesser General Public
+ On Debian systems, the complete text of the GNU General Public
  License, can be found in /usr/share/common-licenses/GPL-3.
 

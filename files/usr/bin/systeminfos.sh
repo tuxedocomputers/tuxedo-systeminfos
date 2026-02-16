@@ -2,26 +2,27 @@
 LC_ALL=C
 LANG=C
 LANGUAGE=C
-serverURI=https://systeminfo.tuxedo.de/systeminfo.php
-infoFileName=systeminfos.txt
-lspciFileName=lspcioutput.txt
-udevFileName=udevoutput.txt
-logFileName=logoutput.txt
-normalpackagesFileName=normalpackagesoutput.txt
-flatpakpackagesFileName=flatpakpackagesoutput.txt
-snappackagesFileName=snappackagesoutput.txt
 audioFileName=audiooutput.txt
-networkFileName=networkoutput.txt
+batteryFileName=batteryoutput.txt
 boardFileName=boardoutput.txt
-firmwareFileName=firmwareoutput.txt
-tccFileName=tccoutput.txt
-modprobeFileName=modprobeoutput.txt
-securebootFileName=securebootoutput.txt
-tomteFileName=tomteoutput.txt
 displayFileName=displayoutput.txt
 failogFilename=failogoutput.txt
+firmwareFileName=firmwareoutput.txt
+flatpakpackagesFileName=flatpakpackagesoutput.txt
+infoFileName=systeminfos.txt
+logFileName=logoutput.txt
+lspciFileName=lspcioutput.txt
+modprobeFileName=modprobeoutput.txt
+networkFileName=networkoutput.txt
+normalpackagesFileName=normalpackagesoutput.txt
+securebootFileName=securebootoutput.txt
+serverURI=https://systeminfo.tuxedo.de/systeminfo.php
+snappackagesFileName=snappackagesoutput.txt
 started=$(date +"%d.%m.%y-%H:%Mh")
+tccFileName=tccoutput.txt
 ticketnumber=$1
+tomteFileName=tomteoutput.txt
+udevFileName=udevoutput.txt
 
 if [ "$(id -u)" -ne 0 ]; then
     printf "\e[31msysteminfos.sh muss mit root Rechten ausgefuehrt werden! / systeminfos.sh must be executed with root privileges! \e[1m\n"
@@ -85,10 +86,10 @@ fi
 
 printf "\n"
 
-echo 'Ticketnummer: ' $ticketnumber | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
+echo 'Ticketnummer: ' $ticketnumber | tee -a $audioFileName $batteryFileName $boardFileName $displayFileName $failogFilename $firmwareFileName $flatpakpackagesFileName $infoFileName $logFileName $lspciFileName $modprobeFileName $networkFileName $normalpackagesFileName $securebootFileName $snappackagesFileName $tccFileName $tomteFileName $udevFileName > /dev/null 2>&1
 
-echo 'systeminfos.sh started at' $started | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
-printf "\n\n" | tee -a $infoFileName $lspciFileName $udevFileName $logFileName $normalpackagesFileName $audioFileName $networkFileName $boardFileName $firmwareFileName $tccFileName $modprobeFileName $securebootFileName $tomteFileName $displayFileName $failogFilename $flatpakpackagesFileName $snappackagesFileName > /dev/null 2>&1
+echo 'systeminfos.sh started at' $started | tee -a $audioFileName $batteryFileName $boardFileName $displayFileName $failogFilename $firmwareFileName $flatpakpackagesFileName $infoFileName $logFileName $lspciFileName $modprobeFileName $networkFileName $normalpackagesFileName $securebootFileName $snappackagesFileName $tccFileName $tomteFileName $udevFileName > /dev/null 2>&1
+printf "\n\n" | tee -a $audioFileName $batteryFileName $boardFileName $displayFileName $failogFilename $firmwareFileName $flatpakpackagesFileName $infoFileName $logFileName $lspciFileName $modprobeFileName $networkFileName $normalpackagesFileName $securebootFileName $snappackagesFileName $tccFileName $tomteFileName $udevFileName > /dev/null 2>&1
 
 ### $infoFileName Section
 
@@ -235,59 +236,6 @@ fi
 
 printf "lm-sensors\n\n" >> $infoFileName
 sensors >> $infoFileName
-
-printf "\n\n\n" >> $infoFileName
-
-if [ -f /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile ]; then
-    printf "charging_profile\n\n" >> $infoFileName
-    cat /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-else
-    printf "Modell unterstuetzt kein charging_profile" >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-fi
-
-if [ -f /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio ]; then
-    printf "charging_prio\n\n" >> $infoFileName
-    cat /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-else
-    printf "Modell unterstuetzt kein charging_prio" >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-fi
-
-if [ -f /sys/class/power_supply/BAT*/charge_type ]; then
-    printf "charge_type\n\n" >> $infoFileName
-    cat /sys/class/power_supply/BAT*/charge_type >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-    printf "charge_control_start_threshold\n\n" >> $infoFileName
-    cat /sys/class/power_supply/BAT*/charge_control_start_threshold >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-    printf "charge_control_end_threshold\n\n" >> $infoFileName
-    cat /sys/class/power_supply/BAT*/charge_control_end_threshold >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-    printf "available_start_thresholds\n\n" >> $infoFileName
-    cat /sys/class/power_supply/BAT*/charge_control_start_available_thresholds >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-    printf "available_end_thresholds\n\n" >> $infoFileName
-    cat /sys/class/power_supply/BAT*/charge_control_end_available_thresholds >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-else
-    printf "Modell unterstuetzt kein Flexicharger" >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
-fi
-
-
 
 ### $logFileName Section
 
@@ -897,24 +845,102 @@ done
 
 printf "\n\n\n" >> $displayFileName
 
+# batteryFileName section
+
+if [ -f /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile ]; then
+    printf "charging_profile\n\n" >> $batteryFileName
+    cat /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+else
+    printf "Modell unterstuetzt kein charging_profile" >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+fi
+
+if [ -f /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio ]; then
+    printf "charging_prio\n\n" >> $batteryFileName
+    cat /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+else
+    printf "Modell unterstuetzt kein charging_prio" >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+fi
+
+if [ -f /sys/class/power_supply/BAT*/charge_type ]; then
+    printf "charge_type\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/charge_type >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "charge_control_start_threshold\n\n" >> $infoFilbatteryFileName
+    cat /sys/class/power_supply/BAT*/charge_control_start_threshold >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "charge_control_end_threshold\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/charge_control_end_threshold >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "available_start_thresholds\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/charge_control_start_available_thresholds >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "available_end_thresholds\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/charge_control_end_available_thresholds >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+else
+    printf "Modell unterstuetzt kein Flexicharger" >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+fi
+
+if [ -f /sys/class/power_supply/BAT*/raw_cycle_count ]; then
+    printf "raw_cycle_count\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/raw_cycle_count >> $batteryFileName
+    raw_cycle_count=$(cat /sys/class/power_supply/BAT*/raw_cycle_count)
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "raw_xif1\n\n" >> $infoFilbatteryFileName
+    cat /sys/class/power_supply/BAT*/raw_xif1 >> $batteryFileName
+    raw_xif1=$(cat /sys/class/power_supply/BAT*/raw_xif1)
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "raw_xif2\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/raw_xif2 >> $batteryFileName
+    raw_xif2=$(cat /sys/class/power_supply/BAT*/raw_xif2)
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "Cycles:  $raw_cycle_count" >> $batteryFileName
+    printf "Health:  $(expr $raw_xif2 \* 100 / $raw_xif1)%" >> $batteryFileName
+
+else
+    printf "Kein NB02 Geraet" >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+fi
+
+
 # Rename files
-mv $infoFileName systeminfos-$ticketnumber.txt
-mv $lspciFileName lspci-$ticketnumber.txt
-mv $udevFileName udev-$ticketnumber.txt
-mv $logFileName log-$ticketnumber.txt
-mv $normalpackagesFileName packages-normal-$ticketnumber.txt
-mv $flatpakpackagesFileName packages-flatpak-$ticketnumber.txt
-mv $snappackagesFileName packages-snap-$ticketnumber.txt
 mv $audioFileName audio-$ticketnumber.txt
-mv $networkFileName network-$ticketnumber.txt
+mv $batteryFileName battery-$ticketnumber.txt
 mv $boardFileName boardinfo-$ticketnumber.txt
-mv $firmwareFileName firmware-$ticketnumber.txt
-mv $tccFileName tcc-$ticketnumber.txt
-mv $modprobeFileName modprobe-$ticketnumber.txt
-mv $securebootFileName secureboot-$ticketnumber.txt
-mv $tomteFileName tomte-$ticketnumber.txt
 mv $displayFileName display-$ticketnumber.txt
 mv $failogFilename failog-$ticketnumber.txt
+mv $firmwareFileName firmware-$ticketnumber.txt
+mv $flatpakpackagesFileName packages-flatpak-$ticketnumber.txt
+mv $infoFileName systeminfos-$ticketnumber.txt
+mv $logFileName log-$ticketnumber.txt
+mv $lspciFileName lspci-$ticketnumber.txt
+mv $modprobeFileName modprobe-$ticketnumber.txt
+mv $networkFileName network-$ticketnumber.txt
+mv $normalpackagesFileName packages-normal-$ticketnumber.txt
+mv $securebootFileName secureboot-$ticketnumber.txt
+mv $snappackagesFileName packages-snap-$ticketnumber.txt
+mv $tccFileName tcc-$ticketnumber.txt
+mv $tomteFileName tomte-$ticketnumber.txt
+mv $udevFileName udev-$ticketnumber.txt
 
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 

@@ -1,16 +1,13 @@
+# Intended only for simple packages
 include:
   - project: "tuxedocomputers/development/installation-testing/package-build-gitlab-ci-yaml"
-    file: "/full-packaging-jobs.yml"
+    ref: "next"
+    file: "/build-pkg-template.yml"
 
-variables:
-  BUILD_DOCKER_CONTAINER_SIZE: tiny
-  BUILD_DOCKER_IMAGE_URL: registry.gitlab.com/tuxedocomputers/development/installation-testing/docker-images/deb-builder:debian-latest
-
-  STATIC_SERVER_UPLOAD_USER: deploy-deb-tuxedo-systeminfos
-  STATIC_SERVER_UPLOAD_TARGET_RELATIVE_BASE_DIR: deb/tuxedo-systeminfos/tuxedo-systeminfos
-
-.test-deb-package-template:
-  parallel:
-    matrix:
-      - test_deb_docker_image:
-          - registry.gitlab.com/tuxedocomputers/development/installation-testing/docker-images/deb-builder:tuxedo-os-4-latest
+build-packages:
+  extends: .build-pkg-template
+  variables:
+    PKG_BRANCH: "main"
+    SPC_ARGS: "--appstream"
+    DEPLOY_SERVER_USER: deploy-deb-tuxedo-systeminfos
+    DEPLOY_SERVER_RELATIVE_UPLOAD_DIR: deb/tuxedo-systeminfos/tuxedo-systeminfos
