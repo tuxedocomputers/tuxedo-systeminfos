@@ -18,7 +18,7 @@ normalpackagesFileName=normalpackagesoutput.txt
 securebootFileName=securebootoutput.txt
 serverURI=https://systeminfo.tuxedo.de/systeminfo.php
 snappackagesFileName=snappackagesoutput.txt
-started=$(date +"%d.%m.%y-%H:%Mh")
+started=$(date +"%Y-%m-%d-%H:%Mh")
 tccFileName=tccoutput.txt
 ticketnumber=$1
 tomteFileName=tomteoutput.txt
@@ -912,7 +912,7 @@ if [ -f /sys/class/power_supply/BAT*/raw_cycle_count ]; then
     raw_xif2=$(cat /sys/class/power_supply/BAT*/raw_xif2)
     printf "\n\n\n" >> $batteryFileName
 
-    printf "Cycles:  $raw_cycle_count" >> $batteryFileName
+    printf "Cycles:  $raw_cycle_count\n" >> $batteryFileName
     printf "Health:  $(expr $raw_xif2 \* 100 / $raw_xif1)%" >> $batteryFileName
 
 else
