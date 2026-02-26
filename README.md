@@ -1,7 +1,7 @@
 # TUXEDO Systeminfos
 
 Script from TUXEDO Computers to get necessary information of the system for technical support purposes. \
-For more information see [here](https://www.tuxedocomputers.com/en/Notebooks-PCs-systeminfossh.tuxedo).
+For more information see [here](https://www.tuxedocomputers.com/en/Information-on-system-diagnostics.tuxedo).
 
 **Note:** We do not collect any personal data and no credentials! We only collect information about your hard- and software configuration.
 
@@ -42,6 +42,7 @@ If there is no Internet connection, the script will be aborted. Please make sure
 - System log file
 - Audio devices
 - Tomte configuration
+- Battery information/health
 
 ## What does the script do after collecting?
 - Sends the collected system information to TUXEDO
