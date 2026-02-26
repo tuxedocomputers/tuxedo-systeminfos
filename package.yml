@@ -1,7 +1,8 @@
 name: "tuxedo-systeminfos"
 summary: "TUXEDO Systeminfos Script"
 description: "Script from TUXEDO Computers to get necessary information of the system for technical support purposes."
-git-url: "https://gitlab.com/tuxedocomputers/development/systeminfos-script"
+license: "GPL-2.0-only"
+git_url: "https://gitlab.com/tuxedocomputers/development/systeminfos-script"
 dependencies:
   ["curl, edid-decode, efibootmgr, jq, lm-sensors, mesa-utils, nvme-cli, zip"]
 
@@ -9,17 +10,22 @@ ci_deploy_user: "deploy-deb-tuxedo-systeminfos"
 ci_upload_dir: "tuxedo-systeminfos"
 
 changelog:
-  - version: "20251117.2"
+  - version: "20260216.1.0"
+    author: "Steven Seifried"
+    date: 2026-02-16 08:15:00
+    entries:
+      - "Add NB02 battery information (introduced with tuxedo-drivers 4.20.0)"
+  - version: "20251117.2.0"
     author: "Steven Seifried"
     date: 2025-11-17 10:30:00
     entries:
       - "Remove not working '$(basename $0)' and change '$1' to '$0'"
-  - version: "20251117.1"
+  - version: "20251117.1.0"
     author: "Steven Seifried"
     date: 2025-11-17 08:05:00
     entries:
       - "Remove 'SYSINFOS_DEBUG' due to bugs and less usage"
-  - version: "20251103.1"
+  - version: "20251103.1.0"
     author: "Steven Seifried"
     date: 2025-11-03 08:45:01
     entries:
