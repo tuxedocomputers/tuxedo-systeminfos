@@ -34,12 +34,12 @@ cp -r files/* %{buildroot}/
 
 %files
 %license LICENSE
-/usr/bin/tuxedo-systeminfos.sh
-/usr/bin/tuxedo-systeminfos
-/usr/bin/systeminfos.sh
-/usr/bin/systeminfos
 /usr/bin/tuxedo-systeminfo
 /usr/bin/tuxedo-systeminfo.sh
+/usr/bin/tuxedo-systeminfos.sh
+/usr/bin/systeminfos.sh
+/usr/bin/systeminfos
+/usr/bin/tuxedo-systeminfos
 /usr/share/applications/tuxedo-systeminfos.desktop
 /usr/share/icons/hicolor/64x64/apps/tuxedo-systeminfos.png
 /usr/share/metainfo/tuxedo-systeminfos.metainfo.xml

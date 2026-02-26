@@ -18,12 +18,12 @@
   </description>
 
   <provides>
-    <binary>tuxedo-systeminfos.sh</binary>
-    <binary>tuxedo-systeminfos</binary>
-    <binary>systeminfos.sh</binary>
-    <binary>systeminfos</binary>
     <binary>tuxedo-systeminfo</binary>
     <binary>tuxedo-systeminfo.sh</binary>
+    <binary>tuxedo-systeminfos.sh</binary>
+    <binary>systeminfos.sh</binary>
+    <binary>systeminfos</binary>
+    <binary>tuxedo-systeminfos</binary>
   </provides>
 
   <releases>
