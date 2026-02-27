@@ -1,3 +1,9 @@
+tuxedo-systeminfos (20260227.2.0) noble; urgency=medium
+
+  * Fix 'dependencies' in 'package.yml'
+
+ -- Steven Seifried <tux@tuxedocomputers.com>  Fri, 27 Feb 2026 13:33:00 +0000
+
 tuxedo-systeminfos (20260227.1.0) noble; urgency=medium
 
   * Fix 'dependencies' in 'package.yml'
