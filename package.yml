@@ -10,7 +10,8 @@ dependencies:
   - jq
   - lm-sensors
   - mesa-utils
-  - nvme-cli, zip
+  - nvme-cli
+  - zip
 
 ci_deploy_user: "deploy-deb-tuxedo-systeminfos"
 ci_upload_dir: "tuxedo-systeminfos"
