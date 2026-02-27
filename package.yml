@@ -16,6 +16,11 @@ ci_deploy_user: "deploy-deb-tuxedo-systeminfos"
 ci_upload_dir: "tuxedo-systeminfos"
 
 changelog:
+  - version: "20260227.1.0"
+    author: "Steven Seifried"
+    date: 2026-02-27 12:50:00
+    entries:
+      - "Fix 'dependencies' in 'package.yml'"
   - version: "20260216.1.0"
     author: "Steven Seifried"
     date: 2026-02-16 08:15:00
