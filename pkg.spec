@@ -2,7 +2,7 @@
 %define debug_package %{nil}
 
 Name:           tuxedo-systeminfos
-Version:        20260216.1.0
+Version:        20260227.1.0
 Release:        1%{?dist}
 Summary:        TUXEDO Systeminfos Script
 
@@ -34,12 +34,12 @@ cp -r files/* %{buildroot}/
 
 %files
 %license LICENSE
-/usr/bin/tuxedo-systeminfo
-/usr/bin/tuxedo-systeminfo.sh
 /usr/bin/tuxedo-systeminfos.sh
+/usr/bin/tuxedo-systeminfos
 /usr/bin/systeminfos.sh
 /usr/bin/systeminfos
-/usr/bin/tuxedo-systeminfos
+/usr/bin/tuxedo-systeminfo
+/usr/bin/tuxedo-systeminfo.sh
 /usr/share/applications/tuxedo-systeminfos.desktop
 /usr/share/icons/hicolor/64x64/apps/tuxedo-systeminfos.png
 /usr/share/metainfo/tuxedo-systeminfos.metainfo.xml
@@ -50,6 +50,8 @@ cp -r files/* %{buildroot}/
 
 
 %changelog
+* Fri Feb 27 2026 Steven Seifried <tux@tuxedocomputers.com> - 20260227.1.0-1
+- Fix 'dependencies' in 'package.yml'
 * Mon Feb 16 2026 Steven Seifried <tux@tuxedocomputers.com> - 20260216.1.0-1
 - Add NB02 battery information (introduced with tuxedo-drivers 4.20.0)
 * Mon Nov 17 2025 Steven Seifried <tux@tuxedocomputers.com> - 20251117.2.0-1

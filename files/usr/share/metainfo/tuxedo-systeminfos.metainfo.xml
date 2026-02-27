@@ -18,15 +18,20 @@
   </description>
 
   <provides>
-    <binary>tuxedo-systeminfo</binary>
-    <binary>tuxedo-systeminfo.sh</binary>
     <binary>tuxedo-systeminfos.sh</binary>
+    <binary>tuxedo-systeminfos</binary>
     <binary>systeminfos.sh</binary>
     <binary>systeminfos</binary>
-    <binary>tuxedo-systeminfos</binary>
+    <binary>tuxedo-systeminfo</binary>
+    <binary>tuxedo-systeminfo.sh</binary>
   </provides>
 
   <releases>
+    <release version="20260227.1.0" date="2026-02-27">
+      <description>
+        <p>Fix 'dependencies' in 'package.yml'</p>
+      </description>
+    </release>
     <release version="20260216.1.0" date="2026-02-16">
       <description>
         <p>Add NB02 battery information (introduced with tuxedo-drivers 4.20.0)</p>

@@ -1,3 +1,9 @@
+tuxedo-systeminfos (20260227.1.0) noble; urgency=medium
+
+  * Fix 'dependencies' in 'package.yml'
+
+ -- Steven Seifried <tux@tuxedocomputers.com>  Fri, 27 Feb 2026 12:50:00 +0000
+
 tuxedo-systeminfos (20260216.1.0) noble; urgency=medium
 
   * Add NB02 battery information (introduced with tuxedo-drivers 4.20.0)
