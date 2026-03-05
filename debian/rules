@@ -1,5 +1,11 @@
 #!/usr/bin/make -f
 dh_verbose=1
 
+override_dh_dwz:
+	$(DH_OVERRIDDEN_COMMAND) --no-dwz-multifile
+
+override_dh_shlibdeps:
+	$(DH_OVERRIDDEN_COMMAND) --exclude python3/spc-packages
+
 %:
 	dh ${@}

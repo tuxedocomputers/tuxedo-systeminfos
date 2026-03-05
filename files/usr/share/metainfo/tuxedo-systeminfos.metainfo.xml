@@ -19,11 +19,11 @@
 
   <provides>
     <binary>tuxedo-systeminfos</binary>
+    <binary>tuxedo-systeminfos.sh</binary>
     <binary>tuxedo-systeminfo.sh</binary>
     <binary>tuxedo-systeminfo</binary>
-    <binary>systeminfos.sh</binary>
-    <binary>tuxedo-systeminfos.sh</binary>
     <binary>systeminfos</binary>
+    <binary>systeminfos.sh</binary>
   </provides>
 
   <releases>
