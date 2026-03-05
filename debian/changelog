@@ -1,3 +1,10 @@
+tuxedo-systeminfos (1:3.0.6) noble; urgency=medium
+
+  * Switch version scheme
+  * Add epoch
+
+ -- Steven Seifried <tux@tuxedocomputers.com>  Thu, 05 Mar 2026 10:45:00 +0000
+
 tuxedo-systeminfos (20260227.2.0) noble; urgency=medium
 
   * Fix 'dependencies' in 'package.yml'

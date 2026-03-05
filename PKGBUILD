@@ -1,7 +1,8 @@
 options=(!debug !lto) # No debug or LTO packages
 
 pkgname='tuxedo-systeminfos'
-pkgver='20260227.2.0'
+pkgver='3.0.6'
+epoch='1'
 pkgrel='1'
 pkgdesc='TUXEDO Systeminfos Script'
 arch=(any)

@@ -27,6 +27,12 @@
   </provides>
 
   <releases>
+    <release version="3.0.6" date="2026-03-05">
+      <description>
+        <p>Switch version scheme</p>
+        <p>Add epoch</p>
+      </description>
+    </release>
     <release version="20260227.2.0" date="2026-02-27">
       <description>
         <p>Fix 'dependencies' in 'package.yml'</p>

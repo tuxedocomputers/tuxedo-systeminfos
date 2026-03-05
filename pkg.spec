@@ -2,7 +2,8 @@
 %define debug_package %{nil}
 
 Name:           tuxedo-systeminfos
-Version:        20260227.2.0
+Version:        3.0.6
+Epoch:          1
 Release:        1%{?dist}
 Summary:        TUXEDO Systeminfos Script
 
@@ -50,6 +51,9 @@ cp -r files/* %{buildroot}/
 
 
 %changelog
+* Thu Mar 05 2026 Steven Seifried <tux@tuxedocomputers.com> - 3.0.6-1
+- Switch version scheme
+- Add epoch
 * Fri Feb 27 2026 Steven Seifried <tux@tuxedocomputers.com> - 20260227.2.0-1
 - Fix 'dependencies' in 'package.yml'
 * Fri Feb 27 2026 Steven Seifried <tux@tuxedocomputers.com> - 20260227.1.0-1
