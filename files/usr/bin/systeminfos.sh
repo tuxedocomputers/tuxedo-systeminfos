@@ -1,7 +1,14 @@
 #!/bin/sh
+### change language to "C"
 LC_ALL=C
 LANG=C
 LANGUAGE=C
+### set other parameter
+serverURI=https://systeminfo.tuxedo.de/systeminfo.php
+snappackagesFileName=snappackagesoutput.txt
+started=$(date +"%Y-%m-%d-%H:%Mh")
+ticketnumber=$1
+### set filenames
 audioFileName=audiooutput.txt
 batteryFileName=batteryoutput.txt
 boardFileName=boardoutput.txt
@@ -16,21 +23,18 @@ modprobeFileName=modprobeoutput.txt
 networkFileName=networkoutput.txt
 normalpackagesFileName=normalpackagesoutput.txt
 securebootFileName=securebootoutput.txt
-serverURI=https://systeminfo.tuxedo.de/systeminfo.php
-snappackagesFileName=snappackagesoutput.txt
-started=$(date +"%Y-%m-%d-%H:%Mh")
 tccFileName=tccoutput.txt
-ticketnumber=$1
 tomteFileName=tomteoutput.txt
 udevFileName=udevoutput.txt
 
+### check root privileges
 if [ "$(id -u)" -ne 0 ]; then
     printf "\e[31msysteminfos.sh muss mit root Rechten ausgefuehrt werden! / systeminfos.sh must be executed with root privileges! \e[1m\n"
     printf "\e[37m\e[0m\n"
     exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh $0"
 fi
 
-# Check Internet connection
+### Check Internet connection
 printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
 scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
 if [ $scriptisonline -eq 200 ]; then
@@ -44,7 +48,7 @@ else
     exit 1
 fi
 
-# clear terminal window before printing messages
+### clear terminal window before printing messages
 clear
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
@@ -59,7 +63,7 @@ else
     printf "You can ignore any error messages that may appear. \n"
 fi
 
-# 5 seconds before next textbox. Clear screen again before next textbox appears
+### Wait 5 seconds before next textbox. Clear screen again before next textbox appears
 sleep 5
 clear
 
@@ -91,7 +95,207 @@ echo 'Ticketnummer: ' $ticketnumber | tee -a $audioFileName $batteryFileName $bo
 echo 'systeminfos.sh started at' $started | tee -a $audioFileName $batteryFileName $boardFileName $displayFileName $failogFilename $firmwareFileName $flatpakpackagesFileName $infoFileName $logFileName $lspciFileName $modprobeFileName $networkFileName $normalpackagesFileName $securebootFileName $snappackagesFileName $tccFileName $tomteFileName $udevFileName > /dev/null 2>&1
 printf "\n\n" | tee -a $audioFileName $batteryFileName $boardFileName $displayFileName $failogFilename $firmwareFileName $flatpakpackagesFileName $infoFileName $logFileName $lspciFileName $modprobeFileName $networkFileName $normalpackagesFileName $securebootFileName $snappackagesFileName $tccFileName $tomteFileName $udevFileName > /dev/null 2>&1
 
-### $infoFileName Section
+##### $audioFileName Section
+
+printf "aplay -l\n\n" >> $audioFileName
+aplay -l >> $audioFileName
+
+printf "\n\n\n" >> $audioFileName
+
+printf "echo 1 > /sys/module/snd_hda_codec/parameters/dump_coef\n" >> $audioFileName
+printf "cat /proc/asound/card*/codec*\n\n" >> $audioFileName
+echo 1 > /sys/module/snd_hda_codec/parameters/dump_coef
+cat /proc/asound/card*/codec* >> $audioFileName
+
+printf "\n\n\n" >> $audioFileName
+
+printf "lspci -v | grep -A7 -i "audio"\n\n" >> $audioFileName
+lspci -v | grep -A7 -i "audio" >> $audioFileName
+
+printf "\n\n\n" >> $audioFileName
+
+printf "pacmd list-sink-inputs\n\n" >> $audioFileName
+pacmd list-sink-inputs >> $audioFileName
+
+printf "\n\n\n" >> $audioFileName
+
+printf "pa-info\n\n" >> $audioFileName
+pa-info >> $audioFileName
+
+printf "\n\n\n" >> $audioFileName
+
+printf "arecord -l\n\n" >> $audioFileName
+arecord -l >> $audioFileName
+
+printf "\n\n\n" >> $audioFileName
+
+printf "fuser -v /dev/snd/*\n\n" >> $audioFileName
+fuser -v /dev/snd/* >> $audioFileName
+
+##### $batteryFileName section
+
+printf "upower -d\n\n" >> $batteryFileName
+upower -d >> $batteryFileName
+
+printf "\n\n\n" >> $batteryFileName
+
+if [ -f /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile ]; then
+    printf "charging_profile\n\n" >> $batteryFileName
+    cat /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+else
+    printf "Modell unterstuetzt kein charging_profile" >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+fi
+
+if [ -f /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio ]; then
+    printf "charging_prio\n\n" >> $batteryFileName
+    cat /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+else
+    printf "Modell unterstuetzt kein charging_prio" >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+fi
+
+if [ -f /sys/class/power_supply/BAT*/charge_type ]; then
+    printf "charge_type\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/charge_type >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "charge_control_start_threshold\n\n" >> $infoFilbatteryFileName
+    cat /sys/class/power_supply/BAT*/charge_control_start_threshold >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "charge_control_end_threshold\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/charge_control_end_threshold >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "available_start_thresholds\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/charge_control_start_available_thresholds >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "available_end_thresholds\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/charge_control_end_available_thresholds >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+else
+    printf "Modell unterstuetzt kein Flexicharger" >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+fi
+
+if [ -f /sys/class/power_supply/BAT*/raw_cycle_count ]; then
+    printf "raw_cycle_count\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/raw_cycle_count >> $batteryFileName
+    raw_cycle_count=$(cat /sys/class/power_supply/BAT*/raw_cycle_count)
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "raw_xif1\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/raw_xif1 >> $batteryFileName
+    raw_xif1=$(cat /sys/class/power_supply/BAT*/raw_xif1)
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "raw_xif2\n\n" >> $batteryFileName
+    cat /sys/class/power_supply/BAT*/raw_xif2 >> $batteryFileName
+    raw_xif2=$(cat /sys/class/power_supply/BAT*/raw_xif2)
+    printf "\n\n\n" >> $batteryFileName
+
+    printf "Cycles:  $raw_cycle_count\n" >> $batteryFileName
+    printf "Health:  $(expr $raw_xif2 \* 100 / $raw_xif1)%%\n" >> $batteryFileName
+
+else
+    printf "Kein NB02 Geraet" >> $batteryFileName
+    printf "\n\n\n" >> $batteryFileName
+
+fi
+
+
+##### $boardFileName Section
+
+printf "BIOS date and time\n\n" >> $boardFileName
+cat /sys/class/rtc/rtc0/date >> $boardFileName
+printf "\n"  >> $boardFileName
+cat /sys/class/rtc/rtc0/time >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "find /sys/class/dmi/id/ -maxdepth 1 -type f -print -exec cat {}  \; -exec echo \;\n\n" >> $boardFileName
+find /sys/class/dmi/id/ -maxdepth 1 -type f -print -exec cat {}  \; -exec echo \; >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "dmidecode -t memory\n\n" >> $boardFileName
+dmidecode -t memory >> $boardFileName
+
+printf "\n\n\n" >> $boardFileName
+
+printf "dmidecode\n\n" >> $boardFileName
+dmidecode >> $boardFileName
+
+
+##### $displayFileName section
+
+printf "glxinfo|grep vendor\n\n" >> $displayFileName
+glxinfo|grep vendor >> $displayFileName
+
+printf "\n\n\n" >> $displayFileName
+
+printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $displayFileName
+grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $displayFileName
+
+printf "\n\n\n" >> $displayFileName
+
+printf "Display Info colormgr\n\n"
+colormgr get-devices-by-kind display >> $displayFileName
+
+printf "\n\n\n" >> $displayFileName
+
+for f in /sys/class/drm/card*-*/edid; do
+    ls -la /sys/class/drm/card*-*/edid
+    printf "\n\n" >> $displayFileName
+    printf "====================\n" >> $displayFileName
+    printf "Decoding: %s" $f >> $displayFileName
+    printf "\n" >> $displayFileName
+    cat $f | edid-decode >> $displayFileName
+    printf "====================" >> $displayFileName
+done
+
+printf "\n\n\n" >> $displayFileName
+
+
+##### $failogFilename Section
+
+if [ -f /var/log/tuxedo-install.log ]; then
+    cat /var/log/tuxedo-install.log >> $failogFilename
+
+else
+    printf "WebFAI Install-Log konnte nicht gefunden werden.\n" >> $failogFilename
+    printf "Moeglicherweise handelt es sich um keine WebFAI Installation.\n" >> $failogFilename
+
+fi
+
+
+##### $firmwareFileName Section
+
+printf "ls -l /lib/firmware\n\n" >> $firmwareFileName
+ls -l /lib/firmware >> $firmwareFileName
+
+printf "\n\n\n" >> $firmwareFileName
+
+printf "dmesg|grep firmware\n\n" >> $firmwareFileName
+dmesg|grep firmware >> $firmwareFileName
+
+
+##### $flatpakpackagesFileName
+
+printf "flatpak list --app --show-details\n\n" >> $flatpakpackagesFileName
+flatpak list >> $flatpakpackagesFileName
+
+##### $infoFileName Section
 
 printf "users\n\n" >> $infoFileName
 users >> $infoFileName
@@ -235,16 +439,16 @@ fi
 printf "lm-sensors\n\n" >> $infoFileName
 sensors >> $infoFileName
 
-### $logFileName Section
 
-if [ -f /var/log/tuxedo-install.log ]; then
-    cat /var/log/tuxedo-install.log >> $failogFilename
-
-else
-    printf "WebFAI Install-Log konnte nicht gefunden werden.\n" >> $failogFilename
-    printf "Moeglicherweise handelt es sich um keine WebFAI Installation.\n" >> $failogFilename
-
+if [ -d /var/crash ]; then
+    printf "\n\n\n" >> $infoFileName
+    printf "/var/crash/\n\n" >> $infoFileName
+    la -la /var/crash/ >> $infoFileName
+    cat /var/crash/* >> $infoFileName
 fi
+
+##### $logFileName Section
+
 
 if [ -f /var/log/fai-tomte.log ]; then
     printf "cat /var/log/fai-tomte.log\n\n" >> $logFileName
@@ -306,79 +510,25 @@ systemctl status systemd-modules-load.service >> $logFileName
 
 printf "\n\n\n\n\n" >> $logFileName
 
-if [ -d /var/crash ]; then
-   printf "/var/crash/\n\n" >> $infoFileName
-   la -la /var/crash/ >> $infoFileName
-   cat /var/crash/* >> $infoFileName
-   printf "\n\n\n" >> $infoFileName
-fi
 
-
-### $boardFileName Section
-
-printf "BIOS date and time\n\n" >> $boardFileName
-cat /sys/class/rtc/rtc0/date >> $boardFileName
-printf "\n"  >> $boardFileName
-cat /sys/class/rtc/rtc0/time >> $boardFileName
-
-printf "\n\n\n" >> $infoFileName
-
-printf "find /sys/class/dmi/id/ -maxdepth 1 -type f -print -exec cat {}  \; -exec echo \;\n\n" >> $boardFileName
-find /sys/class/dmi/id/ -maxdepth 1 -type f -print -exec cat {}  \; -exec echo \; >> $boardFileName
-
-printf "\n\n\n" >> $boardFileName
-
-printf "dmidecode -t memory\n\n" >> $boardFileName
-dmidecode -t memory >> $boardFileName
-
-printf "\n\n\n" >> $boardFileName
-
-printf "dmidecode\n\n" >> $boardFileName
-dmidecode >> $boardFileName
-
-### $lspciFileName Section
+##### $lspciFileName Section
 
 printf "lspci -vvnn\n\n" >> $lspciFileName
 lspci -vvnn >> $lspciFileName
 
-### $audioFileName Section
 
-printf "aplay -l\n\n" >> $audioFileName
-aplay -l >> $audioFileName
+##### $modprobeFileName Section
 
-printf "\n\n\n" >> $audioFileName
+printf "/etc/modprobe.d/\n\n" >> $modprobeFileName
+ls /etc/modprobe.d/ >> $modprobeFileName
 
-printf "echo 1 > /sys/module/snd_hda_codec/parameters/dump_coef\n" >> $audioFileName
-printf "cat /proc/asound/card*/codec*\n\n" >> $audioFileName
-echo 1 > /sys/module/snd_hda_codec/parameters/dump_coef
-cat /proc/asound/card*/codec* >> $audioFileName
+printf "\n\n\n" >> $modprobeFileName
 
-printf "\n\n\n" >> $audioFileName
+printf "/etc/modprobe.d/ files\n\n" >> $modprobeFileName
+cat /etc/modprobe.d/* >> $modprobeFileName
 
-printf "lspci -v | grep -A7 -i "audio"\n\n" >> $audioFileName
-lspci -v | grep -A7 -i "audio" >> $audioFileName
 
-printf "\n\n\n" >> $audioFileName
-
-printf "pacmd list-sink-inputs\n\n" >> $audioFileName
-pacmd list-sink-inputs >> $audioFileName
-
-printf "\n\n\n" >> $audioFileName
-
-printf "pa-info\n\n" >> $audioFileName
-pa-info >> $audioFileName
-
-printf "\n\n\n" >> $audioFileName
-
-printf "arecord -l\n\n" >> $audioFileName
-arecord -l >> $audioFileName
-
-printf "\n\n\n" >> $audioFileName
-
-printf "fuser -v /dev/snd/*\n\n" >> $audioFileName
-fuser -v /dev/snd/* >> $audioFileName
-
-### $networkFileName Section
+##### $networkFileName Section
 
 printf "\n\n\n" >> $networkFileName
 
@@ -411,7 +561,7 @@ printf "\n\n\n" >> $networkFileName
 printf "mmcli\n\n" >> $networkFileName
 mmcli -m 0 | grep -v -e "imei:*" -e "equipment id:*" >> $networkFileName
 
-### $normalpackagesFileName Section
+##### $normalpackagesFileName Section
 
 printf "\n\n\n" >> $normalpackagesFileName
 
@@ -693,70 +843,8 @@ else
     printf "Unsupported Distribution! Skipping... \n\n\n"
 fi
 
-### flatpakpackagesFileName
 
-printf "flatpak list --app --show-details\n\n" >> $flatpakpackagesFileName
-flatpak list >> $flatpakpackagesFileName
-
-### snappackagesFileName
-
-printf "snap list\n\n" >> $snappackagesFileName
-snap list >> $snappackagesFileName
-
-### $udevFileName Section
-
-printf "/etc/udev/rules.d/\n\n" >> $udevFileName
-ls /etc/udev/rules.d/ >> $udevFileName
-
-printf "\n\n\n" >> $udevFileName
-
-printf "/etc/udev/rules.d/ files\n\n" >> $udevFileName
-cat /etc/udev/rules.d/* >> $udevFileName
-
-printf "/lib/udev/rules.d/\n\n" >> $udevFileName
-ls /lib/udev/rules.d/ >> $udevFileName
-
-printf "\n\n\n" >> $udevFileName
-
-printf "/lib/udev/rules.d/ files\n\n" >> $udevFileName
-cat /lib/udev/rules.d/* >> $udevFileName
-
-# $firmwareFileName Section
-
-printf "ls -l /lib/firmware\n\n" >> $firmwareFileName
-ls -l /lib/firmware >> $firmwareFileName
-
-printf "\n\n\n" >> $firmwareFileName
-
-printf "dmesg|grep firmware\n\n" >> $firmwareFileName
-dmesg|grep firmware >> $firmwareFileName
-
-# $tccFileName Section
-
-printf "/etc/tcc/settings\n\n" >> $tccFileName
-cat /etc/tcc/settings | jq >> $tccFileName
-
-printf "\n\n\n" >> $tccFileName
-
-printf "/etc/tcc/profiless\n\n" >> $tccFileName
-cat /etc/tcc/profiles | jq >> $tccFileName
-
-printf "\n\n\n" >> $tccFileName
-
-printf "systemctl is-active tccd.service\n\n" >> $tccFileName
-systemctl is-active tccd.service >> $tccFileName
-
-# $modprobeFileName Section
-
-printf "/etc/modprobe.d/\n\n" >> $modprobeFileName
-ls /etc/modprobe.d/ >> $modprobeFileName
-
-printf "\n\n\n" >> $modprobeFileName
-
-printf "/etc/modprobe.d/ files\n\n" >> $modprobeFileName
-cat /etc/modprobe.d/* >> $modprobeFileName
-
-# $securebootFileName section
+##### $securebootFileName section
 
 printf "mokutil --sb-state\n\n" >> $securebootFileName
 mokutil --sb-state >> $securebootFileName
@@ -803,7 +891,30 @@ mokutil --mokx >> $securebootFileName
 
 printf "\n\n\n" >> $securebootFileName
 
-# $tomteFileName section
+
+##### $snappackagesFileName
+
+printf "snap list\n\n" >> $snappackagesFileName
+snap list >> $snappackagesFileName
+
+
+##### $tccFileName Section
+
+printf "/etc/tcc/settings\n\n" >> $tccFileName
+cat /etc/tcc/settings | jq >> $tccFileName
+
+printf "\n\n\n" >> $tccFileName
+
+printf "/etc/tcc/profiless\n\n" >> $tccFileName
+cat /etc/tcc/profiles | jq >> $tccFileName
+
+printf "\n\n\n" >> $tccFileName
+
+printf "systemctl is-active tccd.service\n\n" >> $tccFileName
+systemctl is-active tccd.service >> $tccFileName
+
+
+##### $tomteFileName section
 
 printf "tuxedo-tomte list\n\n" >> $tomteFileName
 tuxedo-tomte list >> $tomteFileName
@@ -842,118 +953,27 @@ else
     printf "\n\n\n" >> $tomteFileName
 fi
 
-# $displayFileName section
 
-printf "glxinfo|grep vendor\n\n" >> $displayFileName
-glxinfo|grep vendor >> $displayFileName
+##### $udevFileName Section
 
-printf "\n\n\n" >> $displayFileName
+printf "/etc/udev/rules.d/\n\n" >> $udevFileName
+ls /etc/udev/rules.d/ >> $udevFileName
 
-printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $displayFileName
-grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $displayFileName
+printf "\n\n\n" >> $udevFileName
 
-printf "\n\n\n" >> $displayFileName
+printf "/etc/udev/rules.d/ files\n\n" >> $udevFileName
+cat /etc/udev/rules.d/* >> $udevFileName
 
-printf "Display Info colormgr\n\n"
-colormgr get-devices-by-kind display >> $displayFileName
+printf "/lib/udev/rules.d/\n\n" >> $udevFileName
+ls /lib/udev/rules.d/ >> $udevFileName
 
-printf "\n\n\n" >> $displayFileName
+printf "\n\n\n" >> $udevFileName
 
-for f in /sys/class/drm/card*-*/edid; do
-    ls -la /sys/class/drm/card*-*/edid
-    printf "\n\n" >> $displayFileName
-    printf "====================\n" >> $displayFileName
-    printf "Decoding: %s" $f >> $displayFileName
-    printf "\n" >> $displayFileName
-    cat $f | edid-decode >> $displayFileName
-    printf "====================" >> $displayFileName
-done
-
-printf "\n\n\n" >> $displayFileName
-
-# batteryFileName section
-
-printf "upower -d\n\n" >> $batteryFileName
-upower -d >> $batteryFileName
-
-printf "\n\n\n" >> $batteryFileName
-
-if [ -f /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile ]; then
-    printf "charging_profile\n\n" >> $batteryFileName
-    cat /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
-else
-    printf "Modell unterstuetzt kein charging_profile" >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
-fi
-
-if [ -f /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio ]; then
-    printf "charging_prio\n\n" >> $batteryFileName
-    cat /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
-else
-    printf "Modell unterstuetzt kein charging_prio" >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
-fi
-
-if [ -f /sys/class/power_supply/BAT*/charge_type ]; then
-    printf "charge_type\n\n" >> $batteryFileName
-    cat /sys/class/power_supply/BAT*/charge_type >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
-    printf "charge_control_start_threshold\n\n" >> $infoFilbatteryFileName
-    cat /sys/class/power_supply/BAT*/charge_control_start_threshold >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
-    printf "charge_control_end_threshold\n\n" >> $batteryFileName
-    cat /sys/class/power_supply/BAT*/charge_control_end_threshold >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
-    printf "available_start_thresholds\n\n" >> $batteryFileName
-    cat /sys/class/power_supply/BAT*/charge_control_start_available_thresholds >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
-    printf "available_end_thresholds\n\n" >> $batteryFileName
-    cat /sys/class/power_supply/BAT*/charge_control_end_available_thresholds >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
-else
-    printf "Modell unterstuetzt kein Flexicharger" >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
-fi
-
-if [ -f /sys/class/power_supply/BAT*/raw_cycle_count ]; then
-    printf "raw_cycle_count\n\n" >> $batteryFileName
-    cat /sys/class/power_supply/BAT*/raw_cycle_count >> $batteryFileName
-    raw_cycle_count=$(cat /sys/class/power_supply/BAT*/raw_cycle_count)
-    printf "\n\n\n" >> $batteryFileName
-
-    printf "raw_xif1\n\n" >> $batteryFileName
-    cat /sys/class/power_supply/BAT*/raw_xif1 >> $batteryFileName
-    raw_xif1=$(cat /sys/class/power_supply/BAT*/raw_xif1)
-    printf "\n\n\n" >> $batteryFileName
-
-    printf "raw_xif2\n\n" >> $batteryFileName
-    cat /sys/class/power_supply/BAT*/raw_xif2 >> $batteryFileName
-    raw_xif2=$(cat /sys/class/power_supply/BAT*/raw_xif2)
-    printf "\n\n\n" >> $batteryFileName
-
-    printf "Cycles:  $raw_cycle_count\n" >> $batteryFileName
-    printf "Health:  $(expr $raw_xif2 \* 100 / $raw_xif1)%%\n" >> $batteryFileName
-
-else
-    printf "Kein NB02 Geraet" >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
-fi
+printf "/lib/udev/rules.d/ files\n\n" >> $udevFileName
+cat /lib/udev/rules.d/* >> $udevFileName
 
 
-# Rename files
+### Rename files
 mv $audioFileName audio-$ticketnumber.txt
 mv $batteryFileName battery-$ticketnumber.txt
 mv $boardFileName boardinfo-$ticketnumber.txt
@@ -976,7 +996,7 @@ mv $udevFileName udev-$ticketnumber.txt
 zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 
-# Check Internet connection
+### Check Internet connection
 printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
 scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
 if [ $scriptisonline -eq 200 ]; then
