@@ -811,6 +811,24 @@ else
     printf "\n\n\n" >> $tomteFileName
 fi
 
+if [ -d /var/log/tuxedo-tomte-light/tuxedo-tomte-light ]; then
+    printf "tuxedo-tomte-light.log\n" >> $tomteFileName
+    cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light/tuxedo-tomte-light.log >> $tomteFileName
+    printf "\n\n\n" >> $tomteFileName
+
+    printf "tuxedo-tomte-light-packages.log\n" >> $tomteFileName
+    cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light/tuxedo-tomte-light-packages.log >> $tomteFileName
+    printf "\n\n\n" >> $tomteFileName
+
+    printf "tuxedo-tomte-light-startups.log\n" >> $tomteFileName
+    cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light/tuxedo-tomte-light-startups.log >> $tomteFileName
+    printf "\n\n\n" >> $tomteFileName
+
+else
+    printf "Tomte Light ist nicht installiert\n" >> $tomteFileName
+    printf "\n\n\n" >> $tomteFileName
+fi
+
 # $displayFileName section
 
 printf "glxinfo|grep vendor\n\n" >> $displayFileName
