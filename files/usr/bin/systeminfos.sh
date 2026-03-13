@@ -93,6 +93,9 @@ printf "\n\n" | tee -a $audioFileName $batteryFileName $boardFileName $displayFi
 
 ### $infoFileName Section
 
+printf "users\n\n" >> $infoFileName
+users >> $infoFileName
+
 printf "uname -a\n\n" >> $infoFileName
 uname -a >> $infoFileName
 
