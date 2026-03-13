@@ -304,6 +304,16 @@ printf "\n\n\n\n\n" >> $logFileName
 printf "systemctl status systemd-modules-load.service\n\n" >> $logFileName
 systemctl status systemd-modules-load.service >> $logFileName
 
+printf "\n\n\n\n\n" >> $logFileName
+
+if [ -d /var/crash ]; then
+   printf "/var/crash/\n\n" >> $infoFileName
+   la -la /var/crash/ >> $infoFileName
+   cat /var/crash/* >> $infoFileName
+   printf "\n\n\n" >> $infoFileName
+fi
+
+
 ### $boardFileName Section
 
 printf "BIOS date and time\n\n" >> $boardFileName
