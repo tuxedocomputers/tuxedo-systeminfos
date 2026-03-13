@@ -17,6 +17,25 @@ ci_deploy_user: "deploy-deb-tuxedo-systeminfos"
 ci_upload_dir: "tuxedo-systeminfos"
 
 changelog:
+  - version: "3.0.8"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-13 09:25:00
+    entries:
+      - "include tomte-light logs"
+  - version: "3.0.7"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-13 09:20:00
+    entries:
+      - "Add 'users' to '$infoFileName'"
+  - version: "3.0.6"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-05 10:45:00
+    entries:
+      - "Switch version scheme"
+      - "Add epoch"
   - version: "20260227.2.0"
     author: "Steven Seifried"
     date: 2026-02-27 13:33:00
