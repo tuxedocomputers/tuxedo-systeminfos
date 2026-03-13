@@ -17,6 +17,12 @@ ci_deploy_user: "deploy-deb-tuxedo-systeminfos"
 ci_upload_dir: "tuxedo-systeminfos"
 
 changelog:
+  - version: "3.0.10"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-13 17:10:00
+    entries:
+      - "Sort sections alphabetically for easier maintenance and better structure"
   - version: "3.0.9"
     epoch: 1
     author: "Steven Seifried"
