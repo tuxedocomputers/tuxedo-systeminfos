@@ -29,8 +29,7 @@ udevFileName=udevoutput.txt
 
 ### check root privileges
 if [ "$(id -u)" -ne 0 ]; then
-    printf "\e[31msysteminfos.sh muss mit root Rechten ausgefuehrt werden! / systeminfos.sh must be executed with root privileges! \e[1m\n"
-    printf "\e[37m\e[0m\n"
+    printf "\e[31msysteminfos.sh muss mit root Rechten ausgefuehrt werden! / systeminfos.sh must be executed with root privileges! \e[0m\n"
     exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh $0"
 fi
 
@@ -52,15 +51,15 @@ fi
 clear
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
-    printf "Das Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten! \n"
-    printf "Es werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt. \n"
-    printf "Bitte beachten Sie, dass Sie nur für TUXEDO OS und Ubuntu technischen Support von TUXEDO Computers erhalten. \n"
-    printf "Eventuell auftauchende Fehlermeldungen können Sie ignorieren. \n"
+    printf "%s\n" "Das Skript sammelt keinerlei persönliche Daten und keine Zugangsdaten!"
+    printf "%s\n" "Es werden lediglich Informationen über Ihre Hard- und Softwarekonfiguration gesammelt."
+    printf "%s\n" "Bitte beachten Sie, dass Sie nur für TUXEDO OS und Ubuntu technischen Support von TUXEDO Computers erhalten."
+    printf "%s\n" "Eventuell auftauchende Fehlermeldungen können Sie ignorieren."
 else
-    printf "The script does not collect any personal data and no access data! \n"
-    printf "Only information about your hardware and software configuration is collected. \n"
-    printf "Please note that you will only receive technical support for TUXEDO OS and Ubuntu from TUXEDO Computers. \n"
-    printf "You can ignore any error messages that may appear. \n"
+    printf "%s\n" "The script does not collect any personal data and no access data!"
+    printf "%s\n" "Only information about your hardware and software configuration is collected."
+    printf "%s\n" "Please note that you will only receive technical support for TUXEDO OS and Ubuntu from TUXEDO Computers."
+    printf "%s\n" "You can ignore any error messages that may appear."
 fi
 
 ### Wait 5 seconds before next textbox. Clear screen again before next textbox appears
@@ -68,15 +67,15 @@ sleep 5
 clear
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
-    printf "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen \n"
-    printf "Die Ticketnummer beginnt mit 99 und ist neun Stellen lang \n"
-    printf "Eingesendete Systeminformationen ohne gültige Ticketnummer können nicht bearbeitet werden und werden unbearbeitet geschlossen \n"
-    printf "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine E-Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen. \n"
+    printf "%s\n" "Wie lautet Ihre Ticketnummer? Mit [ENTER] bestätigen"
+    printf "%s\n" "Die Ticketnummer beginnt mit 99 und ist neun Stellen lang"
+    printf "%s\n" "Eingesendete Systeminformationen ohne gültige Ticketnummer können nicht bearbeitet werden und werden unbearbeitet geschlossen"
+    printf "%s\n" "Um eine Ticketnummer zu erhalten, schreiben Sie uns eine E-Mail an tux[at]tuxedocomputer.com mit Ihrem Anliegen."
 else
-    printf "What is your ticket number? Confirm with [ENTER] \n"
-    printf "The ticket number starts with 99 and is nine digits long \n"
-    printf "Submitted system information without a valid ticket number can't be processed and will be closed unprocessed \n"
-    printf "To get an ticket number you can contact us by e-mail to tux[at]tuxedocomputers.com \n"
+    printf "%s\n" "What is your ticket number? Confirm with [ENTER]"
+    printf "%s\n" "The ticket number starts with 99 and is nine digits long"
+    printf "%s\n" "Submitted system information without a valid ticket number can't be processed and will be closed unprocessed"
+    printf "%s\n" "To get an ticket number you can contact us by e-mail to tux[at]tuxedocomputers.com"
 fi
 
 if [ -z $ticketnumber ]; then
@@ -97,159 +96,126 @@ printf "\n\n" | tee -a $audioFileName $batteryFileName $boardFileName $displayFi
 
 ##### $audioFileName Section
 
-printf "aplay -l\n\n" >> $audioFileName
+printf "%s\n\n" "aplay -l" >> $audioFileName
 aplay -l >> $audioFileName
 
-printf "\n\n\n" >> $audioFileName
-
-printf "echo 1 > /sys/module/snd_hda_codec/parameters/dump_coef\n" >> $audioFileName
-printf "cat /proc/asound/card*/codec*\n\n" >> $audioFileName
+printf "\n\n\n%s\n" "echo 1 > /sys/module/snd_hda_codec/parameters/dump_coef" >> $audioFileName
+printf "%s\n\n" "cat /proc/asound/card*/codec*" >> $audioFileName
 echo 1 > /sys/module/snd_hda_codec/parameters/dump_coef
+printf "\n"
 cat /proc/asound/card*/codec* >> $audioFileName
 
-printf "\n\n\n" >> $audioFileName
-
-printf "lspci -v | grep -A7 -i "audio"\n\n" >> $audioFileName
+printf "\n\n\n%s\n\n" "lspci -v | grep -A7 -i "audio"" >> $audioFileName
 lspci -v | grep -A7 -i "audio" >> $audioFileName
 
-printf "\n\n\n" >> $audioFileName
-
-printf "pacmd list-sink-inputs\n\n" >> $audioFileName
+printf "\n\n\n%s\n\n" "pacmd list-sink-inputs" >> $audioFileName
 pacmd list-sink-inputs >> $audioFileName
 
-printf "\n\n\n" >> $audioFileName
-
-printf "pa-info\n\n" >> $audioFileName
+printf "\n\n\n%s\n\n" "pa-info" >> $audioFileName
 pa-info >> $audioFileName
 
-printf "\n\n\n" >> $audioFileName
-
-printf "arecord -l\n\n" >> $audioFileName
+printf "\n\n\n%s\n\n" "arecord -l" >> $audioFileName
 arecord -l >> $audioFileName
 
-printf "\n\n\n" >> $audioFileName
-
-printf "fuser -v /dev/snd/*\n\n" >> $audioFileName
+printf "\n\n\n%s\n\n" "fuser -v /dev/snd/*" >> $audioFileName
 fuser -v /dev/snd/* >> $audioFileName
 
 ##### $batteryFileName section
 
-printf "upower -d\n\n" >> $batteryFileName
+printf "%s\n\n" "upower -d" >> $batteryFileName
 upower -d >> $batteryFileName
 
 printf "\n\n\n" >> $batteryFileName
 
 if [ -f /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile ]; then
-    printf "charging_profile\n\n" >> $batteryFileName
+    printf "%s\n\n" "charging_profile" >> $batteryFileName
     cat /sys/devices/platform/tuxedo_keyboard/charging_profile/charging_profile >> $batteryFileName
     printf "\n\n\n" >> $batteryFileName
-
 else
-    printf "Modell unterstuetzt kein charging_profile" >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
+    printf "%s\n\n\n" "Modell unterstuetzt kein charging_profile" >> $batteryFileName
 fi
 
 if [ -f /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio ]; then
-    printf "charging_prio\n\n" >> $batteryFileName
+    printf "%s\n\n" "charging_prio" >> $batteryFileName
     cat /sys/devices/platform/tuxedo_keyboard/charging_priority/charging_prio >> $batteryFileName
     printf "\n\n\n" >> $batteryFileName
-
 else
-    printf "Modell unterstuetzt kein charging_prio" >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
+    printf "%s\n\n\n" "Modell unterstuetzt kein charging_prio" >> $batteryFileName
 fi
 
 if [ -f /sys/class/power_supply/BAT*/charge_type ]; then
-    printf "charge_type\n\n" >> $batteryFileName
+    printf "%s\n\n" "charge_type" >> $batteryFileName
     cat /sys/class/power_supply/BAT*/charge_type >> $batteryFileName
     printf "\n\n\n" >> $batteryFileName
 
-    printf "charge_control_start_threshold\n\n" >> $infoFilbatteryFileName
+    printf "%s\n\n" "charge_control_start_threshold" >> $infoFilbatteryFileName
     cat /sys/class/power_supply/BAT*/charge_control_start_threshold >> $batteryFileName
     printf "\n\n\n" >> $batteryFileName
 
-    printf "charge_control_end_threshold\n\n" >> $batteryFileName
+    printf "%s\n\n" "charge_control_end_threshold" >> $batteryFileName
     cat /sys/class/power_supply/BAT*/charge_control_end_threshold >> $batteryFileName
     printf "\n\n\n" >> $batteryFileName
 
-    printf "available_start_thresholds\n\n" >> $batteryFileName
+    printf "%s\n\n" "available_start_thresholds" >> $batteryFileName
     cat /sys/class/power_supply/BAT*/charge_control_start_available_thresholds >> $batteryFileName
     printf "\n\n\n" >> $batteryFileName
 
-    printf "available_end_thresholds\n\n" >> $batteryFileName
+    printf "%s\n\n" "available_end_thresholds" >> $batteryFileName
     cat /sys/class/power_supply/BAT*/charge_control_end_available_thresholds >> $batteryFileName
     printf "\n\n\n" >> $batteryFileName
 
 else
-    printf "Modell unterstuetzt kein Flexicharger" >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
+    printf "%s\n\n\n" "Modell unterstuetzt kein Flexicharger" >> $batteryFileName
 fi
 
 if [ -f /sys/class/power_supply/BAT*/raw_cycle_count ]; then
-    printf "raw_cycle_count\n\n" >> $batteryFileName
+    printf "%s\n\n" "raw_cycle_count" >> $batteryFileName
     cat /sys/class/power_supply/BAT*/raw_cycle_count >> $batteryFileName
     raw_cycle_count=$(cat /sys/class/power_supply/BAT*/raw_cycle_count)
-    printf "\n\n\n" >> $batteryFileName
-
-    printf "raw_xif1\n\n" >> $batteryFileName
+    
+    printf "\n\n\n%s\n\n" "raw_xif1" >> $batteryFileName
     cat /sys/class/power_supply/BAT*/raw_xif1 >> $batteryFileName
     raw_xif1=$(cat /sys/class/power_supply/BAT*/raw_xif1)
-    printf "\n\n\n" >> $batteryFileName
 
-    printf "raw_xif2\n\n" >> $batteryFileName
+    printf "\n\n\n%s\n\n" "raw_xif2" >> $batteryFileName
     cat /sys/class/power_supply/BAT*/raw_xif2 >> $batteryFileName
     raw_xif2=$(cat /sys/class/power_supply/BAT*/raw_xif2)
     printf "\n\n\n" >> $batteryFileName
 
-    printf "Cycles:  $raw_cycle_count\n" >> $batteryFileName
-    printf "Health:  $(expr $raw_xif2 \* 100 / $raw_xif1)%%\n" >> $batteryFileName
+    printf "%s\n" "Cycles:  $raw_cycle_count" >> $batteryFileName
+    printf "%s\n" "Health:  $(expr $raw_xif2 \* 100 / $raw_xif1)%%" >> $batteryFileName
 
 else
-    printf "Kein NB02 Geraet" >> $batteryFileName
-    printf "\n\n\n" >> $batteryFileName
-
+    printf "%s\n\n\n" "Kein NB02 Geraet" >> $batteryFileName
 fi
 
 
 ##### $boardFileName Section
 
-printf "BIOS date and time\n\n" >> $boardFileName
+printf "%s\n\n" "BIOS date and time" >> $boardFileName
 cat /sys/class/rtc/rtc0/date >> $boardFileName
 printf "\n"  >> $boardFileName
 cat /sys/class/rtc/rtc0/time >> $boardFileName
 
-printf "\n\n\n" >> $boardFileName
-
-printf "find /sys/class/dmi/id/ -maxdepth 1 -type f -print -exec cat {}  \; -exec echo \;\n\n" >> $boardFileName
+printf "\n\n\n%s\n\n" "find /sys/class/dmi/id/ -maxdepth 1 -type f -print -exec cat {}  \; -exec echo \;" >> $boardFileName
 find /sys/class/dmi/id/ -maxdepth 1 -type f -print -exec cat {}  \; -exec echo \; >> $boardFileName
 
-printf "\n\n\n" >> $boardFileName
-
-printf "dmidecode -t memory\n\n" >> $boardFileName
+printf "\n\n\n%s\n\n" "dmidecode -t memory" >> $boardFileName
 dmidecode -t memory >> $boardFileName
 
-printf "\n\n\n" >> $boardFileName
-
-printf "dmidecode\n\n" >> $boardFileName
+printf "\n\n\n%s\n\n" "dmidecode" >> $boardFileName
 dmidecode >> $boardFileName
 
 
 ##### $displayFileName section
 
-printf "glxinfo|grep vendor\n\n" >> $displayFileName
+printf "%s\n\n" "glxinfo|grep vendor" >> $displayFileName
 glxinfo|grep vendor >> $displayFileName
 
-printf "\n\n\n" >> $displayFileName
-
-printf "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)\n\n" >> $displayFileName
+printf "\n\n\n%s\n\n" "Display Info (/sys/kernel/debug/dri/*/i1915_display_info)" >> $displayFileName
 grep -A 100 "^Connector info" /sys/kernel/debug/dri/*/i915_display_info >> $displayFileName
 
-printf "\n\n\n" >> $displayFileName
-
-printf "Display Info colormgr\n\n"
+printf "\n\n\n%s\n\n" "Display Info colormgr"
 colormgr get-devices-by-kind display >> $displayFileName
 
 printf "\n\n\n" >> $displayFileName
@@ -257,14 +223,12 @@ printf "\n\n\n" >> $displayFileName
 for f in /sys/class/drm/card*-*/edid; do
     ls -la /sys/class/drm/card*-*/edid
     printf "\n\n" >> $displayFileName
-    printf "====================\n" >> $displayFileName
+    printf "%s\n" "====================" >> $displayFileName
     printf "Decoding: %s" $f >> $displayFileName
     printf "\n" >> $displayFileName
     cat $f | edid-decode >> $displayFileName
     printf "====================" >> $displayFileName
 done
-
-printf "\n\n\n" >> $displayFileName
 
 
 ##### $failogFilename Section
@@ -273,176 +237,129 @@ if [ -f /var/log/tuxedo-install.log ]; then
     cat /var/log/tuxedo-install.log >> $failogFilename
 
 else
-    printf "WebFAI Install-Log konnte nicht gefunden werden.\n" >> $failogFilename
-    printf "Moeglicherweise handelt es sich um keine WebFAI Installation.\n" >> $failogFilename
+    printf "%s\n" "WebFAI Install-Log konnte nicht gefunden werden." >> $failogFilename
+    printf "%s\n" "Moeglicherweise handelt es sich um keine WebFAI Installation." >> $failogFilename
 
 fi
 
 
 ##### $firmwareFileName Section
 
-printf "ls -l /lib/firmware\n\n" >> $firmwareFileName
+printf "%s\n\n" "ls -l /lib/firmware" >> $firmwareFileName
 ls -l /lib/firmware >> $firmwareFileName
 
-printf "\n\n\n" >> $firmwareFileName
-
-printf "dmesg|grep firmware\n\n" >> $firmwareFileName
+printf "\n\n\n%s\n\n" "dmesg|grep firmware" >> $firmwareFileName
 dmesg|grep firmware >> $firmwareFileName
 
 
 ##### $flatpakpackagesFileName
 
-printf "flatpak list --app --show-details\n\n" >> $flatpakpackagesFileName
+printf "%s\n\n" "flatpak list --app --show-details" >> $flatpakpackagesFileName
 flatpak list >> $flatpakpackagesFileName
 
 ##### $infoFileName Section
 
-printf "users\n\n" >> $infoFileName
+printf "%s\n\n" "users" >> $infoFileName
 users >> $infoFileName
 
-printf "uname -a\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "uname -a" >> $infoFileName
 uname -a >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "lsb_release -a\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "lsb_release -a" >> $infoFileName
 lsb_release -a >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "lscpu\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "lscpu" >> $infoFileName
 lscpu >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "lscpu -e\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "lscpu -e" >> $infoFileName
 lscpu -e >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "free -h\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "free -h" >> $infoFileName
 free -h >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "/sys/power/mem_sleep\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "/sys/power/mem_sleep" >> $infoFileName
 cat /sys/power/mem_sleep >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "lsusb\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "lsusb" >> $infoFileName
 lsusb >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "lsblk\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "lsblk" >> $infoFileName
 lsblk -d -o NAME,SIZE,TYPE,TRAN >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "fstab\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "fstab" >> $infoFileName
 egrep -iv "cifs|nfs|davfs|http" /etc/fstab >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "disk usage (df -h)\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "disk usage (df -h)" >> $infoFileName
 df -h >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "xinput\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "xinput" >> $infoFileName
 xinput >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "/etc/default/grub\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "/etc/default/grub" >> $infoFileName
 cat /etc/default/grub >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "/etc/default/grub.d\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "/etc/default/grub.d" >> $infoFileName
 cat /etc/default/grub.d/* >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "lsmod\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "lsmod" >> $infoFileName
 lsmod >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
 if [ -f /etc/modprobe.d/tuxedo_keyboard.conf ]; then
-    printf "tuxedo_keyboard.conf\n\n" >> $infoFileName
+    printf "%s\n\n" "tuxedo_keyboard.conf" >> $infoFileName
     cat /etc/modprobe.d/tuxedo_keyboard.conf >> $infoFileName
     printf "\n\n\n" >> $infoFileName
-
 else
-    printf "TUXEDO Keyboard scheint nicht installiert zu sein" >> $infoFileName
-    printf "\n\n\n" >> $infoFileName
-
+    printf "%s\n\n\n" "TUXEDO Drivers scheint nicht installiert zu sein" >> $infoFileName
 fi
 
-printf "dkms status\n\n" >> $infoFileName
+printf "%s\n\n" "dkms status" >> $infoFileName
 dkms status >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "prime-select query\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "prime-select query" >> $infoFileName
 prime-select query >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "XDG_SESSION_TYPE\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "XDG_SESSION_TYPE" >> $infoFileName
 echo $XDG_SESSION_TYPE >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "Desktop\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "Desktop" >> $infoFileName
 echo $XDG_CURRENT_DESKTOP >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "Display-Manager\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "Display-Manager" >> $infoFileName
 cat /etc/systemd/system/display-manager.service >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "xrandr\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "xrandr" >> $infoFileName
 xrandr >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "lshw\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "lshw" >> $infoFileName
 lshw >> $infoFileName
 
-printf "\n\n\n" >> $infoFileName
-
-printf "journalctl -k --grep=tpm\n\n" >> $infoFileName
+printf "\n\n\n%s\n\n" "journalctl -k --grep=tpm" >> $infoFileName
 journalctl -k --grep=tpm >> $infoFileName
 
 printf "\n\n\n" >> $infoFileName
 
 if [ -d /sys/class/nvme ]; then
-    printf "nvme list\n\n" >> $infoFileName
+    printf "%s\n\n" "nvme list" >> $infoFileName
     nvme list >> $infoFileName
     printf "\n\n\n" >> $infoFileName
 fi
 
 if [ -d /sys/firmware/efi ]; then
-   printf "efibootmgr\n\n" >> $infoFileName
+   printf "%s\n\n" "efibootmgr" >> $infoFileName
    efibootmgr -v >> $infoFileName
    printf "\n\n\n" >> $infoFileName
 else
-   printf "Es wird Legacy genutzt" >> $infoFileName
-   printf "\n\n\n" >> $infoFileName
+   printf "%s\n\n\n" "Es wird Legacy genutzt" >> $infoFileName
 fi
 
-printf "lm-sensors\n\n" >> $infoFileName
+printf "%s\n\n" "lm-sensors" >> $infoFileName
 sensors >> $infoFileName
 
 
 if [ -d /var/crash ]; then
-    printf "\n\n\n" >> $infoFileName
-    printf "/var/crash/\n\n" >> $infoFileName
+    printf "\n\n\n%s\n\n" "/var/crash/" >> $infoFileName
     la -la /var/crash/ >> $infoFileName
     cat /var/crash/* >> $infoFileName
 fi
@@ -451,45 +368,39 @@ fi
 
 
 if [ -f /var/log/fai-tomte.log ]; then
-    printf "cat /var/log/fai-tomte.log\n\n" >> $logFileName
+    printf "%s\n\n" "cat /var/log/fai-tomte.log" >> $logFileName
     cat /var/log/fai-tomte.log >> $logFileName
     printf "\n\n\n" >> $logFileName
-
 else
-    printf "Tomte FAI Log konnte nicht gefunden werden.\n" >> $logFileName
-    printf "Moeglicherweise handelt es sich nicht um eine WebFAI Installation oder diese Distribution wird nicht von Tomte unterstuetzt.\n" >> $logFileName
+    printf "%s\n" "Tomte FAI Log konnte nicht gefunden werden." >> $logFileName
+    printf "%s\n" "Moeglicherweise handelt es sich nicht um eine WebFAI Installation oder diese Distribution wird nicht von Tomte unterstuetzt." >> $logFileName
     printf "\n\n\n" >> $logFileName
-
 fi
 
 if [ -f /var/log/tomte/tomte.log ]; then
-    printf "/var/log/tomte/tomte.log\n\n" >> $logFileName
+    printf "%s\n\n" "/var/log/tomte/tomte.log" >> $logFileName
     tail --lines=1000 /var/log/tomte/tomte.log >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 else
-    printf "Tomte Log konnte nicht gefunden werden.\n" >> $logFileName
-    printf "Moeglicherweise ist Tomte nicht installiert.\n" >> $logFileName
+    printf "%s\n" "Tomte Log konnte nicht gefunden werden." >> $logFileName
+    printf "%s\n" "Moeglicherweise ist Tomte nicht installiert." >> $logFileName
     printf "\n\n\n" >> $logFileName
 
 fi
 
-printf "/var/log/syslog\n\n" >> $logFileName
+printf "%s\n\n" "/var/log/syslog" >> $logFileName
 tail --lines=1000 /var/log/syslog >> $logFileName
 
-printf "\n\n\n\n\n" >> $logFileName
-
-printf "journalctl --system -e\n\n" >> $logFileName
+printf "\n\n\n%s\n\n" "journalctl --system -e" >> $logFileName
 journalctl --system -e >> $logFileName
 
-printf "\n\n\n\n\n" >> $logFileName
-
-printf "/var/log/boot.log\n\n" >> $logFileName
+printf "\n\n\n%s\n\n" "/var/log/boot.log" >> $logFileName
 tail --lines=1000 /var/log/boot.log >> $logFileName
 
 printf "\n\n\n\n\n" >> $logFileName
 
-printf "/var/log/Xorg.0.log\n\n" >> $logFileName
+printf "%s\n\n" "/var/log/Xorg.0.log" >> $logFileName
 if [ $(wc --lines /var/log/Xorg.0.log | cut --delimiter=" " --fields=1) -le 2500 ]; then
     cat /var/log/Xorg.0.log >> $logFileName
 else
@@ -498,67 +409,46 @@ else
     tail --lines=1250 /var/log/Xorg.0.log >> $logFileName
 fi
 
-printf "\n\n\n\n\n" >> $logFileName
-
-printf "dmesg\n\n" >> $logFileName
+printf "\n\n\n%s\n\n" "dmesg" >> $logFileName
 dmesg >> $logFileName
 
-printf "\n\n\n\n\n" >> $logFileName
-
-printf "systemctl status systemd-modules-load.service\n\n" >> $logFileName
+printf "\n\n\n%s\n\n" "systemctl status systemd-modules-load.service" >> $logFileName
 systemctl status systemd-modules-load.service >> $logFileName
-
-printf "\n\n\n\n\n" >> $logFileName
 
 
 ##### $lspciFileName Section
 
-printf "lspci -vvnn\n\n" >> $lspciFileName
+printf "%s\n\n" "lspci -vvnn" >> $lspciFileName
 lspci -vvnn >> $lspciFileName
 
 
 ##### $modprobeFileName Section
 
-printf "/etc/modprobe.d/\n\n" >> $modprobeFileName
+printf "%s\n\n" "/etc/modprobe.d/" >> $modprobeFileName
 ls /etc/modprobe.d/ >> $modprobeFileName
 
-printf "\n\n\n" >> $modprobeFileName
-
-printf "/etc/modprobe.d/ files\n\n" >> $modprobeFileName
+printf "\n\n\n%s\n\n" "/etc/modprobe.d/ files" >> $modprobeFileName
 cat /etc/modprobe.d/* >> $modprobeFileName
 
 
 ##### $networkFileName Section
 
-printf "\n\n\n" >> $networkFileName
-
-echo 'lspci -nnk | grep -E -A3 -i "Ethernet|Network"' >> $networkFileName
-printf "\n\n" >> $networkFileName
+printf "\n\n\n%s\n\n" "lspci -nnk | grep -E -A3 -i "Ethernet|Network"" >> $networkFileName
 lspci -nnk | grep -E -A3 -i "Ethernet|Network" >> $networkFileName
 
-printf "\n\n\n" >> $networkFileName
-
-printf "ip addr show\n\n" >> $networkFileName
+printf "\n\n\n%s\n\n" "ip addr show" >> $networkFileName
 ip addr show >> $networkFileName
 
-printf "\n\n\n" >> $networkFileName
-
-printf "ip route show\n\n" >> $networkFileName
+printf "\n\n\n%s\n\n" "ip route show" >> $networkFileName
 ip route show >> $networkFileName
 
-printf "\n\n\n" >> $networkFileName
-
-printf "rfkill list\n\n" >> $networkFileName
+printf "\n\n\n%s\n\n" "rfkill list" >> $networkFileName
 rfkill list >> $networkFileName
 
-printf "\n\n\n" >> $networkFileName
-
-printf "iwconfig\n\n" >> $networkFileName
+printf "\n\n\n%s\n\n"iwconfig" >> $networkFileName
 iwconfig >> $networkFileName
 
-printf "\n\n\n" >> $networkFileName
-
-printf "mmcli\n\n" >> $networkFileName
+printf "\n\n\n%s\n\n" "mmcli" >> $networkFileName
 mmcli -m 0 | grep -v -e "imei:*" -e "equipment id:*" >> $networkFileName
 
 ##### $normalpackagesFileName Section
@@ -568,408 +458,294 @@ printf "\n\n\n" >> $normalpackagesFileName
 # TUXEDO_OS
 if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
 
-    printf "sources.list\n\n" >> $normalpackagesFileName
+    printf "%s\n\n" "sources.list" >> $normalpackagesFileName
     cat /etc/apt/sources.list >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/etc/apt/sources.list.d\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d" >> $normalpackagesFileName
     ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
     cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l" >> $normalpackagesFileName
     dpkg -l >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l | grep tuxedo\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l | grep tuxedo" >> $normalpackagesFileName
     dpkg -l|grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l | grep nvidia\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l | grep nvidia" >> $normalpackagesFileName
     dpkg -l|grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/var/log/apt/history.log\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/var/log/apt/history.log" >> $normalpackagesFileName
     cat /var/log/apt/history.log >> $normalpackagesFileName
 
 # Ubuntu
 elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
 
-    printf "sources.list\n\n" >> $normalpackagesFileName
+    printf "%s\n\n" "sources.list" >> $normalpackagesFileName
     cat /etc/apt/sources.list >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/etc/apt/sources.list.d\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d" >> $normalpackagesFileName
     ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
     cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l" >> $normalpackagesFileName
     dpkg -l >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l | grep tuxedo\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l | grep tuxedo" >> $normalpackagesFileName
     dpkg -l|grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l | grep nvidia\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l | grep nvidia" >> $normalpackagesFileName
     dpkg -l|grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/var/log/apt/history.log\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/var/log/apt/history.log" >> $normalpackagesFileName
     cat /var/log/apt/history.log >> $normalpackagesFileName
 
 # elementary OS
 elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
 
-    printf "sources.list\n\n" >> $normalpackagesFileName
+    printf "%s\n\n" "sources.list" >> $normalpackagesFileName
     cat /etc/apt/sources.list >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/etc/apt/sources.list.d\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d" >> $normalpackagesFileName
     ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
     cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l" >> $normalpackagesFileName
     dpkg -l >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l | grep tuxedo\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l | grep tuxedo" >> $normalpackagesFileName
     dpkg -l|grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l | grep nvidia\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l | grep nvidia" >> $normalpackagesFileName
     dpkg -l|grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/var/log/apt/history.log\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/var/log/apt/history.log" >> $normalpackagesFileName
     cat /var/log/apt/history.log >> $normalpackagesFileName
 
 # KDE neon
 elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
 
-    printf "sources.list\n\n" >> $normalpackagesFileName
+    printf "%s\n\n" "sources.list" >> $normalpackagesFileName
     cat /etc/apt/sources.list >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/etc/apt/sources.list.d\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d" >> $normalpackagesFileName
     ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
     cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l" >> $normalpackagesFileName
     dpkg -l >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l | grep tuxedo\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l | grep tuxedo" >> $normalpackagesFileName
     dpkg -l|grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l | grep nvidia\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l | grep nvidia" >> $normalpackagesFileName
     dpkg -l|grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/var/log/apt/history.log\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/var/log/apt/history.log" >> $normalpackagesFileName
     cat /var/log/apt/history.log >> $normalpackagesFileName
 
 # Linux Mint
 elif [ "$(. /etc/os-release; echo $NAME)" = "Linux Mint" ]; then
 
-    printf "sources.list\n\n" >> $normalpackagesFileName
+    printf "%s\n\n" "sources.list" >> $normalpackagesFileName
     cat /etc/apt/sources.list >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/etc/apt/sources.list.d\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d" >> $normalpackagesFileName
     ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/etc/apt/sources.list.d ppa\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
     cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l" >> $normalpackagesFileName
     dpkg -l >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l | grep tuxedo\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l | grep tuxedo" >> $normalpackagesFileName
     dpkg -l|grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dpkg -l | grep nvidia\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dpkg -l | grep nvidia" >> $normalpackagesFileName
     dpkg -l|grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/var/log/apt/history.log\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/var/log/apt/history.log" >> $normalpackagesFileName
     cat /var/log/apt/history.log >> $normalpackagesFileName
 
 
 # openSUSE
 elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
 
-    printf "/etc/zypp/repos.d\n\n" >> $normalpackagesFileName
+    printf "%s\n\n" "/etc/zypp/repos.d" >> $normalpackagesFileName
     ls -al /etc/zypp/repos.d/ >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "zypper sources lists\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "zypper sources lists" >> $normalpackagesFileName
     cat /etc/zypp/repos.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "rpm -qa\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "rpm -qa" >> $normalpackagesFileName
     rpm -qa >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "rpm -qa | grep tuxedo\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "rpm -qa | grep tuxedo" >> $normalpackagesFileName
     rpm -qa | grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "rpm -qa | grep nvidia\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "rpm -qa | grep nvidia" >> $normalpackagesFileName
     rpm -qa | grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/var/log/zypp/history\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/var/log/zypp/history" >> $normalpackagesFileName
     cat /var/log/zypp/history >> $normalpackagesFileName
 
 # Fedora
 elif [ "$(. /etc/os-release; echo $NAME)" = "Fedora Linux" ]; then
 
-    printf "/etc/yum.repos.d\n\n" >> $normalpackagesFileName
+    printf "%s\n\n" "/etc/yum.repos.d" >> $normalpackagesFileName
     ls -al /etc/yum.repos.d/ >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "dnf sources lists\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "dnf sources lists" >> $normalpackagesFileName
     cat /etc/yum.repos.d/* >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "rpm -qa\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "rpm -qa" >> $normalpackagesFileName
     rpm -qa >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "rpm -qa | grep tuxedo\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "rpm -qa | grep tuxedo" >> $normalpackagesFileName
     rpm -qa | grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "rpm -qa | grep nvidia\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "rpm -qa | grep nvidia" >> $normalpackagesFileName
     rpm -qa | grep nvidia >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "/var/log/dnf.log\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n""/var/log/dnf.log" >> $normalpackagesFileName
     cat /var/log/dnf.log >> $normalpackagesFileName
 
-    printf "/var/log/dnf.librepo.log\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/var/log/dnf.librepo.log" >> $normalpackagesFileName
     cat /var/log/dnf.librepo.log >> $normalpackagesFileName
 
-    printf "/var/log/dnf.rpm.log\n\n" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "/var/log/dnf.rpm.log" >> $normalpackagesFileName
     cat /var/log/dnf.rpm.log >> $normalpackagesFileName
 
 # Manjaro
 elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
 
-    printf "cat /etc/pacman.conf" >> $normalpackagesFileName
+    printf "%s\n\n" "cat /etc/pacman.conf" >> $normalpackagesFileName
     cat /etc/pacman.conf >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "pacman -Qqe" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "pacman -Qqe" >> $normalpackagesFileName
     pacman -Qqe >> $normalpackagesFileName
 
-    printf "pacman -Qqe | grep tuxedo" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "pacman -Qqe | grep tuxedo" >> $normalpackagesFileName
     pacman -Qqe | grep tuxedo >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
-    printf "pacman Repo's" >> $normalpackagesFileName
+    printf "\n\n\n%s\n\n" "pacman Repos" >> $normalpackagesFileName
     cat /etc/pacman.conf | grep -E 'core|extra|community|multilib' >> $normalpackagesFileName
 
-    printf "\n\n\n" >> $normalpackagesFileName
-
+    printf "\n\n\n%s\n\n" "pacman logs"
     cat /var/log/pacman.log >> $normalpackagesFileName
     printf "\n\n\n" >> $normalpackagesFileName
 
 else
-    printf "Nicht unterstuetze Distribution! Ueberspringe...\n"
-    printf "Unsupported Distribution! Skipping... \n\n\n"
+    printf "%s\n" "Nicht unterstuetze Distribution! Ueberspringe..."
+    printf "%s\n\n\n" "Unsupported Distribution! Skipping..."
 fi
 
 
 ##### $securebootFileName section
 
-printf "mokutil --sb-state\n\n" >> $securebootFileName
+printf "%s\n\n" "mokutil --sb-state" >> $securebootFileName
 mokutil --sb-state >> $securebootFileName
 
-printf "\n\n\n" >> $securebootFileName
-
-printf "mokutil --pk\n\n" >> $securebootFileName
+printf "\n\n\n%s\n\n" "mokutil --pk" >> $securebootFileName
 mokutil --pk >> $securebootFileName
 
-printf "\n\n\n" >> $securebootFileName
-
-printf "mokutil --kek\n\n" >> $securebootFileName
+printf "\n\n\n%s\n\n" "mokutil --kek" >> $securebootFileName
 mokutil --kek >> $securebootFileName
 
-printf "\n\n\n" >> $securebootFileName
-
-printf "mokutil --db\n\n" >> $securebootFileName
+printf "\n\n\n%s\n\n" "mokutil --db" >> $securebootFileName
 mokutil --db >> $securebootFileName
 
-printf "\n\n\n" >> $securebootFileName
-
-printf "mokutil --dbx\n\n" >> $securebootFileName
+printf "\n\n\n%s\n\n" "mokutil --dbx" >> $securebootFileName
 mokutil --dbx >> $securebootFileName
 
-printf "\n\n\n" >> $securebootFileName
-
-printf "mokutil --list-enrolled\n\n" >> $securebootFileName
+printf "\n\n\n%s\n\n" "mokutil --list-enrolled" >> $securebootFileName
 mokutil --list-enrolled >> $securebootFileName
 
-printf "\n\n\n" >> $securebootFileName
-
-printf "mokutil --list-new\n\n" >> $securebootFileName
+printf "\n\n\n%s\n\n" "mokutil --list-new" >> $securebootFileName
 mokutil --list-new >> $securebootFileName
 
-printf "\n\n\n" >> $securebootFileName
-
-printf "mokutil --list-delete\n\n" >> $securebootFileName
+printf "\n\n\n%s\n\n" "mokutil --list-delete" >> $securebootFileName
 mokutil --list-delete >> $securebootFileName
 
-printf "\n\n\n" >> $securebootFileName
-
-printf "mokutil --mokx\n\n" >> $securebootFileName
+printf "\n\n\n%s\n\n" "mokutil --mokx" >> $securebootFileName
 mokutil --mokx >> $securebootFileName
-
-printf "\n\n\n" >> $securebootFileName
 
 
 ##### $snappackagesFileName
 
-printf "snap list\n\n" >> $snappackagesFileName
+printf "%s\n\n" "snap list" >> $snappackagesFileName
 snap list >> $snappackagesFileName
 
 
 ##### $tccFileName Section
 
-printf "/etc/tcc/settings\n\n" >> $tccFileName
+printf "%s\n\n" "/etc/tcc/settings" >> $tccFileName
 cat /etc/tcc/settings | jq >> $tccFileName
 
-printf "\n\n\n" >> $tccFileName
-
-printf "/etc/tcc/profiless\n\n" >> $tccFileName
+printf "\n\n\n%s\n\n" "/etc/tcc/profiles" >> $tccFileName
 cat /etc/tcc/profiles | jq >> $tccFileName
 
-printf "\n\n\n" >> $tccFileName
-
-printf "systemctl is-active tccd.service\n\n" >> $tccFileName
+printf "\n\n\n%s\n\n" "systemctl is-active tccd.service" >> $tccFileName
 systemctl is-active tccd.service >> $tccFileName
 
 
 ##### $tomteFileName section
 
-printf "tuxedo-tomte list\n\n" >> $tomteFileName
+printf "%s\n\n" "tuxedo-tomte list" >> $tomteFileName
 tuxedo-tomte list >> $tomteFileName
 
 printf "\n\n\n" >> $tomteFileName
 
 if [ -f /etc/tomte/AUTOMATIC ]; then
-    printf "Tomte wird in den vorgesehenen Standardeinstellungen verwendet\n" >> $tomteFileName
+    printf "%s\n" "Tomte wird in den vorgesehenen Standardeinstellungen verwendet" >> $tomteFileName
     printf "\n\n\n" >> $tomteFileName
 elif [ -f /etc/tomte/DONT_CONFIGURE ]; then
-    printf "Tomte ist so konfiguriert, dass nur die als "notwendig" (prerequisite) markierten Module konfiguriert werden\n" >> $tomteFileName
+    printf "%s\n" "Tomte ist so konfiguriert, dass nur die als "notwendig" (prerequisite) markierten Module konfiguriert werden" >> $tomteFileName
     printf "\n\n\n" >> $tomteFileName
 elif [ -f /etc/tomte/UPDATES_ONLY ]; then
-    printf "Tomte ist so konfiguriert, dass nur Aktualisierungen ueber Tomte verarbeitet werden\n" >> $tomteFileName
+    printf "%s\n" "Tomte ist so konfiguriert, dass nur Aktualisierungen ueber Tomte verarbeitet werden" >> $tomteFileName
     printf "\n\n\n" >> $tomteFileName
 else
-    printf "Tomte wird in den Standardeinstellungen verwendet\n" >> $tomteFileName
+    printf "%s\n" "Tomte wird in den Standardeinstellungen verwendet" >> $tomteFileName
     printf "\n\n\n" >> $tomteFileName
 fi
 
 if [ -d /var/log/tuxedo-tomte-light/tuxedo-tomte-light ]; then
-    printf "tuxedo-tomte-light.log\n" >> $tomteFileName
+    printf "%s\n" "tuxedo-tomte-light.log" >> $tomteFileName
     cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light/tuxedo-tomte-light.log >> $tomteFileName
-    printf "\n\n\n" >> $tomteFileName
-
-    printf "tuxedo-tomte-light-packages.log\n" >> $tomteFileName
+    
+    printf "\n\n\n%s\n\n" "tuxedo-tomte-light-packages.log" >> $tomteFileName
     cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light/tuxedo-tomte-light-packages.log >> $tomteFileName
-    printf "\n\n\n" >> $tomteFileName
-
-    printf "tuxedo-tomte-light-startups.log\n" >> $tomteFileName
+    
+    printf "\n\n\n%s\n\n" "tuxedo-tomte-light-startups.log" >> $tomteFileName
     cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light/tuxedo-tomte-light-startups.log >> $tomteFileName
     printf "\n\n\n" >> $tomteFileName
-
 else
-    printf "Tomte Light ist nicht installiert\n" >> $tomteFileName
+    printf "%s\n" "Tomte Light ist nicht installiert" >> $tomteFileName
     printf "\n\n\n" >> $tomteFileName
 fi
 
 
 ##### $udevFileName Section
 
-printf "/etc/udev/rules.d/\n\n" >> $udevFileName
+printf "%s\n\n" "/etc/udev/rules.d/" >> $udevFileName
 ls /etc/udev/rules.d/ >> $udevFileName
 
-printf "\n\n\n" >> $udevFileName
-
-printf "/etc/udev/rules.d/ files\n\n" >> $udevFileName
+printf "\n\n\n%s\n\n" "/etc/udev/rules.d/ files" >> $udevFileName
 cat /etc/udev/rules.d/* >> $udevFileName
 
-printf "/lib/udev/rules.d/\n\n" >> $udevFileName
+printf "\n\n\n%s\n\n" "/lib/udev/rules.d/" >> $udevFileName
 ls /lib/udev/rules.d/ >> $udevFileName
 
-printf "\n\n\n" >> $udevFileName
-
-printf "/lib/udev/rules.d/ files\n\n" >> $udevFileName
+printf "\n\n\n%s\n\n" "/lib/udev/rules.d/ files" >> $udevFileName
 cat /lib/udev/rules.d/* >> $udevFileName
 
 
@@ -1013,15 +789,13 @@ curl -k -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticket
 rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
-    printf "\n"
-    printf "Systeminfos erfolgreich uebermittelt. \n"
-    printf "Wir werden die eingesendeten Systeminfos nun auswerten und uns bei Ihnen melden. \n"
-    printf "Bitte haben Sie etwas Geduld. \n"
+    printf "\n%s\n" "Systeminfos erfolgreich uebermittelt."
+    printf "%s\n" "Wir werden die eingesendeten Systeminfos nun auswerten und uns bei Ihnen melden."
+    printf "%s\n" "Bitte haben Sie etwas Geduld."
 else
-    printf "\n"
-    printf "Systeminformations successfully transferred. \n"
-    printf "We will now evaluate the submitted system information and get back to you. \n"
-    printf "Please be patient. \n"
+    printf "\n%s\n" "Systeminformations successfully transferred."
+    printf "%s\n" "We will now evaluate the submitted system information and get back to you."
+    printf "%s\n" "Please be patient."
 fi
 
 unset LC_ALL
