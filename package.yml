@@ -17,6 +17,12 @@ ci_deploy_user: "deploy-deb-tuxedo-systeminfos"
 ci_upload_dir: "tuxedo-systeminfos"
 
 changelog:
+  - version: "3.0.11"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-17 09:15:00
+    entries:
+      - "Replace most printf commands for easier maintenance and better code readability"
   - version: "3.0.10"
     epoch: 1
     author: "Steven Seifried"
