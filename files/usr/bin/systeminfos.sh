@@ -103,7 +103,11 @@ printf "\n\n\n%s\n" "echo 1 > /sys/module/snd_hda_codec/parameters/dump_coef" >>
 printf "%s\n\n" "cat /proc/asound/card*/codec*" >> $audioFileName
 echo 1 > /sys/module/snd_hda_codec/parameters/dump_coef
 printf "\n"
-cat /proc/asound/card*/codec* >> $audioFileName
+printf "\n\n\n%s" "/proc/asound/card*/codec* files" >> $audioFileName
+for f in /proc/asound/card*/codec*; do
+    printf "\n\n\n=== %s ===\n\n" "$f" >> $audioFileName
+    cat "$f" >> $audioFileName
+done
 
 printf "\n\n\n%s\n\n" "lspci -v | grep -A7 -i "audio"" >> $audioFileName
 lspci -v | grep -A7 -i "audio" >> $audioFileName
@@ -298,8 +302,11 @@ xinput >> $infoFileName
 printf "\n\n\n%s\n\n" "/etc/default/grub" >> $infoFileName
 cat /etc/default/grub >> $infoFileName
 
-printf "\n\n\n%s\n\n" "/etc/default/grub.d" >> $infoFileName
-cat /etc/default/grub.d/* >> $infoFileName
+printf "\n\n\n%s" "/etc/default/grub.d" >> $infoFileName
+for f in /etc/default/grub.d/*; do
+    printf "\n\n\n=== %s ===\n\n" "$f" >> $infoFileName
+    cat "$f" >> $infoFileName
+done
 
 printf "\n\n\n%s\n\n" "lsmod" >> $infoFileName
 lsmod >> $infoFileName
@@ -360,8 +367,12 @@ sensors >> $infoFileName
 
 if [ -d /var/crash ]; then
     printf "\n\n\n%s\n\n" "/var/crash/" >> $infoFileName
-    la -la /var/crash/ >> $infoFileName
-    cat /var/crash/* >> $infoFileName
+    ls -la /var/crash/ >> $infoFileName
+    printf "\n\n\n%s" "/var/crash/" >> $infoFileName
+    for f in /var/crash/*; do
+        printf "\n\n\n=== %s ===\n\n" "$f" >> $infoFileName
+        cat "$f" >> $infoFileName
+    done
 fi
 
 ##### $logFileName Section
@@ -427,8 +438,11 @@ lspci -vvnn >> $lspciFileName
 printf "%s\n\n" "/etc/modprobe.d/" >> $modprobeFileName
 ls /etc/modprobe.d/ >> $modprobeFileName
 
-printf "\n\n\n%s\n\n" "/etc/modprobe.d/ files" >> $modprobeFileName
-cat /etc/modprobe.d/* >> $modprobeFileName
+printf "\n\n\n%s" "/etc/modprobe.d/ files" >> $modprobeFileName
+for f in /etc/modprobe.d/*; do
+    printf "\n\n\n=== %s ===\n\n" "$f" >> $modprobeFileName
+    cat "$f" >> $modprobeFileName
+done
 
 
 ##### $networkFileName Section
@@ -464,8 +478,11 @@ if [ "$(. /etc/os-release; echo $NAME)" = "TUXEDO OS" ]; then
     printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d" >> $normalpackagesFileName
     ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
-    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
+    printf "\n\n\n%s" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
+    for f in /etc/apt/sources.list.d/*; do
+        printf "\n\n\n=== %s ===\n\n" "$f"  >> $normalpackagesFileName
+        cat "$f"  >> $normalpackagesFileName
+    done
 
     printf "\n\n\n%s\n\n" "dpkg -l" >> $normalpackagesFileName
     dpkg -l >> $normalpackagesFileName
@@ -488,8 +505,11 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Ubuntu" ]; then
     printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d" >> $normalpackagesFileName
     ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
-    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
+    printf "\n\n\n%s" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
+    for f in /etc/apt/sources.list.d/*; do
+        printf "\n\n\n=== %s ===\n\n" "$f"  >> $normalpackagesFileName
+        cat "$f"  >> $normalpackagesFileName
+    done
 
     printf "\n\n\n%s\n\n" "dpkg -l" >> $normalpackagesFileName
     dpkg -l >> $normalpackagesFileName
@@ -512,8 +532,11 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "elementary OS" ]; then
     printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d" >> $normalpackagesFileName
     ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
-    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
+    printf "\n\n\n%s" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
+    for f in /etc/apt/sources.list.d/*; do
+        printf "\n\n\n=== %s ===\n\n" "$f"  >> $normalpackagesFileName
+        cat "$f"  >> $normalpackagesFileName
+    done
 
     printf "\n\n\n%s\n\n" "dpkg -l" >> $normalpackagesFileName
     dpkg -l >> $normalpackagesFileName
@@ -536,8 +559,11 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "KDE neon" ]; then
     printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d" >> $normalpackagesFileName
     ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
-    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
+    printf "\n\n\n%s" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
+    for f in /etc/apt/sources.list.d/*; do
+        printf "\n\n\n=== %s ===\n\n" "$f"  >> $normalpackagesFileName
+        cat "$f"  >> $normalpackagesFileName
+    done
 
     printf "\n\n\n%s\n\n" "dpkg -l" >> $normalpackagesFileName
     dpkg -l >> $normalpackagesFileName
@@ -560,8 +586,11 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Linux Mint" ]; then
     printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d" >> $normalpackagesFileName
     ls /etc/apt/sources.list.d >> $normalpackagesFileName
 
-    printf "\n\n\n%s\n\n" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
-    cat /etc/apt/sources.list.d/* >> $normalpackagesFileName
+    printf "\n\n\n%s" "/etc/apt/sources.list.d ppa" >> $normalpackagesFileName
+    for f in /etc/apt/sources.list.d/*; do
+        printf "\n\n\n=== %s ===\n\n" "$f"  >> $normalpackagesFileName
+        cat "$f"  >> $normalpackagesFileName
+    done
 
     printf "\n\n\n%s\n\n" "dpkg -l" >> $normalpackagesFileName
     dpkg -l >> $normalpackagesFileName
@@ -582,8 +611,11 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "openSUSE Leap" ]; then
     printf "%s\n\n" "/etc/zypp/repos.d" >> $normalpackagesFileName
     ls -al /etc/zypp/repos.d/ >> $normalpackagesFileName
 
-    printf "\n\n\n%s\n\n" "zypper sources lists" >> $normalpackagesFileName
-    cat /etc/zypp/repos.d/* >> $normalpackagesFileName
+    printf "\n\n\n%s" "zypper sources lists" >> $normalpackagesFileName
+    for f in /etc/zypp/repos.d/*; do
+        printf "\n\n\n=== %s ===\n\n" "$f" >> $normalpackagesFileName
+        cat "$f" >> $normalpackagesFileName
+    done
 
     printf "\n\n\n%s\n\n" "rpm -qa" >> $normalpackagesFileName
     rpm -qa >> $normalpackagesFileName
@@ -603,8 +635,11 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Fedora Linux" ]; then
     printf "%s\n\n" "/etc/yum.repos.d" >> $normalpackagesFileName
     ls -al /etc/yum.repos.d/ >> $normalpackagesFileName
 
-    printf "\n\n\n%s\n\n" "dnf sources lists" >> $normalpackagesFileName
-    cat /etc/yum.repos.d/* >> $normalpackagesFileName
+    printf "\n\n\n%s" "dnf sources lists" >> $normalpackagesFileName
+    for f in /etc/yum.repos.d/*; do
+        printf "\n\n\n=== %s ===\n\n" "$f" >> $normalpackagesFileName
+        cat "$f" >> $normalpackagesFileName
+    done
 
     printf "\n\n\n%s\n\n" "rpm -qa" >> $normalpackagesFileName
     rpm -qa >> $normalpackagesFileName
@@ -739,14 +774,20 @@ fi
 printf "%s\n\n" "/etc/udev/rules.d/" >> $udevFileName
 ls /etc/udev/rules.d/ >> $udevFileName
 
-printf "\n\n\n%s\n\n" "/etc/udev/rules.d/ files" >> $udevFileName
-cat /etc/udev/rules.d/* >> $udevFileName
+printf "\n\n\n%s" "/etc/udev/rules.d/ files" >> $udevFileName
+for f in /etc/udev/rules.d/*; do
+    printf "\n\n\n=== %s ===\n\n" "$f" >> $udevFileName
+    cat "$f" >> $udevFileName
+done
 
 printf "\n\n\n%s\n\n" "/lib/udev/rules.d/" >> $udevFileName
 ls /lib/udev/rules.d/ >> $udevFileName
 
-printf "\n\n\n%s\n\n" "/lib/udev/rules.d/ files" >> $udevFileName
-cat /lib/udev/rules.d/* >> $udevFileName
+printf "\n\n\n%s" "/lib/udev/rules.d/ files" >> $udevFileName
+for f in /lib/udev/rules.d/*; do
+    printf "\n\n\n=== %s ===\n\n" "$f" >> $udevFileName
+    cat "$f" >> $udevFileName
+done
 
 
 ### Rename files

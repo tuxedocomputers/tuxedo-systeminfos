@@ -17,6 +17,12 @@ ci_deploy_user: "deploy-deb-tuxedo-systeminfos"
 ci_upload_dir: "tuxedo-systeminfos"
 
 changelog:
+  - version: "3.0.12"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-18 09:00:00
+    entries:
+      - "Display file names in addition to folder contents"
   - version: "3.0.11"
     epoch: 1
     author: "Steven Seifried"
