@@ -33,6 +33,36 @@ if [ "$(id -u)" -ne 0 ]; then
     exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh $0"
 fi
 
+if [ -f /usr/bin/systeminfos.sh ]; then
+    echo "Found myself as installed package. Continue…" > /dev/null
+else
+    if [ -f /usr/bin/apt-get ]; then
+        apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
+        printf "%s\n" "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait..."
+    elif [ -f /usr/bin/zypper ]; then
+        zypper in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
+        printf "%s\n" "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait..."
+    elif [ -f /usr/bin/dnf ]; then
+        dnf in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
+        printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
+    elif [ -f /usr/bin/pacman ]; then
+        pacman -Sy --noconfirm curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
+        printf "%s\n" "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
+    else
+        if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+            clear
+            printf "%s\n" "Sie verwenden eine nicht unterstützte Distribution. Bitte installieren Sie die entsprechende Pakete für die folgende Software selbst und führen das Skript erneut aus"
+            printf "%s\n" "- curl" "- zip" "- nvme-cli" "- edid-decode" "- efibootmgr" "- lm_sensors" "- jq"
+            exit 1
+        else
+            clear
+            printf "%s\n" "You are using an unsupported distribution. Please install the corresponding packages for the following software yourself and run the script again"
+            printf "%s\n" "- curl" "- zip" "- nvme-cli" "- edid-decode" "- efibootmgr" "- lm_sensors" "- jq"
+            exit 1
+        fi
+    fi
+fi
+
 ### Check Internet connection
 printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
 scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
