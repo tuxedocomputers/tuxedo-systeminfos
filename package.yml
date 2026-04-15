@@ -17,6 +17,12 @@ ci_deploy_user: "deploy-deb-tuxedo-systeminfos"
 ci_upload_dir: "tuxedo-systeminfos"
 
 changelog:
+  - version: "3.0.14"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-25 17:17:17
+    entries:
+      - "Split messages by language"
   - version: "3.0.13"
     epoch: 1
     author: "Steven Seifried"

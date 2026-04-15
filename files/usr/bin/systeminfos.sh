@@ -29,25 +29,47 @@ udevFileName=udevoutput.txt
 
 ### check root privileges
 if [ "$(id -u)" -ne 0 ]; then
-    printf "\e[31msysteminfos.sh muss mit root Rechten ausgefuehrt werden! / systeminfos.sh must be executed with root privileges! \e[0m\n"
-    exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh $0"
+    if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+        printf "\e[31msysteminfos.sh muss mit root Rechten ausgefuehrt werden! \e[0m\n"
+        exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh $0"
+    else
+        printf "\e[31msysteminfos.sh must be executed with root privileges! \e[0m\n"
+        exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh $0"
+    fi
 fi
 
 if [ -f /usr/bin/systeminfos.sh ]; then
     echo "Found myself as installed package. Continue…" > /dev/null
+
 else
     if [ -f /usr/bin/apt-get ]; then
         apt-get update && apt-get -y install curl zip nvme-cli edid-decode efibootmgr lm-sensors jq > /dev/null 2>&1
-        printf "%s\n" "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait..."
+        if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+            printf "%s\n" "Installiere benötigte Abhängigkeiten. Bitte warten..."
+        else
+            printf "%s\n" "Install required dependencies. Please wait..."
+        fi
     elif [ -f /usr/bin/zypper ]; then
         zypper in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
-        printf "%s\n" "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait..."
+        if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+            printf "%s\n" "Installiere benötigte Abhängigkeiten. Bitte warten..."
+        else
+            printf "%s\n" "Install required dependencies. Please wait..."
+        fi
     elif [ -f /usr/bin/dnf ]; then
         dnf in -y curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
-        printf "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
+        if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+            printf "%s\n" "Installiere benötigte Abhängigkeiten. Bitte warten..."
+        else
+            printf "%s\n" "Install required dependencies. Please wait..."
+        fi
     elif [ -f /usr/bin/pacman ]; then
         pacman -Sy --noconfirm curl zip nvme-cli edid-decode efibootmgr lm_sensors jq > /dev/null 2>&1
-        printf "%s\n" "Installiere benoetigte Abhaengigkeiten. Bitte warten... / Install required dependencies. Please wait... \n"
+        if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+            printf "%s\n" "Installiere benötigte Abhängigkeiten. Bitte warten..."
+        else
+            printf "%s\n" "Install required dependencies. Please wait..."
+        fi
     else
         if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
             clear
@@ -70,11 +92,21 @@ if [ $scriptisonline -eq 200 ]; then
     printf "\e[32mOnline\e[0m\n"
     printf "\e[37m\e[0m\n"
 else
-    printf "\e[31mOffline! Um das Skript ausfuehren zu koennen ist eine Internetverbindung erforderlich! / Offline! An internet connection is required to run the script! \e[1m\n"
-    printf "Sollten Sie sich in einem Firmennetzwerk befinden, führen Sie das Skript bitte außerhalb des Firmennetzwerkes erneut aus. / If you are in a corporate network, please run the script again outside the corporate network. \n"
-    printf "In manchen Firmennetzwerken werden Skripte als nicht vertrauenswürdig eingestuft und blockiert. / In some corporate networks, scripts are classified as untrusted and blocked. \n"
-    printf "\e[37m\e[0m\n"
-    exit 1
+    if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+        clear
+        printf "\e[31mOffline! Um das Skript ausführen zu können ist eine Internetverbindung erforderlich! \e[1m\n"
+        printf "Sollten Sie sich in einem Firmennetzwerk befinden, führen Sie das Skript bitte außerhalb des Firmennetzwerkes erneut aus.\n"
+        printf "In manchen Firmennetzwerken werden Skripte als nicht vertrauenswürdig eingestuft und blockiert.\n"
+        printf "\e[37m\e[0m\n"
+        exit 1
+    else
+        clear
+        printf "\e[31m Offline! An internet connection is required to run the script! \e[1m\n"
+        printf "If you are in a corporate network, please run the script again outside the corporate network. \n"
+        printf "In some corporate networks, scripts are classified as untrusted and blocked. \n"
+        printf "\e[37m\e[0m\n"
+        exit 1
+    fi
 fi
 
 ### clear terminal window before printing messages
@@ -111,9 +143,15 @@ fi
 if [ -z $ticketnumber ]; then
     read -p "Ticket#: " ticketnumber
     if [ -z $ticketnumber ]; then
-        printf "\e[31mKeine Tickernummer angegeben. Beende. / No ticket number given. Quitting. \e[1m\n"
-        printf "\e[37m\e[0m\n"
-        exit 1
+        if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+            printf "\e[31mKeine Tickernummer angegeben. Beende. \e[1m\n"
+            printf "\e[37m\e[0m\n"
+            exit 1
+        else
+            printf "\e[31mNo ticket number given. Quitting. \e[1m\n"
+            printf "\e[37m\e[0m\n"
+            exit 1
+        fi
     fi
 fi
 
@@ -689,8 +727,8 @@ elif [ "$(. /etc/os-release; echo $NAME)" = "Fedora Linux" ]; then
     printf "\n\n\n%s\n\n" "/var/log/dnf.rpm.log" >> $normalpackagesFileName
     cat /var/log/dnf.rpm.log >> $normalpackagesFileName
 
-# Manjaro
-elif [ "$(. /etc/os-release; echo $NAME)" = "Manjaro Linux" ]; then
+# Arch Linux based
+elif [ "$(. /etc/os-release; echo $ID_LIKE)" = "arch" || "$(. /etc/os-release; echo $ID)" ]; then
 
     printf "%s\n\n" "cat /etc/pacman.conf" >> $normalpackagesFileName
     cat /etc/pacman.conf >> $normalpackagesFileName
@@ -850,8 +888,13 @@ if [ $scriptisonline -eq 200 ]; then
     printf "\e[32mOnline\e[0m\n"
     printf "\e[37m\e[0m\n"
 else
-    printf "\e[31mOffline! Um die Ergebnisse uebermitteln zu koennen ist eine Internetverbindung erforderlich! / Offline! An Internet connection is required to transmit the results! \e[1m\n"
-    printf "\e[37m\e[0m\n"
+    if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+        printf "\e[31mOffline! Um die Ergebnisse uebermitteln zu koennen ist eine Internetverbindung erforderlich! \e[1m\n"
+        printf "\e[37m\e[0m\n"
+    else
+        printf "\e[31mOffline! An Internet connection is required to transmit the results! \e[1m\n"
+        printf "\e[37m\e[0m\n"
+    fi
     rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
     exit 1
 fi
