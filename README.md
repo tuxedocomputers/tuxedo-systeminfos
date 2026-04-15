@@ -17,6 +17,18 @@ The script uses some distribution specific commands. distribution specific comma
 
 You will only receive official support for TUXEDO OS and Ubuntu from TUXEDO Computers
 
+## Dependencies
+For the distributions above, the script is able to install the following dependencies by itself:
+- curl
+- zip
+- nvme-cli
+- edid-decode
+- efibootmgr
+- lm_sensors
+- jq
+
+If you are using an unsupported distribution, please install the corresponding packages for the listed software above yourself and run the script again
+
 ## Before you running the script
 - Check if you got a ticketnumber. If you don't have a ticket number: contact us by e-mail to `tux[at]tuxedocomputers.com` first.
 - Submitted system information **without** valid ticket number can't be processed
@@ -26,7 +38,6 @@ It checks, if there is an internet connection. Without an internet connection, t
 If there is no Internet connection, the script will be aborted. Please make sure, that you have an internet connection.
 
 ## What exactly does the script collect?
-
 - Kernel version
 - USB devices
 - PCI devices

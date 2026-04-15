@@ -17,6 +17,61 @@ ci_deploy_user: "deploy-deb-tuxedo-systeminfos"
 ci_upload_dir: "tuxedo-systeminfos"
 
 changelog:
+  - version: "3.0.14"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-25 17:17:17
+    entries:
+      - "Split messages by language"
+  - version: "3.0.13"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-18 11:00:00
+    entries:
+      - "Re-add dependency check"
+  - version: "3.0.12"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-18 09:00:00
+    entries:
+      - "Display file names in addition to folder contents"
+  - version: "3.0.11"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-17 09:15:00
+    entries:
+      - "Replace most printf commands for easier maintenance and better code readability"
+  - version: "3.0.10"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-13 17:10:00
+    entries:
+      - "Sort sections alphabetically for easier maintenance and better structure"
+  - version: "3.0.9"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-13 16:42:00
+    entries:
+      - "include crash files"
+  - version: "3.0.8"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-13 09:25:00
+    entries:
+      - "include tomte-light logs"
+  - version: "3.0.7"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-13 09:20:00
+    entries:
+      - "Add 'users' to '$infoFileName'"
+  - version: "3.0.6"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-05 10:45:00
+    entries:
+      - "Switch version scheme"
+      - "Add epoch"
   - version: "20260227.2.0"
     author: "Steven Seifried"
     date: 2026-02-27 13:33:00
