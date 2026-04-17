@@ -1,3 +1,10 @@
 include:
   - project: "tuxedocomputers/development/installation-testing/package-build-gitlab-ci-yaml"
-    file: "/simple-package-creator.yml"
+    ref: "staging"
+    file: "includes/multi-distro/template.yml"
+    inputs:
+      server_user: "deploy-deb-tuxedo-systeminfos"
+      deploy_base_dir: "deb/tuxedo-systeminfos"
+      src_distros:
+        - any
+        - suse_rpm
