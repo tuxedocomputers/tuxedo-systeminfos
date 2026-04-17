@@ -1,0 +1,114 @@
+name: "tuxedo-systeminfos"
+summary: "TUXEDO Systeminfos Script"
+description: "Script from TUXEDO Computers to get necessary information of the system for technical support purposes."
+license: "GPL-2.0-only"
+git_url: "https://gitlab.com/tuxedocomputers/development/systeminfos-script"
+
+dependencies:
+  - curl
+  - efibootmgr
+  - jq
+  - nvme-cli
+  - zip
+
+deb_dependencies:
+  - edid-decode
+  - lm-sensors
+  - mesa-utils
+
+rpm_dependencies:
+  - edid-decode
+  - glx-utils # mesa-utils
+  - lm_sensors
+
+alpm_dependencies:
+  - lm_sensors
+  - mesa-utils
+  - v4l-utils # edid-decode
+
+changelog:
+  - version: "3.0.14"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-25 17:17:17
+    entries:
+      - "Split messages by language"
+  - version: "3.0.13"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-18 11:00:00
+    entries:
+      - "Re-add dependency check"
+  - version: "3.0.12"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-18 09:00:00
+    entries:
+      - "Display file names in addition to folder contents"
+  - version: "3.0.11"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-17 09:15:00
+    entries:
+      - "Replace most printf commands for easier maintenance and better code readability"
+  - version: "3.0.10"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-13 17:10:00
+    entries:
+      - "Sort sections alphabetically for easier maintenance and better structure"
+  - version: "3.0.9"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-13 16:42:00
+    entries:
+      - "include crash files"
+  - version: "3.0.8"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-13 09:25:00
+    entries:
+      - "include tomte-light logs"
+  - version: "3.0.7"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-13 09:20:00
+    entries:
+      - "Add 'users' to '$infoFileName'"
+  - version: "3.0.6"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-03-05 10:45:00
+    entries:
+      - "Switch version scheme"
+      - "Add epoch"
+  - version: "20260227.2.0"
+    author: "Steven Seifried"
+    date: 2026-02-27 13:33:00
+    entries:
+      - "Fix 'dependencies' in 'package.yml'"
+  - version: "20260227.1.0"
+    author: "Steven Seifried"
+    date: 2026-02-27 12:50:00
+    entries:
+      - "Fix 'dependencies' in 'package.yml'"
+  - version: "20260216.1.0"
+    author: "Steven Seifried"
+    date: 2026-02-16 08:15:00
+    entries:
+      - "Add NB02 battery information (introduced with tuxedo-drivers 4.20.0)"
+  - version: "20251117.2.0"
+    author: "Steven Seifried"
+    date: 2025-11-17 10:30:00
+    entries:
+      - "Remove not working '$(basename $0)' and change '$1' to '$0'"
+  - version: "20251117.1.0"
+    author: "Steven Seifried"
+    date: 2025-11-17 08:05:00
+    entries:
+      - "Remove 'SYSINFOS_DEBUG' due to bugs and less usage"
+  - version: "20251103.1.0"
+    author: "Steven Seifried"
+    date: 2025-11-03 08:45:01
+    entries:
+      - "Use simple-package-creator for packaging"

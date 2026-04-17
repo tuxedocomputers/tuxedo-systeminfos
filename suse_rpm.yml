@@ -1,0 +1,7 @@
+rpm_dependencies:
+  - Mesa-demo # mesa-utils
+  - sensors
+
+# Leap 16.0 has no edid-decode 😭
+rpm_recommends:
+  - edid-decode
