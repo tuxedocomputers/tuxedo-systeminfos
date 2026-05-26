@@ -74,12 +74,12 @@ else
         if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
             clear
             printf "%s\n" "Sie verwenden eine nicht unterstützte Distribution. Bitte installieren Sie die entsprechende Pakete für die folgende Software selbst und führen das Skript erneut aus"
-            printf "%s\n" "- curl" "- zip" "- nvme-cli" "- edid-decode" "- efibootmgr" "- lm_sensors" "- jq"
+            printf "%s\n" "- curl" "- zip" "- nvme-cli" "- edid-decode" "- efibootmgr" "- lm_sensors" "- lshw" "- jq"
             exit 1
         else
             clear
             printf "%s\n" "You are using an unsupported distribution. Please install the corresponding packages for the following software yourself and run the script again"
-            printf "%s\n" "- curl" "- zip" "- nvme-cli" "- edid-decode" "- efibootmgr" "- lm_sensors" "- jq"
+            printf "%s\n" "- curl" "- zip" "- nvme-cli" "- edid-decode" "- efibootmgr" "- lm_sensors" "- lshw" "- jq"
             exit 1
         fi
     fi

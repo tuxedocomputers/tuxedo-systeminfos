@@ -8,6 +8,7 @@ dependencies:
   - curl
   - efibootmgr
   - jq
+  - lshw
   - nvme-cli
   - zip
 
@@ -27,6 +28,12 @@ alpm_dependencies:
   - v4l-utils # edid-decode
 
 changelog:
+  - version: "3.0.15"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-05-21 08:35:00
+    entries:
+      - "Split messages by language"
   - version: "3.0.14"
     epoch: 1
     author: "Steven Seifried"
