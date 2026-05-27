@@ -28,6 +28,12 @@ alpm_dependencies:
   - v4l-utils # edid-decode
 
 changelog:
+  - version: "3.0.18"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-05-26 09:00:00
+    entries:
+      - "Separate Tomte 2 and 3"
   - version: "3.0.17"
     epoch: 1
     author: "Steven Seifried"
