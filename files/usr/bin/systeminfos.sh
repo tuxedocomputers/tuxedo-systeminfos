@@ -1,8 +1,8 @@
 #!/bin/sh
 ### change language to "C"
-LC_ALL=C
-LANG=C
-LANGUAGE=C
+export LC_ALL=C
+export LANG=C
+export LANGUAGE=C
 ### set other parameter
 serverURI=https://systeminfo.tuxedo.de/systeminfo.php
 snappackagesFileName=snappackagesoutput.txt
