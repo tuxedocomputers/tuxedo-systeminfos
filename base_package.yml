@@ -28,6 +28,12 @@ alpm_dependencies:
   - v4l-utils # edid-decode
 
 changelog:
+  - version: "3.0.17"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-05-22 08:40:00
+    entries:
+      - "Update tomte configuration message in log"
   - version: "3.0.16"
     epoch: 1
     author: "Steven Seifried"
