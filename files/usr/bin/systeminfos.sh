@@ -503,7 +503,7 @@ done
 
 ##### $networkFileName Section
 
-printf "\n\n\n%s\n\n" "lspci -nnk | grep -E -A3 -i "Ethernet|Network"" >> $networkFileName
+printf "\n\n\n%s\n\n" "lspci -nnk | grep -E -A3 -i 'Ethernet|Network'" >> $networkFileName
 lspci -nnk | grep -E -A3 -i "Ethernet|Network" >> $networkFileName
 
 printf "\n\n\n%s\n\n" "ip addr show" >> $networkFileName
@@ -515,7 +515,7 @@ ip route show >> $networkFileName
 printf "\n\n\n%s\n\n" "rfkill list" >> $networkFileName
 rfkill list >> $networkFileName
 
-printf "\n\n\n%s\n\n"iwconfig" >> $networkFileName
+printf "\n\n\n%s\n\n" "iwconfig" >> $networkFileName
 iwconfig >> $networkFileName
 
 printf "\n\n\n%s\n\n" "mmcli" >> $networkFileName
