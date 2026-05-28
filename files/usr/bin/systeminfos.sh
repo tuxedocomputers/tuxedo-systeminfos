@@ -1,8 +1,8 @@
 #!/bin/sh
 ### change language to "C"
-LC_ALL=C
-LANG=C
-LANGUAGE=C
+export LC_ALL=C
+export LANG=C
+export LANGUAGE=C
 ### set other parameter
 serverURI=https://systeminfo.tuxedo.de/systeminfo.php
 snappackagesFileName=snappackagesoutput.txt
@@ -74,12 +74,12 @@ else
         if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
             clear
             printf "%s\n" "Sie verwenden eine nicht unterstützte Distribution. Bitte installieren Sie die entsprechende Pakete für die folgende Software selbst und führen das Skript erneut aus"
-            printf "%s\n" "- curl" "- zip" "- nvme-cli" "- edid-decode" "- efibootmgr" "- lm_sensors" "- jq"
+            printf "%s\n" "- curl" "- zip" "- nvme-cli" "- edid-decode" "- efibootmgr" "- lm_sensors" "- lshw" "- jq"
             exit 1
         else
             clear
             printf "%s\n" "You are using an unsupported distribution. Please install the corresponding packages for the following software yourself and run the script again"
-            printf "%s\n" "- curl" "- zip" "- nvme-cli" "- edid-decode" "- efibootmgr" "- lm_sensors" "- jq"
+            printf "%s\n" "- curl" "- zip" "- nvme-cli" "- edid-decode" "- efibootmgr" "- lm_sensors" "- lshw" "- jq"
             exit 1
         fi
     fi
@@ -456,18 +456,6 @@ else
     printf "\n\n\n" >> $logFileName
 fi
 
-if [ -f /var/log/tomte/tomte.log ]; then
-    printf "%s\n\n" "/var/log/tomte/tomte.log" >> $logFileName
-    tail --lines=1000 /var/log/tomte/tomte.log >> $logFileName
-    printf "\n\n\n" >> $logFileName
-
-else
-    printf "%s\n" "Tomte Log konnte nicht gefunden werden." >> $logFileName
-    printf "%s\n" "Moeglicherweise ist Tomte nicht installiert." >> $logFileName
-    printf "\n\n\n" >> $logFileName
-
-fi
-
 printf "%s\n\n" "/var/log/syslog" >> $logFileName
 tail --lines=1000 /var/log/syslog >> $logFileName
 
@@ -515,7 +503,7 @@ done
 
 ##### $networkFileName Section
 
-printf "\n\n\n%s\n\n" "lspci -nnk | grep -E -A3 -i "Ethernet|Network"" >> $networkFileName
+printf "\n\n\n%s\n\n" "lspci -nnk | grep -E -A3 -i 'Ethernet|Network'" >> $networkFileName
 lspci -nnk | grep -E -A3 -i "Ethernet|Network" >> $networkFileName
 
 printf "\n\n\n%s\n\n" "ip addr show" >> $networkFileName
@@ -527,7 +515,7 @@ ip route show >> $networkFileName
 printf "\n\n\n%s\n\n" "rfkill list" >> $networkFileName
 rfkill list >> $networkFileName
 
-printf "\n\n\n%s\n\n"iwconfig" >> $networkFileName
+printf "\n\n\n%s\n\n" "iwconfig" >> $networkFileName
 iwconfig >> $networkFileName
 
 printf "\n\n\n%s\n\n" "mmcli" >> $networkFileName
@@ -811,7 +799,7 @@ if [ -f /etc/tomte/AUTOMATIC ]; then
     printf "%s\n" "Tomte wird in den vorgesehenen Standardeinstellungen verwendet" >> $tomteFileName
     printf "\n\n\n" >> $tomteFileName
 elif [ -f /etc/tomte/DONT_CONFIGURE ]; then
-    printf "%s\n" "Tomte ist so konfiguriert, dass nur die als "notwendig" (prerequisite) markierten Module konfiguriert werden" >> $tomteFileName
+    printf "%s\n" "Tomte ist so konfiguriert, dass nur die als notwendig markierten Module konfiguriert werden" >> $tomteFileName
     printf "\n\n\n" >> $tomteFileName
 elif [ -f /etc/tomte/UPDATES_ONLY ]; then
     printf "%s\n" "Tomte ist so konfiguriert, dass nur Aktualisierungen ueber Tomte verarbeitet werden" >> $tomteFileName
@@ -821,15 +809,42 @@ else
     printf "\n\n\n" >> $tomteFileName
 fi
 
-if [ -d /var/log/tuxedo-tomte-light/tuxedo-tomte-light ]; then
+if [ -f /var/log/tomte/tomte.log ]; then
+    printf "%s\n\n" "/var/log/tomte/tomte.log" >> $logFileName
+    tail --lines=1000 /var/log/tomte/tomte.log >> $logFileName
+    printf "\n\n\n" >> $logFileName
+
+else
+    printf "%s\n" "Tomte Classic Log konnte nicht gefunden werden." >> $logFileName
+    printf "%s\n" "Moeglicherweise ist Tomte Classic nicht installiert." >> $logFileName
+    printf "\n\n\n" >> $logFileName
+
+fi
+
+if [ -d /var/log/tuxedo-tomte/ ]; then
+    printf "%s\n" "tuxedo-tomte.log" >> $tomteFileName
+    cat /var/log/tuxedo-tomte/tuxedo-tomte/tuxedo-tomte.log >> $tomteFileName
+    
+    printf "\n\n\n%s\n\n" "tuxedo-tomte-packages.log" >> $tomteFileName
+    cat /var/log//tuxedo-tomte/tuxedo-tomte-packages.log >> $tomteFileName
+    
+    printf "\n\n\n%s\n\n" "tuxedo-tomte-startups.log" >> $tomteFileName
+    cat /var/log/tuxedo-tomte/tuxedo-tomte-startups.log >> $tomteFileName
+    printf "\n\n\n" >> $tomteFileName
+else
+    printf "%s\n" "Tomte >=3 ist nicht installiert" >> $tomteFileName
+    printf "\n\n\n" >> $tomteFileName
+fi
+
+if [ -d /var/log/tuxedo-tomte-light/ ]; then
     printf "%s\n" "tuxedo-tomte-light.log" >> $tomteFileName
-    cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light/tuxedo-tomte-light.log >> $tomteFileName
+    cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light.log >> $tomteFileName
     
     printf "\n\n\n%s\n\n" "tuxedo-tomte-light-packages.log" >> $tomteFileName
-    cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light/tuxedo-tomte-light-packages.log >> $tomteFileName
+    cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light-packages.log >> $tomteFileName
     
     printf "\n\n\n%s\n\n" "tuxedo-tomte-light-startups.log" >> $tomteFileName
-    cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light/tuxedo-tomte-light-startups.log >> $tomteFileName
+    cat /var/log/tuxedo-tomte-light/tuxedo-tomte-light-startups.log >> $tomteFileName
     printf "\n\n\n" >> $tomteFileName
 else
     printf "%s\n" "Tomte Light ist nicht installiert" >> $tomteFileName

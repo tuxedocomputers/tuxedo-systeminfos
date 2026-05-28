@@ -8,6 +8,7 @@ dependencies:
   - curl
   - efibootmgr
   - jq
+  - lshw
   - nvme-cli
   - zip
 
@@ -27,6 +28,36 @@ alpm_dependencies:
   - v4l-utils # edid-decode
 
 changelog:
+  - version: "3.0.19"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-05-28 06:35:00
+    entries:
+      - "Fix strings"
+  - version: "3.0.18"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-05-26 09:00:00
+    entries:
+      - "Separate Tomte 2 and 3"
+  - version: "3.0.17"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-05-22 08:40:00
+    entries:
+      - "Update tomte configuration message in log"
+  - version: "3.0.16"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-05-21 08:42:00
+    entries:
+      - "Export vars"
+  - version: "3.0.15"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-05-21 08:35:00
+    entries:
+      - "Split messages by language"
   - version: "3.0.14"
     epoch: 1
     author: "Steven Seifried"
