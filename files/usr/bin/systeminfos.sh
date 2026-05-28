@@ -823,10 +823,10 @@ fi
 
 if [ -d /var/log/tuxedo-tomte/ ]; then
     printf "%s\n" "tuxedo-tomte.log" >> $tomteFileName
-    cat /var/log/tuxedo-tomte/tuxedo-tomte/tuxedo-tomte.log >> $tomteFileName
+    cat /var/log/tuxedo-tomte/tuxedo-tomte.log >> $tomteFileName
     
     printf "\n\n\n%s\n\n" "tuxedo-tomte-packages.log" >> $tomteFileName
-    cat /var/log//tuxedo-tomte/tuxedo-tomte-packages.log >> $tomteFileName
+    cat /var/log/tuxedo-tomte/tuxedo-tomte-packages.log >> $tomteFileName
     
     printf "\n\n\n%s\n\n" "tuxedo-tomte-startups.log" >> $tomteFileName
     cat /var/log/tuxedo-tomte/tuxedo-tomte-startups.log >> $tomteFileName
