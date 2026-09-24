@@ -280,7 +280,7 @@ dmidecode >> $boardFileName
 
 if [ -f /sys/class/mei/mei0/fw_ver ]; then
     printf "\n\n\n%s\n\n" "Intel ME Version" >> $boardFileName
-    head -n 1 /sys/class/mei/mei0/fw_ver >> $boardFileName
+    head -n 1 /sys/class/mei/mei0/fw_ver | tr -d "0:" >> $boardFileName
 fi
 
 
