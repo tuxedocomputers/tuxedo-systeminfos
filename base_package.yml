@@ -28,6 +28,12 @@ alpm_dependencies:
   - v4l-utils # edid-decode
 
 changelog:
+  - version: "3.0.21"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-09-24 09:40:00
+    entries:
+      - "Read out Intel ME version"
   - version: "3.0.20"
     epoch: 1
     author: "Steven Seifried"
