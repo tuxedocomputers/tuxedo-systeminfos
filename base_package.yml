@@ -28,6 +28,12 @@ alpm_dependencies:
   - v4l-utils # edid-decode
 
 changelog:
+  - version: "3.0.22"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-09-24 09:45:00
+    entries:
+      - "temporary remove crash logs"
   - version: "3.0.21"
     epoch: 1
     author: "Steven Seifried"

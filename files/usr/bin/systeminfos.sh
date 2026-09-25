@@ -438,15 +438,15 @@ printf "%s\n\n" "lm-sensors" >> $infoFileName
 sensors >> $infoFileName
 
 
-if [ -d /var/crash ]; then
-    printf "\n\n\n%s\n\n" "/var/crash/" >> $infoFileName
-    ls -la /var/crash/ >> $infoFileName
-    printf "\n\n\n%s" "/var/crash/" >> $infoFileName
-    for f in /var/crash/*; do
-        printf "\n\n\n=== %s ===\n\n" "$f" >> $infoFileName
-        cat "$f" >> $infoFileName
-    done
-fi
+#if [ -d /var/crash ]; then
+#    printf "\n\n\n%s\n\n" "/var/crash/" >> $infoFileName
+#    ls -la /var/crash/ >> $infoFileName
+#    printf "\n\n\n%s" "/var/crash/" >> $infoFileName
+#    for f in /var/crash/*; do
+#        printf "\n\n\n=== %s ===\n\n" "$f" >> $infoFileName
+#        cat "$f" >> $infoFileName
+#    done
+#fi
 
 ##### $logFileName Section
 
