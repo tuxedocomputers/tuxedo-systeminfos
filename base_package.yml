@@ -35,7 +35,6 @@ changelog:
     date: 2026-11-06 14:30:00
     entries:
       - "Optimize security for system information upload logic"
-      - "A lot of Pocky sticks were eaten for this security release"
   - version: "3.0.22"
     epoch: 1
     author: "Steven Seifried"
