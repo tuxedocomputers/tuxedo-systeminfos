@@ -7,6 +7,7 @@ export LANGUAGE=C
 serverURI=https://systeminfo.tuxedo.de/systeminfo.php
 snappackagesFileName=snappackagesoutput.txt
 started=$(date +"%Y-%m-%d-%H:%Mh")
+tuxedoURI=https://www.tuxedocomputers.com
 ticketnumber=$1
 ### set filenames
 audioFileName=audiooutput.txt
@@ -30,10 +31,12 @@ udevFileName=udevoutput.txt
 ### check root privileges
 if [ "$(id -u)" -ne 0 ]; then
     if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
-        printf "\e[31msysteminfos.sh muss mit root Rechten ausgefuehrt werden! \e[0m\n"
+        printf "\e[31m%s\e[0m\n" \
+        "systeminfos.sh muss mit root Rechten ausgeführt werden!"
         exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh $0"
     else
-        printf "\e[31msysteminfos.sh must be executed with root privileges! \e[0m\n"
+        printf "\e[31m%s\e[0m\n" \
+        "systeminfos.sh must be executed with root privileges!"
         exec sudo --preserve-env="XDG_SESSION_TYPE,XDG_CURRENT_DESKTOP" su -c "sh $0"
     fi
 fi
@@ -86,11 +89,11 @@ else
 fi
 
 ### Check Internet connection
-printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
-scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
-if [ $scriptisonline -eq 200 ]; then
-    printf "\e[32mOnline\e[0m\n"
-    printf "\e[37m\e[0m\n"
+printf "%s\n" "Überprüfe Internetverbindung... / Checking Internet connection..."
+scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" $tuxedoURI)
+if [ "${scriptisonline}" -eq 200 ]; then
+    printf "\n\e[32m%s\e[0m\n\n" \
+    "Online"
 else
     if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
         clear
@@ -902,34 +905,70 @@ zip -9 systeminfos-$ticketnumber.zip *-$ticketnumber.txt
 
 
 ### Check Internet connection
-printf "Ueberpruefe Internetverbindung... / Checking Internet connection... \n"
-scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" https://www.tuxedocomputers.com)
-if [ $scriptisonline -eq 200 ]; then
-    printf "\e[32mOnline\e[0m\n"
-    printf "\e[37m\e[0m\n"
+printf "%s\n" "Überpruefe Internetverbindung... / Checking Internet connection..."
+scriptisonline=$(curl -o /dev/null -I -L -s -w "%{http_code}" $tuxedoURI)
+if [ "${scriptisonline}" -eq 200 ]; then
+    printf "\n\e[32m%s\e[0m\n\n" \
+    "Online"
 else
     if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
-        printf "\e[31mOffline! Um die Ergebnisse uebermitteln zu koennen ist eine Internetverbindung erforderlich! \e[1m\n"
-        printf "\e[37m\e[0m\n"
+        printf "\e[31m%s\e[0m\n" \
+        "Offline! Um die Ergebnisse übermitteln zu können ist eine Internetverbindung erforderlich!"
     else
-        printf "\e[31mOffline! An Internet connection is required to transmit the results! \e[1m\n"
-        printf "\e[37m\e[0m\n"
+        printf "\e[31m%s\e[0m\n" \
+        "Offline! An Internet connection is required to transmit the results!"
     fi
-    rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
+    rm "systeminfos-$ticketnumber.zip" *-$ticketnumber.txt
     exit 1
 fi
 
-curl -k -F "file=@systeminfos-$ticketnumber.zip" $serverURI?ticketnumber=$ticketnumber
-rm systeminfos-$ticketnumber.zip *-$ticketnumber.txt
+unzip -tq "systeminfos-$ticketnumber.zip" >/dev/null 2>&1
+zipcheck=$?
+
+if [ "$zipcheck" -eq 0 ]; then
+    curl --fail -F "file=@systeminfos-$ticketnumber.zip" "$serverURI?ticketnumber=$ticketnumber"
+    curlexit=$?
+    if [ "$curlexit" -ne 0 ]; then
+        if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+            printf "\e[31m%s\e[0m\n" \
+            "curl-Fehler $curlexit"
+            rm *-$ticketnumber.txt
+            exit 1;
+        else
+            printf "\e[31m%s\e[0m\n" \
+            "curl error $curlexit"
+            rm *-$ticketnumber.txt
+            exit 1;
+        fi
+    else
+        rm "systeminfos-$ticketnumber.zip" *-$ticketnumber.txt
+    fi
+else
+    if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
+        printf "\e[31m%s\n%s\e[0m\n" \
+        "systeminfos-$ticketnumber.zip scheint defekt zu sein." \
+        "Bitte führen Sie das Skript erneut aus."
+        rm "systeminfos-$ticketnumber.zip" *-$ticketnumber.txt
+        exit 1;
+    else
+        printf "\e[31m%s\n%s\e[0m\n" \
+        "systeminfos-$ticketnumber.zip seems to be broken." \
+        "Please run the script again."
+        rm "systeminfos-$ticketnumber.zip" *-$ticketnumber.txt
+        exit 1;
+    fi
+fi
 
 if [ "$(. /etc/default/locale; echo $LANG)" = "de_DE.UTF-8" ]; then
-    printf "\n%s\n" "Systeminfos erfolgreich uebermittelt."
-    printf "%s\n" "Wir werden die eingesendeten Systeminfos nun auswerten und uns bei Ihnen melden."
-    printf "%s\n" "Bitte haben Sie etwas Geduld."
+    printf "\e[32m\n%s\n%s\n%s\n\e[0m" \
+    "Systeminfos erfolgreich übermittelt." \
+    "Wir werden die eingesendeten Systeminfos nun auswerten und uns bei Ihnen melden." \
+    "Bitte haben Sie etwas Geduld."
 else
-    printf "\n%s\n" "Systeminformations successfully transferred."
-    printf "%s\n" "We will now evaluate the submitted system information and get back to you."
-    printf "%s\n" "Please be patient."
+    printf "\e[32m\n%s\n%s\n%s\n\e[0m" \
+    "Systeminformations successfully transferred." \
+    "We will now evaluate the submitted system information and get back to you." \
+    "Please be patient."
 fi
 
 unset LC_ALL
