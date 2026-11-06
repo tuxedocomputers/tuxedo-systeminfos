@@ -10,6 +10,7 @@ dependencies:
   - jq
   - lshw
   - nvme-cli
+  - unzip
   - zip
 
 deb_dependencies:
@@ -28,6 +29,12 @@ alpm_dependencies:
   - v4l-utils # edid-decode
 
 changelog:
+  - version: "3.1.0"
+    epoch: 1
+    author: "Steven Seifried"
+    date: 2026-11-06 14:30:00
+    entries:
+      - "Optimize security for system information upload logic"
   - version: "3.0.22"
     epoch: 1
     author: "Steven Seifried"
